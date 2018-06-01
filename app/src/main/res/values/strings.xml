@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">成Line</string>
+    //Barcode part
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="tv_msgBulletin">訊息公告</string>
+</resources>

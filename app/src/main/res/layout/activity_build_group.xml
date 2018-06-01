@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azure"
+    android:orientation="vertical"
+    tools:context=".Main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/skyblue"
+            android:gravity="center"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="15dp"
+            android:text="創建群組"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></LinearLayout>
+
+        <EditText
+            android:id="@+id/etGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="輸入群組名稱" />
+
+        <Button
+            android:id="@+id/btn_selectFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="選擇好友"/>
+
+        <Button
+            android:id="@+id/btn_CreateGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="創建" />
+    </LinearLayout>
+
+
+</LinearLayout>

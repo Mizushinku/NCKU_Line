@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.s2784.layout">
+    //add permission
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:configChanges="orientation|keyboardHidden"
+        android:icon="@mipmap/ncku_line2"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ncku_line2"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="stateAlwaysHidden">
+        <activity android:name=".StartInterface">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="usccbarcodescanner" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddFriend" />
+        <activity android:name=".BuildGroup" />
+        <activity android:name=".Main" />
+        <activity android:name=".Chatroom" />
+        <activity android:name=".Upload" />
+        <activity android:name=".LogIn" />
+        <activity
+            android:name=".AnyOrientationCaptureActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".SelectFriendIntoGroup" />
+        <activity android:name=".StudentData" />
+        <activity android:name=".MsgBulletin" />
+        <activity android:name=".JoinGroup"></activity>
+    </application>
+
+</manifest>
