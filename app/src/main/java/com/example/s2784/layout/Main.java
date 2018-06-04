@@ -36,6 +36,8 @@ public class Main extends AppCompatActivity {
     private List<String> listDataHeader;
     private HashMap<String,ArrayList<RoomInfo>> listHash;
 
+    //commit test
+
 
     private static final int REQUEST_CODE = 1;
     private static final int REQUEST_CODE_BuildGroup = 2;
