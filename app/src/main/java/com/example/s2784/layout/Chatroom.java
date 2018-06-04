@@ -121,7 +121,7 @@ public class Chatroom extends AppCompatActivity {
 
 
 
-        btn = findViewById(R.id.btn);
+        btn = findViewById(R.id.btn_send);
         lv = findViewById(R.id.lv);
 //        tv = findViewById(R.id.tv);
         et = findViewById(R.id.et);
