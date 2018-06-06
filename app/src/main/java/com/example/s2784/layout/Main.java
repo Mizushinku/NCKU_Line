@@ -226,9 +226,9 @@ public class Main extends AppCompatActivity {
         switch (resultCode) {
             case REQUEST_CODE :
                 String addFriendID = data.getStringExtra("StudentID");
-                if(!userID.equals(addFriendID)) {
+                //if(!userID.equals(addFriendID)) {
                     AddNewFriend(addFriendID);
-                }
+               // }
                 break;
             case REQUEST_CODE_BuildGroup :
                 RoomInfo newGroup = new RoomInfo();

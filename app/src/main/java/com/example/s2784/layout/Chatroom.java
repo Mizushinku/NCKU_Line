@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ import java.util.concurrent.Executors;
 
 public class Chatroom extends AppCompatActivity {
 
-    private Button btn;
+    private ImageButton btn;
     //    private TextView tv;
     private ListView lv;
     private ArrayList<bubble> Bubble = new ArrayList<bubble>();
