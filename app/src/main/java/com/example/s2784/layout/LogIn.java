@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
@@ -30,7 +31,7 @@ import java.net.URL;
 public class LogIn extends AppCompatActivity {
     private final static int CAMERA_RESULT = 0;
     //SQLite
-    public static boolean LoginOrNot = false;
+    //public static boolean LoginOrNot = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,19 @@ public class LogIn extends AppCompatActivity {
                         */
                     }
                 });
+
+        //StartInterface.LoginOrNot = true;
+
+//        StartInterface.db = openOrCreateDatabase(StartInterface.db_name, Context.MODE_PRIVATE, null);
+//        String createTable = "CREATE TABLE IF NOT EXISTS " + StartInterface.tb_name + "name VARCHAR(32), " + "id VARCHAR(9))";
+
+//        Cursor c = StartInterface.db.rawQuery("SELECT * FROM "+StartInterface.tb_name,null);
+//        if(c.getCount()==0)
+//        {
+//            StartInterface.addData("LogIn","22222222");
+//        }
+        StartInterface.addData("LogIn","F64051114");
+//        StartInterface.db.close();
 
     }
     public void callCamera(){
@@ -163,16 +177,6 @@ public class LogIn extends AppCompatActivity {
         } catch(InterruptedException e){
             e.printStackTrace();
         }
-        // #### SQLite #####
-
-
-
-//
-//        StartInterface.LoginOrNot = true;
-//        StartInterface.db.close();
-
-
-
 
         // ---- 返回呼叫網頁 ---- //
         Intent intent_main = new Intent(Intent.ACTION_VIEW);
@@ -236,7 +240,4 @@ public class LogIn extends AppCompatActivity {
         }   
 
     }
-
-    //SQLite
-
 }

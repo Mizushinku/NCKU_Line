@@ -14,8 +14,8 @@ import android.os.Bundle;
 public class StartInterface extends AppCompatActivity {
 
     public static boolean LoginOrNot = false;
-    //SQLiteDatabase db = new SQLiteDatabase();
-
+    //public static SQLiteDatabase db = new SQLiteDatabase();
+    public static SQLiteDatabase db;
     static final String db_name = "test_db";
     static final String tb_name="test";
 
@@ -27,11 +27,11 @@ public class StartInterface extends AppCompatActivity {
 
 
 //
-//        db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
-//        String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "name VARCHAR(32), " + "id VARCHAR(9))";
-//        StartInterface.db.close();
-//
-//        Cursor c = db.rawQuery("SELECT * FROM "+tb_name,null);
+        db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
+        String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(name VARCHAR(32), " + "id VARCHAR(9))";
+        db.execSQL(createTable);
+
+        Cursor c = db.rawQuery("SELECT * FROM "+tb_name,null);
 //        if(c.getCount()==0)
 //        {
 //           addData("test","22222222");
@@ -39,14 +39,27 @@ public class StartInterface extends AppCompatActivity {
 //        if(c.moveToFirst()){
 //            String str = null;
 //            str+=c.getString(0);
-//            if(str.equals("Login"))
+//            if(str.equals("LogIn"))
 //            {
 //                LoginOrNot = true;
 //            }
 //        }
 
-        //jump to startinterface
-        if (LoginOrNot == false)
+        if(c.moveToFirst()){
+            do{
+                String str = "";
+                str+=c.getString(0);
+                if(str.equals("LogIn"))
+                {
+                    LoginOrNot = true;
+                }
+            }while(c.moveToNext());
+        }
+
+
+        //db.close();
+
+        if (LoginOrNot == false) //若未LogIn過，則需跳頁至LogIn.java
         {
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
@@ -58,13 +71,25 @@ public class StartInterface extends AppCompatActivity {
             }, 3000);
         }
 
+        else if (LoginOrNot == true) //若已LogIn過，則需跳頁至Main.java
+        {
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent mainIntent = new Intent(StartInterface.this, Main.class);
+                    StartInterface.this.startActivity(mainIntent);
+                    StartInterface.this.finish();
+                }
+            }, 3000);
+        }
+
     }
 //
-//    public static void addData(String name,String id)
-//    {
-//        ContentValues cv=new ContentValues(2);
-//        cv.put("name",name);
-//        cv.put("id",id);
-//        db.insert(tb_name,null,cv);
-//    }
+    public static void addData(String name,String id)
+    {
+        ContentValues cv=new ContentValues(2);
+        cv.put("name",name);
+        cv.put("id",id);
+        db.insert(tb_name,null,cv);
+    }
 }
