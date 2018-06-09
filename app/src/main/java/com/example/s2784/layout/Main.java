@@ -184,8 +184,9 @@ public class Main extends AppCompatActivity {
                 })
                 .setNegativeButton("是", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent_logIn = new Intent(Main.this,LogIn.class);
-                        startActivity(intent_logIn);
+                        StartInterface.logout();
+                        Intent intent_StartInterface = new Intent(Main.this,StartInterface.class);
+                        startActivity(intent_StartInterface);
                         finish();
                     }
                 });

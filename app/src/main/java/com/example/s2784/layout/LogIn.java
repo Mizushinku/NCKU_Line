@@ -63,7 +63,6 @@ public class LogIn extends AppCompatActivity {
 //        {
 //            StartInterface.addData("LogIn","22222222");
 //        }
-        StartInterface.addData("LogIn","F64051114");
 //        StartInterface.db.close();
 
     }
@@ -220,6 +219,9 @@ public class LogIn extends AppCompatActivity {
                 Intent studentDataIntent = new Intent(LogIn.this,StudentData.class);
                 studentDataIntent.putExtra("studentID",result.getContents());
                 startActivity(studentDataIntent);
+
+
+                StartInterface.addData("Login",result.getContents());
 
                 finish();
 

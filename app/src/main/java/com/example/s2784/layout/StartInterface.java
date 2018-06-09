@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 
 public class StartInterface extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class StartInterface extends AppCompatActivity {
         String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(name VARCHAR(32), " + "id VARCHAR(9))";
         db.execSQL(createTable);
 
-        Cursor c = db.rawQuery("SELECT * FROM "+tb_name,null);
+        Cursor c = db.rawQuery("SELECT name FROM "+tb_name,null);
 //        if(c.getCount()==0)
 //        {
 //           addData("test","22222222");
@@ -46,14 +47,11 @@ public class StartInterface extends AppCompatActivity {
 //        }
 
         if(c.moveToFirst()){
-            do{
-                String str = "";
-                str+=c.getString(0);
-                if(str.equals("LogIn"))
+                String str = c.getString(0);;
+                if(str.equals("Login"))
                 {
                     LoginOrNot = true;
                 }
-            }while(c.moveToNext());
         }
 
 
@@ -76,7 +74,13 @@ public class StartInterface extends AppCompatActivity {
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Cursor cc = db.rawQuery("SELECT id FROM " + tb_name + " LIMIT 1",null);
+                    cc.moveToFirst();
+                    String user = cc.getString(0);
+                    Toast.makeText(StartInterface.this,"user = " + user, Toast.LENGTH_LONG).show();
+
                     Intent mainIntent = new Intent(StartInterface.this, Main.class);
+                    mainIntent.putExtra("userID",user);
                     StartInterface.this.startActivity(mainIntent);
                     StartInterface.this.finish();
                 }
@@ -91,5 +95,11 @@ public class StartInterface extends AppCompatActivity {
         cv.put("name",name);
         cv.put("id",id);
         db.insert(tb_name,null,cv);
+    }
+
+    public static void logout() {
+        db.delete(tb_name,null,null);
+        db.close();
+        LoginOrNot = false;
     }
 }
