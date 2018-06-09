@@ -77,7 +77,7 @@ public class StartInterface extends AppCompatActivity {
                     Cursor cc = db.rawQuery("SELECT id FROM " + tb_name + " LIMIT 1",null);
                     cc.moveToFirst();
                     String user = cc.getString(0);
-                    Toast.makeText(StartInterface.this,"user = " + user, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(StartInterface.this,"user = " + user, Toast.LENGTH_LONG).show();
 
                     Intent mainIntent = new Intent(StartInterface.this, Main.class);
                     mainIntent.putExtra("userID",user);

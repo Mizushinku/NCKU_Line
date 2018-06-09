@@ -30,13 +30,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 public class Main extends AppCompatActivity {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
     private HashMap<String,ArrayList<RoomInfo>> listHash;
-
-    //commit test
 
 
     private static final int REQUEST_CODE = 1;
@@ -44,15 +55,15 @@ public class Main extends AppCompatActivity {
     private static final int REQUEST_CODE_MsgBulletin = 3;
     private static final int REQUEST_CODE_JoinGroup = 4;
 
-    //private String addFriendID;
     private  ArrayList<RoomInfo> group;
     private ArrayList<RoomInfo> friend;
     private String userID;
 
     public static ArrayList<RoomInfo> friendList = null;
 
+    public Mqtt_Client mqtt;
 
-    //Barcode part
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +75,11 @@ public class Main extends AppCompatActivity {
         TextView mainTitle = (TextView)findViewById(R.id.mainTitle);
         mainTitle.setText(mainTitle.getText() + "     " + userID);
 
+        mqtt = new Mqtt_Client(this.getApplicationContext(),userID);
+
         initData();
+
+        mqtt.Connect();
 
 
 
@@ -74,7 +89,6 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_addFrd = new Intent(Main.this,AddFriend.class);
-                //startActivity(intent_addFrd);
                 startActivityForResult(intent_addFrd,REQUEST_CODE);
             }
         });
@@ -85,7 +99,6 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_joinGroup = new Intent(Main.this,JoinGroup.class);
-                //startActivity(intent_addFrd);
                 startActivityForResult(intent_joinGroup,REQUEST_CODE_JoinGroup);
             }
         });
@@ -113,7 +126,6 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_msgBulletin = new Intent(Main.this,MsgBulletin.class);
-                //startActivity(intent_addFrd);
                 startActivityForResult(intent_msgBulletin,REQUEST_CODE_MsgBulletin);
             }
         });
@@ -167,12 +179,8 @@ public class Main extends AppCompatActivity {
         });
 
 
-//        //ListView 實作
-//        ListView friendList = findViewById(R.id.friendList);
-//        ListAdapter friendAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new String[]{"一", "二", "三","一", "二", "三","一", "二", "三","一", "二", "三"});
-//        friendList.setAdapter(friendAdapter);
-
     }
+
     private void Leave(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -201,24 +209,11 @@ public class Main extends AppCompatActivity {
         listDataHeader.add("好友");
 
         group = new ArrayList<>();
-        //group.add(new RoomInfo("This is group list."));
         friend = new ArrayList<>();
-        //friend.add(new RoomInfo("This is friend list"));
-//        List<String> xxx = new ArrayList<>();
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
-//
-//
-//        List<String> ssss = new ArrayList<>();
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
-//        androidStudio.add("Expandable View");
 
         listHash.put(listDataHeader.get(0),group);
         listHash.put(listDataHeader.get(1),friend);
+
 
     }
 
@@ -321,5 +316,108 @@ public class Main extends AppCompatActivity {
         return info;
     }
 
+    ////////////////////////////////////////////////////////
+    private class Mqtt_Client {
+        private static final String MQTT_HOST = "tcp://140.116.82.52:1883";
+        private MqttAndroidClient client;
+        private MqttConnectOptions options;
+
+        private Context context;
+        private String user;
+
+        public Mqtt_Client(Context context, String user) {
+            this.context = context;
+            this.user = user;
+        }
+
+
+
+        public void Connect() {
+            String clientId = MqttClient.generateClientId();
+            client = new MqttAndroidClient(context, MQTT_HOST, clientId);
+
+            options = new MqttConnectOptions();
+            options.setCleanSession(true);
+
+            try {
+                IMqttToken token = client.connect(options);
+                token.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        // We are connected
+                        mqttSub();
+                        Initialize();
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        // Something went wrong e.g. connection timeout or firewall problems
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+            client.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable cause) {
+
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                    String[] idf = topic.split("/");
+                    String msg = new String(message.getPayload());
+                    switch (idf[1]) {
+                        case "Initialize":
+                            Initialize_re(msg);
+                            break;
+                    }
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                }
+            });
+        }
+
+
+        private void mqttSub() {
+            try {
+                String topic = "IDF/+/" + user + "/Re";
+                client.subscribe(topic,0);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void Initialize() {
+            String topic = "IDF/Initialize/" + user;
+            String MSG = "";
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void Initialize_re(String msg) {
+            String[] info = msg.split("\t");
+            RoomInfo roomInfo = new RoomInfo();
+            roomInfo.setCode(info[0]);
+            roomInfo.setRoomName(info[1]);
+            if(info[2].equals("F")) {
+                friend.add(roomInfo);
+                listHash.put(listDataHeader.get(1),friend);
+            } else if(info[2].equals("G")) {
+                group.add(roomInfo);
+                listHash.put(listDataHeader.get(0),group);
+            }
+
+        }
+
+    }
+    ////////////////////////////////////////////////////////////////////////
 }
 

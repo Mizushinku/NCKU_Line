@@ -11,6 +11,7 @@ public class RoomInfo implements Serializable{
     private String StudentID;
     private Bitmap icon;
     private ArrayList<String> mamberList = null;
+    private String code;
 
     public RoomInfo() {}
 
@@ -69,5 +70,13 @@ public class RoomInfo implements Serializable{
 
     public void setMamberList(ArrayList<String> mamberList) {
         this.mamberList = mamberList;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
