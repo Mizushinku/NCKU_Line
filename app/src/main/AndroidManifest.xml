@@ -4,6 +4,9 @@
     //add permission
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -47,6 +50,8 @@
         <activity android:name=".StudentData" />
         <activity android:name=".MsgBulletin" />
         <activity android:name=".JoinGroup"></activity>
+        <service android:name="org.eclipse.paho.android.service.MqttService" >
+        </service>
     </application>
 
 </manifest>
