@@ -1,37 +1,23 @@
 package com.example.s2784.layout;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -222,9 +208,7 @@ public class Main extends AppCompatActivity {
         switch (resultCode) {
             case REQUEST_CODE :
                 String addFriendID = data.getStringExtra("StudentID");
-                //if(!userID.equals(addFriendID)) {
-                    AddNewFriend(addFriendID);
-               // }
+                mqtt.AddFriend(addFriendID);
                 break;
             case REQUEST_CODE_BuildGroup :
                 RoomInfo newGroup = new RoomInfo();
@@ -249,72 +233,72 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    private void AddNewFriend(String StudentID) {
-        //friend.add(StudentID);
-        //listHash.put(listDataHeader.get(1),friend);
-        class GetInfo extends AsyncTask<String,Void,RoomInfo> {
-
-            @Override
-            protected void onPostExecute(RoomInfo roomInfo) {
-                super.onPostExecute(roomInfo);
-                friend.add(roomInfo);
-                listHash.put(listDataHeader.get(1),friend);
-            }
-
-            @Override
-            protected RoomInfo doInBackground(String...params) {
-                String address = "http://140.116.82.52:80/phpCode/selectByStudentID.php?StudentID=" + params[0];
-                String address2 = "http://140.116.82.52:80/phpCode/getPic.php?StudentID=" + params[0];
-                String jsonString = null;
-                Bitmap image = null;
-                RoomInfo roomInfo = new RoomInfo();
-                String[] result = new String[2];
-                try {
-                    URL url = new URL(address);
-                    InputStream inputStream = url.openConnection().getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf8"));
-                    StringBuilder builder = new StringBuilder();
-                    String line = null;
-                    while((line = bufferedReader.readLine()) != null) {
-                        builder.append(line + "\n");
-                    }
-                    inputStream.close();
-                    jsonString = builder.toString();
-                    url = new URL(address2);
-                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                result = DecodeJSON(jsonString);
-                roomInfo.setName(result[0]);
-                roomInfo.setStudentID(result[1]);
-                roomInfo.setRoomName(result[0] + "  " + result[1]);
-                roomInfo.setIcon(image);
-                return roomInfo;
-            }
-        }
-
-        GetInfo gi = new GetInfo();
-        gi.execute(StudentID);
-    }
-
-    private final String[] DecodeJSON(String input) {
-        String[] info = new String[2];
-        try {
-            JSONArray jsonArray = new JSONArray(input);
-            for(int i = 0; i < jsonArray.length(); ++i) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                info[0] = jsonData.getString("Name");
-                info[1] = jsonData.getString("StudentID");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();;
-        }
-        return info;
-    }
+//    private void AddNewFriend(String StudentID) {
+//        //friend.add(StudentID);
+//        //listHash.put(listDataHeader.get(1),friend);
+//        class GetInfo extends AsyncTask<String,Void,RoomInfo> {
+//
+//            @Override
+//            protected void onPostExecute(RoomInfo roomInfo) {
+//                super.onPostExecute(roomInfo);
+//                friend.add(roomInfo);
+//                listHash.put(listDataHeader.get(1),friend);
+//            }
+//
+//            @Override
+//            protected RoomInfo doInBackground(String...params) {
+//                String address = "http://140.116.82.52:80/phpCode/selectByStudentID.php?StudentID=" + params[0];
+//                String address2 = "http://140.116.82.52:80/phpCode/getPic.php?StudentID=" + params[0];
+//                String jsonString = null;
+//                Bitmap image = null;
+//                RoomInfo roomInfo = new RoomInfo();
+//                String[] result = new String[2];
+//                try {
+//                    URL url = new URL(address);
+//                    InputStream inputStream = url.openConnection().getInputStream();
+//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf8"));
+//                    StringBuilder builder = new StringBuilder();
+//                    String line = null;
+//                    while((line = bufferedReader.readLine()) != null) {
+//                        builder.append(line + "\n");
+//                    }
+//                    inputStream.close();
+//                    jsonString = builder.toString();
+//                    url = new URL(address2);
+//                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                result = DecodeJSON(jsonString);
+//                roomInfo.setName(result[0]);
+//                roomInfo.setStudentID(result[1]);
+//                roomInfo.setRoomName(result[0] + "  " + result[1]);
+//                roomInfo.setIcon(image);
+//                return roomInfo;
+//            }
+//        }
+//
+//        GetInfo gi = new GetInfo();
+//        gi.execute(StudentID);
+//    }
+//
+//    private final String[] DecodeJSON(String input) {
+//        String[] info = new String[2];
+//        try {
+//            JSONArray jsonArray = new JSONArray(input);
+//            for(int i = 0; i < jsonArray.length(); ++i) {
+//                JSONObject jsonData = jsonArray.getJSONObject(i);
+//                info[0] = jsonData.getString("Name");
+//                info[1] = jsonData.getString("StudentID");
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();;
+//        }
+//        return info;
+//    }
 
     ////////////////////////////////////////////////////////
     private class Mqtt_Client {
@@ -324,6 +308,12 @@ public class Main extends AppCompatActivity {
 
         private Context context;
         private String user;
+
+        private int init_flag = 0;
+        private String init_info = null;
+
+        private int addFriend_flag = 0;
+        private String addFriend_info = null;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -367,10 +357,26 @@ public class Main extends AppCompatActivity {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String[] idf = topic.split("/");
-                    String msg = new String(message.getPayload());
                     switch (idf[1]) {
                         case "Initialize":
-                            Initialize_re(msg);
+                            if(init_flag == 0) {
+                                init_info = new String(message.getPayload());
+                                init_flag = 1;
+                            } else {
+                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+                                init_flag = 0;
+                                Initialize_re(init_info, b);
+                            }
+                            break;
+                        case "AddFriend" :
+                            if(addFriend_flag == 0) {
+                                addFriend_info = new String(message.getPayload());
+                                addFriend_flag = 1;
+                            } else {
+                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+                                addFriend_flag = 0;
+                                AddFriend_re(addFriend_info,b);
+                            }
                             break;
                     }
                 }
@@ -402,19 +408,42 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        public void Initialize_re(String msg) {
+        public void Initialize_re(String msg, Bitmap b) {
             String[] info = msg.split("\t");
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(info[0]);
             roomInfo.setRoomName(info[1]);
             if(info[2].equals("F")) {
+                roomInfo.setIcon(b);
                 friend.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
             } else if(info[2].equals("G")) {
                 group.add(roomInfo);
                 listHash.put(listDataHeader.get(0),group);
             }
+        }
 
+        public void AddFriend(String friendID) {
+            String topic = "IDF/AddFriend/" + user;
+            String MSG = friendID;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void AddFriend_re(String msg, Bitmap b) {
+            String[] info = msg.split("/");
+            if(info[0].equals("false")) {
+                return;
+            }
+            RoomInfo roomInfo = new RoomInfo();
+            roomInfo.setRoomName(info[1]);
+            roomInfo.setCode(info[2]);
+            roomInfo.setIcon(b);
+            friend.add(roomInfo);
+            listHash.put(listDataHeader.get(1),friend);
         }
 
     }
