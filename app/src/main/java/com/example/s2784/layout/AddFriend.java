@@ -191,13 +191,6 @@ public class AddFriend extends AppCompatActivity {
                 intent.putExtra("StudentID",result.getContents());
                 setResult(REQUEST_CODE, intent);
 
-
-                // Go student Data page
-//                Intent studentDataIntent = new Intent(this,StudentData.class);
-//                studentDataIntent.putExtra("studentID",result.getContents());
-//                startActivity(studentDataIntent);
-
-
                 this.finish();
 
                 if (this.getIntent().getDataString() != null) {

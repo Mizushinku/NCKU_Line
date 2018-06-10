@@ -34,32 +34,26 @@ public class StudentData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_data);
 
-        Intent intentFromLogin = getIntent();
-        studentID = intentFromLogin.getStringExtra("studentID");
 
         img_proPic = findViewById(R.id.proPic);
         txv_studentID = findViewById(R.id.studentID);
         txv_name = findViewById(R.id.name);
 
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        String ID = intent.getStringExtra("ID");
+        byte[] img = intent.getByteArrayExtra("image");
+        Bitmap b = BitmapFactory.decodeByteArray(img,0,img.length);
+        img_proPic.setImageBitmap(b);
+        txv_studentID.setText(ID);
+        txv_name.setText(name);
 
-        getDataAndDisplay();
     }
 
-    private void getDataAndDisplay(){
-
-    }
 
     public void onClick(View v){
 
         finish();
     }
 
-
-
-    class StudentInfo{
-        Bitmap bpProPic;
-        String studentName;
-        String studentID;
-
-    }
 }

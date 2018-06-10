@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -310,10 +312,11 @@ public class Main extends AppCompatActivity {
         private String user;
 
         private int init_flag = 0;
-        private String init_info = null;
+        private String[] init_info = null;
 
         private int addFriend_flag = 0;
-        private String addFriend_info = null;
+        private String[] addFriend_info = null;
+        private boolean sdtDta_flag = false;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -360,22 +363,39 @@ public class Main extends AppCompatActivity {
                     switch (idf[1]) {
                         case "Initialize":
                             if(init_flag == 0) {
-                                init_info = new String(message.getPayload());
-                                init_flag = 1;
+                                init_info = (new String(message.getPayload())).split("\t");
+                                if(init_info[3].equals("F")) {
+                                    init_flag = 1;
+                                } else if(init_info[3].equals("G")) {
+                                    Initialize_re(init_info[0], init_info[1], init_info[3], null);
+                                }
                             } else {
                                 Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
                                 init_flag = 0;
-                                Initialize_re(init_info, b);
+                                Initialize_re(init_info[0], init_info[1], init_info[3], b);
                             }
                             break;
                         case "AddFriend" :
                             if(addFriend_flag == 0) {
-                                addFriend_info = new String(message.getPayload());
-                                addFriend_flag = 1;
+                                addFriend_info = (new String(message.getPayload())).split("/");
+                                if(addFriend_info[0].equals("true")) {
+                                    addFriend_flag = 1;
+                                    sdtDta_flag = true;
+                                }
                             } else {
-                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+                                byte[] bit = message.getPayload();
+                                Bitmap b = BitmapFactory.decodeByteArray(bit,0,bit.length);
+
+                                if(sdtDta_flag) {
+                                    sdtDta_flag = false;
+                                    Intent studentData = new Intent(Main.this, StudentData.class);
+                                    studentData.putExtra("name", addFriend_info[1]);
+                                    studentData.putExtra("ID", addFriend_info[2]);
+                                    studentData.putExtra("image", bit);
+                                    startActivity(studentData);
+                                }
+                                AddFriend_re(addFriend_info[3],addFriend_info[1],b);
                                 addFriend_flag = 0;
-                                AddFriend_re(addFriend_info,b);
                             }
                             break;
                     }
@@ -408,16 +428,16 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        public void Initialize_re(String msg, Bitmap b) {
-            String[] info = msg.split("\t");
+        public void Initialize_re(String code, String roomName, String type, Bitmap b) {
             RoomInfo roomInfo = new RoomInfo();
-            roomInfo.setCode(info[0]);
-            roomInfo.setRoomName(info[1]);
-            if(info[2].equals("F")) {
+            roomInfo.setCode(code);
+            roomInfo.setRoomName(roomName);
+            if(type.equals("F")) {
                 roomInfo.setIcon(b);
                 friend.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
-            } else if(info[2].equals("G")) {
+            } else if(type.equals("G")) {
+                roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 group.add(roomInfo);
                 listHash.put(listDataHeader.get(0),group);
             }
@@ -433,14 +453,10 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        public void AddFriend_re(String msg, Bitmap b) {
-            String[] info = msg.split("/");
-            if(info[0].equals("false")) {
-                return;
-            }
+        public void AddFriend_re(String code, String roomName, Bitmap b) {
             RoomInfo roomInfo = new RoomInfo();
-            roomInfo.setRoomName(info[1]);
-            roomInfo.setCode(info[2]);
+            roomInfo.setCode(code);
+            roomInfo.setRoomName(roomName);
             roomInfo.setIcon(b);
             friend.add(roomInfo);
             listHash.put(listDataHeader.get(1),friend);
