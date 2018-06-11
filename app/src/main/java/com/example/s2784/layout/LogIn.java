@@ -216,9 +216,9 @@ public class LogIn extends AppCompatActivity {
                 startActivity(mainIntent);
 
                 // Go student Data page
-                Intent studentDataIntent = new Intent(LogIn.this,StudentData.class);
-                studentDataIntent.putExtra("studentID",result.getContents());
-                startActivity(studentDataIntent);
+//                Intent studentDataIntent = new Intent(LogIn.this,StudentData.class);
+//                studentDataIntent.putExtra("studentID",result.getContents());
+//                startActivity(studentDataIntent);
 
 
                 StartInterface.addData("Login",result.getContents());
