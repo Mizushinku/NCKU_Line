@@ -8,8 +8,8 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -51,6 +51,7 @@ public class Main extends AppCompatActivity {
 
     public Mqtt_Client mqtt;
 
+    private Context mCtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class Main extends AppCompatActivity {
         userID = intentFromUpload.getStringExtra("userID");
         TextView mainTitle = (TextView)findViewById(R.id.mainTitle);
         mainTitle.setText(mainTitle.getText() + "     " + userID);
+
+        mCtn = this.getApplicationContext();
 
         mqtt = new Mqtt_Client(this.getApplicationContext(),userID);
 
@@ -137,35 +140,49 @@ public class Main extends AppCompatActivity {
                 int group_class = (int)listAdapter.getGroupId(groupPosition);
                 if(group_class == 1){
                     //Log.d("Tag","好友click");
-                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
-                    String friendID = tmp.getStudentID();
-                    String chatName = tmp.getRoomName();
-
-                    Intent chat = new Intent(Main.this,Chatroom.class);
-                    chat.putExtra("id",userID);
-                    chat.putExtra("friend_id",friendID);
-                    chat.putExtra("chatName", chatName);
-                    startActivity(chat);
-
+//                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
+//                    String friendID = tmp.getStudentID();
+//                    String chatName = tmp.getRoomName();
+//
+//                    Intent chat = new Intent(Main.this,Chatroom.class);
+//                    chat.putExtra("id",userID);
+//                    chat.putExtra("friend_id",friendID);
+//                    chat.putExtra("chatName", chatName);
+//                    startActivity(chat);
+                    Toast.makeText(mCtn,"(" + groupPosition + "," + childPosition + ") click",Toast.LENGTH_SHORT).show();
 
                 } else if(group_class == 0) {
-                    groupPosition=1;
-                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
-                    String chatName = tmp.getRoomName();
-                    String roomID = tmp.getStudentID();
-
-                    Intent chat = new Intent(Main.this,Chatroom.class);
-                    chat.putExtra("id",userID);
-                    chat.putExtra("friend_id",roomID);
-                    chat.putExtra("chatName", chatName);
-                    startActivity(chat);
-
+//                    groupPosition=1;
+//                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
+//                    String chatName = tmp.getRoomName();
+//                    String roomID = tmp.getStudentID();
+//
+//                    Intent chat = new Intent(Main.this,Chatroom.class);
+//                    chat.putExtra("id",userID);
+//                    chat.putExtra("friend_id",roomID);
+//                    chat.putExtra("chatName", chatName);
+//                    startActivity(chat);
+                    Toast.makeText(mCtn,"(" + groupPosition + "," + childPosition + ") click",Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
+                    int groupPos = ExpandableListView.getPackedPositionGroup(packedPos);
+                    int childPos = ExpandableListView.getPackedPositionChild(packedPos);
+
+                    Toast.makeText(mCtn,"(" + groupPos + "," + childPos + ") long click",Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            }
+        });
 
     }
 
@@ -237,7 +254,7 @@ public class Main extends AppCompatActivity {
                 break;
         }
     }
-    
+
 
     ////////////////////////////////////////////////////////
     private class Mqtt_Client {
