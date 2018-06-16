@@ -46,10 +46,8 @@ public class ListViewAdapter extends BaseAdapter {
         View rowView = inflater.inflate(R.layout.list_view_item, null);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
         TextView name = (TextView) rowView.findViewById(R.id.name);
-        TextView ID = (TextView) rowView.findViewById(R.id.ID);
         imageView.setImageBitmap(roomInfo.getIcon());
-        name.setText(roomInfo.getName());
-        ID.setText(roomInfo.getStudentID());
+        name.setText(roomInfo.getStudentID());
 
         return rowView;
     }

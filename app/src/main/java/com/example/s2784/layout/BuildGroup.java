@@ -19,7 +19,8 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private EditText etGroupName;
     private Button btn_selectFriend;
     private Button btn_CreateGroup;
-    private ArrayList<RoomInfo> friendList;
+
+    private ArrayList<String> groupMember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +46,23 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         if(v == btn_selectFriend) {
             Intent intent_selectFriend = new Intent(BuildGroup.this,SelectFriendIntoGroup.class);
             //intent_selectFriend.putExtra("friendList", (Serializable) friendList);
-            startActivity(intent_selectFriend);
+            startActivityForResult(intent_selectFriend,REQUEST_CODE_SELECT_FRIEND);
         }
         if(v == btn_CreateGroup) {
             Intent intent = getIntent();
             intent.putExtra("groupName",etGroupName.getText().toString());
+            intent.putStringArrayListExtra("memberList",groupMember);
             setResult(REQUEST_CODE_BuildGroup, intent);
             this.finish();
         }
     }
-    /*
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case REQUEST_CODE_SELECT_FRIEND :
-
+                    groupMember = data.getStringArrayListExtra("memberList");
                 break;
         }
     }
-    */
 }

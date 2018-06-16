@@ -139,7 +139,7 @@ public class Main extends AppCompatActivity {
                     //Log.d("Tag","好友click");
                     RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
                     String friendID = tmp.getStudentID();
-                    String chatName = tmp.getName();
+                    String chatName = tmp.getRoomName();
 
                     Intent chat = new Intent(Main.this,Chatroom.class);
                     chat.putExtra("id",userID);
@@ -213,13 +213,16 @@ public class Main extends AppCompatActivity {
                 mqtt.AddFriend(addFriendID);
                 break;
             case REQUEST_CODE_BuildGroup :
-                RoomInfo newGroup = new RoomInfo();
                 String groupName = data.getStringExtra("groupName");
-                newGroup.setRoomName(groupName);
-                newGroup.setMamberList(SelectFriendIntoGroup.groupMember);
-                newGroup.setIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.bubble_out));
-                group.add(newGroup);
-                listHash.put(listDataHeader.get(0),group);
+                ArrayList<String> groupMember = data.getStringArrayListExtra("memberList");
+
+                String member_str = userID;
+                if(groupMember != null) {
+                    for (int i = 0; i < groupMember.size(); ++i) {
+                        member_str += ("\t" + groupMember.get(i));
+                    }
+                }
+                mqtt.AddGroup(groupName,member_str);
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();
@@ -234,73 +237,7 @@ public class Main extends AppCompatActivity {
                 break;
         }
     }
-
-//    private void AddNewFriend(String StudentID) {
-//        //friend.add(StudentID);
-//        //listHash.put(listDataHeader.get(1),friend);
-//        class GetInfo extends AsyncTask<String,Void,RoomInfo> {
-//
-//            @Override
-//            protected void onPostExecute(RoomInfo roomInfo) {
-//                super.onPostExecute(roomInfo);
-//                friend.add(roomInfo);
-//                listHash.put(listDataHeader.get(1),friend);
-//            }
-//
-//            @Override
-//            protected RoomInfo doInBackground(String...params) {
-//                String address = "http://140.116.82.52:80/phpCode/selectByStudentID.php?StudentID=" + params[0];
-//                String address2 = "http://140.116.82.52:80/phpCode/getPic.php?StudentID=" + params[0];
-//                String jsonString = null;
-//                Bitmap image = null;
-//                RoomInfo roomInfo = new RoomInfo();
-//                String[] result = new String[2];
-//                try {
-//                    URL url = new URL(address);
-//                    InputStream inputStream = url.openConnection().getInputStream();
-//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf8"));
-//                    StringBuilder builder = new StringBuilder();
-//                    String line = null;
-//                    while((line = bufferedReader.readLine()) != null) {
-//                        builder.append(line + "\n");
-//                    }
-//                    inputStream.close();
-//                    jsonString = builder.toString();
-//                    url = new URL(address2);
-//                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                result = DecodeJSON(jsonString);
-//                roomInfo.setName(result[0]);
-//                roomInfo.setStudentID(result[1]);
-//                roomInfo.setRoomName(result[0] + "  " + result[1]);
-//                roomInfo.setIcon(image);
-//                return roomInfo;
-//            }
-//        }
-//
-//        GetInfo gi = new GetInfo();
-//        gi.execute(StudentID);
-//    }
-//
-//    private final String[] DecodeJSON(String input) {
-//        String[] info = new String[2];
-//        try {
-//            JSONArray jsonArray = new JSONArray(input);
-//            for(int i = 0; i < jsonArray.length(); ++i) {
-//                JSONObject jsonData = jsonArray.getJSONObject(i);
-//                info[0] = jsonData.getString("Name");
-//                info[1] = jsonData.getString("StudentID");
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();;
-//        }
-//        return info;
-//    }
+    
 
     ////////////////////////////////////////////////////////
     private class Mqtt_Client {
@@ -367,12 +304,12 @@ public class Main extends AppCompatActivity {
                                 if(init_info[3].equals("F")) {
                                     init_flag = 1;
                                 } else if(init_info[3].equals("G")) {
-                                    Initialize_re(init_info[0], init_info[1], init_info[3], null);
+                                    Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], null);
                                 }
                             } else {
                                 Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
                                 init_flag = 0;
-                                Initialize_re(init_info[0], init_info[1], init_info[3], b);
+                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
                             }
                             break;
                         case "AddFriend" :
@@ -394,8 +331,16 @@ public class Main extends AppCompatActivity {
                                     studentData.putExtra("image", bit);
                                     startActivity(studentData);
                                 }
-                                AddFriend_re(addFriend_info[3],addFriend_info[1],b);
+                                AddFriend_re(addFriend_info[3],addFriend_info[2],addFriend_info[1],b);
                                 addFriend_flag = 0;
+                            }
+                            break;
+                        case "AddGroup" :
+                            String[] msg = (new String(message.getPayload())).split("/");
+                            if(msg[0].equals("true")) {
+                                AddGroup_re(msg[1],msg[2]);
+                            } else {
+                                Toast.makeText(context,"Error creating group", Toast.LENGTH_LONG).show();
                             }
                             break;
                     }
@@ -428,11 +373,12 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        public void Initialize_re(String code, String roomName, String type, Bitmap b) {
+        public void Initialize_re(String code, String roomName, String ID, String type, Bitmap b) {
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(roomName);
             if(type.equals("F")) {
+                roomInfo.setStudentID(ID);
                 roomInfo.setIcon(b);
                 friend.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
@@ -453,13 +399,33 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        public void AddFriend_re(String code, String roomName, Bitmap b) {
+        public void AddFriend_re(String code, String ID, String roomName, Bitmap b) {
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
+            roomInfo.setStudentID(ID);
             roomInfo.setRoomName(roomName);
             roomInfo.setIcon(b);
             friend.add(roomInfo);
             listHash.put(listDataHeader.get(1),friend);
+        }
+
+        public void AddGroup(String groupName, String member_str) {
+            String topic  = "IDF/AddGroup/" + user;
+            String MSG = groupName + "\t" + member_str;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void AddGroup_re(String code, String groupName) {
+            RoomInfo roomInfo = new RoomInfo();
+            roomInfo.setCode(code);
+            roomInfo.setRoomName(groupName);
+            roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+            group.add(roomInfo);
+            listHash.put(listDataHeader.get(0),group);
         }
 
     }

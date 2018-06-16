@@ -27,7 +27,7 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
     private ListView listView;
     private Button btn_OK;
 
-    public static ArrayList<String> groupMember;
+    public ArrayList<String> groupMember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,9 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
         btn_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                intent.putStringArrayListExtra("memberList",groupMember);
+                setResult(REQUEST_CODE_SELECT_FRIEND,intent);
                 finish();
             }
         });

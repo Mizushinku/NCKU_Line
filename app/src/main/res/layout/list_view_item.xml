@@ -5,17 +5,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="93dp"
+        android:layout_height="97dp" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/ID"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content" />
+        android:layout_width="244dp"
+        android:layout_height="97dp" />
 
 </LinearLayout>
