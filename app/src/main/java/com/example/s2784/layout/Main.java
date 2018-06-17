@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,7 +32,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener{
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
@@ -177,7 +178,11 @@ public class Main extends AppCompatActivity {
                     int groupPos = ExpandableListView.getPackedPositionGroup(packedPos);
                     int childPos = ExpandableListView.getPackedPositionChild(packedPos);
 
-                    Toast.makeText(mCtn,"(" + groupPos + "," + childPos + ") long click",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtn, "(" + groupPos + "," + childPos + ") long click", Toast.LENGTH_SHORT).show();
+
+                    if (groupPos == 1) {
+                        showFLCM(childPos);
+                    }
                 }
 
                 return true;
@@ -220,6 +225,25 @@ public class Main extends AppCompatActivity {
         listHash.put(listDataHeader.get(1),friend);
 
 
+    }
+
+    private void showFLCM(int childPos) {
+        DialogFragment dialogFragment = new FriendLongClickDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("childPos",childPos);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(), "FLCM");
+
+    }
+    @Override
+    public void onItemClick(DialogFragment dialog, int which, int childPos) {
+        String ID = friend.get(childPos).getStudentID();
+        Toast.makeText(mCtn,"click " + which + " on child " + ID, Toast.LENGTH_SHORT).show();
+        switch (which) {
+            case 0:
+                mqtt.DeleteFriend(ID);
+                break;
+        }
     }
 
     @Override
@@ -443,6 +467,20 @@ public class Main extends AppCompatActivity {
             roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
             group.add(roomInfo);
             listHash.put(listDataHeader.get(0),group);
+        }
+
+        public void DeleteFriend(String friendID) {
+            String topic = "IDF/DeleteFriend/" + user;
+            String MSG = friendID;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void DeleteFriend_re() {
+            
         }
 
     }

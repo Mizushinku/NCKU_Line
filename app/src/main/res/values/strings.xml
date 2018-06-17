@@ -5,4 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="tv_msgBulletin">訊息公告</string>
+
+    <!-- friendLongClickMenu & String array -->
+    <string name="FLCM_title">選項</string>
+    <string-array name="friendLongClickMenu">
+        <item>刪除好友</item>
+        <item>返回</item>
+    </string-array>
+
 </resources>
