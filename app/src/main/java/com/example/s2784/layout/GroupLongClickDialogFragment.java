@@ -7,13 +7,13 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class FriendLongClickDialogFragment extends DialogFragment{
+public class GroupLongClickDialogFragment extends DialogFragment {
 
-    public interface FLCMListener {
-        public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos);
+    public interface GLCMListener {
+        public void GLCM_onItemClick(DialogFragment dialog, int which, int childPos);
     }
 
-    FLCMListener mListener;
+    GLCMListener mListener;
 
     int childPos;
 
@@ -22,9 +22,9 @@ public class FriendLongClickDialogFragment extends DialogFragment{
         super.onAttach(activity);
 
         try {
-            mListener = (FLCMListener)activity;
+            mListener = (GLCMListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement FLCMListener");
+            throw new ClassCastException(activity.toString() + " must implement GLCMListener");
         }
     }
 
@@ -36,10 +36,10 @@ public class FriendLongClickDialogFragment extends DialogFragment{
             childPos = getArguments().getInt("childPos");
         }
 
-        builder.setTitle(R.string.FLCM_title).setItems(R.array.friendLongClickMenu, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.GLCM_title).setItems(R.array.groupLongClickMenu, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mListener.FLCM_onItemClick(FriendLongClickDialogFragment.this, which, childPos);
+                mListener.GLCM_onItemClick(GroupLongClickDialogFragment.this, which, childPos);
             }
         });
 

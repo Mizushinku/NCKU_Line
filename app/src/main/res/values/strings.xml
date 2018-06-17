@@ -6,10 +6,17 @@
     <string name="action_settings">Settings</string>
     <string name="tv_msgBulletin">訊息公告</string>
 
-    <!-- friendLongClickMenu & String array -->
+    <!-- Friend Long Click Menu & String array -->
     <string name="FLCM_title">選項</string>
     <string-array name="friendLongClickMenu">
         <item>刪除好友</item>
+        <item>返回</item>
+    </string-array>
+
+    <!-- Group Long Click Menu -->
+    <string name="GLCM_title">選項</string>
+    <string-array name="groupLongClickMenu">
+        <item>退出群組</item>
         <item>返回</item>
     </string-array>
 

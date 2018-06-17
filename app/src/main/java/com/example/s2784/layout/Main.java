@@ -32,7 +32,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener{
+public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
@@ -182,6 +182,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
                     if (groupPos == 1) {
                         showFLCM(childPos);
+                    } else if(groupPos == 0) {
+                        showGLCM(childPos);
                     }
                 }
 
@@ -236,7 +238,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     }
     @Override
-    public void onItemClick(DialogFragment dialog, int which, int childPos) {
+    public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = friend.get(childPos).getStudentID();
         String code = friend.get(childPos).getCode();
         Toast.makeText(mCtn,"click " + which + " on child " + childPos, Toast.LENGTH_SHORT).show();
@@ -244,6 +246,24 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             case 0:
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
+                break;
+        }
+    }
+
+    private void showGLCM(int childPos) {
+        DialogFragment dialogFragment = new GroupLongClickDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("childPos",childPos);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(), "GLCM");
+    }
+    @Override
+    public void GLCM_onItemClick(DialogFragment dialogFragment, int which, int childPos) {
+        String code = group.get(childPos).getCode();
+        switch (which) {
+            case 0:
+                mqtt.setWithdrawGroupPos(childPos);
+                mqtt.WithdrawFromGroup(code);
                 break;
         }
     }
@@ -299,6 +319,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         private boolean sdtDta_flag = false;
 
         private int deleteFriendPos = -1;
+        private int withdrawGroupPos = -1;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -390,11 +411,18 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             break;
                         case "DeleteFriend" :
                             String DF_msg = new String(message.getPayload());
-                            Toast.makeText(context,DF_msg,Toast.LENGTH_SHORT).show();
                             if(DF_msg.equals("true")) {
                                 DeleteFriend_re();
                             } else {
                                 deleteFriendPos = -1;
+                            }
+                            break;
+                        case "WithdrawFromGroup" :
+                            String WG_msg = new String(message.getPayload());
+                            if(WG_msg.equals("true")) {
+                                WithdrawFromGroup_re();
+                            } else {
+                                withdrawGroupPos = -1;
                             }
                             break;
                     }
@@ -500,6 +528,26 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             friend.remove(deleteFriendPos);
             listHash.put(listDataHeader.get(1),friend);
             deleteFriendPos = -1;
+        }
+
+        public void WithdrawFromGroup(String code) {
+            String topic = "IDF/WithdrawFromGroup/" + user;
+            String MSG = code;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void setWithdrawGroupPos(int withdrawGroupPos) {
+            this.withdrawGroupPos = withdrawGroupPos;
+        }
+
+        public void WithdrawFromGroup_re() {
+            group.remove(withdrawGroupPos);
+            listHash.put(listDataHeader.get(0),group);
+            withdrawGroupPos = -1;
         }
 
     }
