@@ -238,10 +238,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
     @Override
     public void onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = friend.get(childPos).getStudentID();
-        Toast.makeText(mCtn,"click " + which + " on child " + ID, Toast.LENGTH_SHORT).show();
+        String code = friend.get(childPos).getCode();
+        Toast.makeText(mCtn,"click " + which + " on child " + childPos, Toast.LENGTH_SHORT).show();
         switch (which) {
             case 0:
-                mqtt.DeleteFriend(ID);
+                mqtt.setDeleteFriendPos(childPos);
+                mqtt.DeleteFriend(ID, code);
                 break;
         }
     }
@@ -295,6 +297,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         private int addFriend_flag = 0;
         private String[] addFriend_info = null;
         private boolean sdtDta_flag = false;
+
+        private int deleteFriendPos = -1;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -377,11 +381,20 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             }
                             break;
                         case "AddGroup" :
-                            String[] msg = (new String(message.getPayload())).split("/");
-                            if(msg[0].equals("true")) {
-                                AddGroup_re(msg[1],msg[2]);
+                            String[] AG_msg = (new String(message.getPayload())).split("/");
+                            if(AG_msg[0].equals("true")) {
+                                AddGroup_re(AG_msg[1],AG_msg[2]);
                             } else {
                                 Toast.makeText(context,"Error creating group", Toast.LENGTH_LONG).show();
+                            }
+                            break;
+                        case "DeleteFriend" :
+                            String DF_msg = new String(message.getPayload());
+                            Toast.makeText(context,DF_msg,Toast.LENGTH_SHORT).show();
+                            if(DF_msg.equals("true")) {
+                                DeleteFriend_re();
+                            } else {
+                                deleteFriendPos = -1;
                             }
                             break;
                     }
@@ -469,9 +482,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             listHash.put(listDataHeader.get(0),group);
         }
 
-        public void DeleteFriend(String friendID) {
+        public void DeleteFriend(String friendID, String code) {
             String topic = "IDF/DeleteFriend/" + user;
-            String MSG = friendID;
+            String MSG = friendID + "/" + code;
             try {
                 client.publish(topic,MSG.getBytes(),0,false);
             }catch (MqttException e) {
@@ -479,8 +492,14 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         }
 
+        public void setDeleteFriendPos(int deleteFriendPos) {
+            this.deleteFriendPos = deleteFriendPos;
+        }
+
         public void DeleteFriend_re() {
-            
+            friend.remove(deleteFriendPos);
+            listHash.put(listDataHeader.get(1),friend);
+            deleteFriendPos = -1;
         }
 
     }
