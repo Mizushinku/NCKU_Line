@@ -19,7 +19,6 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
 
     private static final int REQUEST_CODE_SELECT_FRIEND = 1;
 
-    private ArrayList<RoomInfo> friendList;
 
     private ImageView photo;
     private TextView name;
@@ -36,10 +35,9 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
 
         //Intent intentFromBuildGroup = getIntent();
         //friendList = (List<RoomInfo>) intentFromBuildGroup.getSerializableExtra("friendList");
-        friendList = Main.friendList;
 
         listView = findViewById(R.id.listView);
-        final ListViewAdapter listViewAdapter = new  ListViewAdapter(this, friendList);
+        final ListViewAdapter listViewAdapter = new  ListViewAdapter(this, Main.friendList);
         listView.setAdapter(listViewAdapter);
 
         btn_OK = findViewById(R.id.btn_OK);

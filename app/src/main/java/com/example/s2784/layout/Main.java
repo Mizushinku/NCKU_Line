@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -50,9 +51,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     public static ArrayList<RoomInfo> friendList = null;
 
-    public Mqtt_Client mqtt;
+
+    public static Mqtt_Client mqtt;
 
     private Context mCtn;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         initData();
 
         mqtt.Connect();
-
 
 
         //Add Friedn Button
@@ -140,18 +143,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 int group_class = (int)listAdapter.getGroupId(groupPosition);
                 if(group_class == 1){
-                    //Log.d("Tag","好友click");
-//                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
-//                    String friendID = tmp.getStudentID();
-//                    String chatName = tmp.getRoomName();
-//
-//                    Intent chat = new Intent(Main.this,Chatroom.class);
-//                    chat.putExtra("id",userID);
-//                    chat.putExtra("friend_id",friendID);
-//                    chat.putExtra("chatName", chatName);
-//                    startActivity(chat);
-                    Toast.makeText(mCtn,"(" + groupPosition + "," + childPosition + ") click",Toast.LENGTH_SHORT).show();
+                    RoomInfo roomInfo = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
+                    String code = roomInfo.getCode();
 
+                    Intent chat = new Intent(Main.this,Chatroom.class);
+                    chat.putExtra("code", code);
+                    startActivity(chat);
                 } else if(group_class == 0) {
 //                    groupPosition=1;
 //                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
@@ -163,7 +160,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 //                    chat.putExtra("friend_id",roomID);
 //                    chat.putExtra("chatName", chatName);
 //                    startActivity(chat);
-                    Toast.makeText(mCtn,"(" + groupPosition + "," + childPosition + ") click",Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
@@ -192,6 +188,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         });
 
     }
+
+
 
     private void Leave(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -286,6 +284,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                     }
                 }
                 mqtt.AddGroup(groupName,member_str);
+                friendList.clear();
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();
@@ -303,7 +302,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
 
     ////////////////////////////////////////////////////////
-    private class Mqtt_Client {
+    public class Mqtt_Client {
         private static final String MQTT_HOST = "tcp://140.116.82.52:1883";
         private MqttAndroidClient client;
         private MqttConnectOptions options;
@@ -320,6 +319,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
         private int deleteFriendPos = -1;
         private int withdrawGroupPos = -1;
+
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -550,7 +550,11 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             withdrawGroupPos = -1;
         }
 
+        public void test() {
+            TestMod.getInstance().callFoo();
+        }
     }
     ////////////////////////////////////////////////////////////////////////
+
 }
 

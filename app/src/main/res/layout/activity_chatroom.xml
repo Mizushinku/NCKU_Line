@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:text="tmp"
             android:textAlignment="center"
             android:textSize="14sp" />
     </ScrollView>
