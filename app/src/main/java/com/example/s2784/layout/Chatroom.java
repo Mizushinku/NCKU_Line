@@ -1,8 +1,6 @@
 package com.example.s2784.layout;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,20 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class Chatroom extends AppCompatActivity implements View.OnClickListener, TestMod.TestLis{
+public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
     private ImageButton btn;
     //    private TextView tv;
@@ -82,6 +70,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Main.mqtt.setProcessingCode("");
 //        Log.d("TAG","Destroy");
 //        if(client!=null) {
 //            try {
@@ -120,7 +109,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         btn.setOnClickListener(this);
 
-        TestMod.getInstance().setListener(this);
+        LinkModule.getInstance().setListener(this);
+
+        Main.mqtt.setProcessingCode(code);
 
 //        tv.setMovementMethod(new ScrollingMovementMethod());
 
@@ -137,11 +128,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    public void foo() {
-        txv_chatName.setText("YY");
+    public void foo(String s) {
+        txv_chatName.setText(s);
     }
-
-
 
 
 

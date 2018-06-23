@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -320,6 +319,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         private int deleteFriendPos = -1;
         private int withdrawGroupPos = -1;
 
+        private String processingCode = "";
+
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -551,7 +552,11 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         }
 
         public void test() {
-            TestMod.getInstance().callFoo();
+            LinkModule.getInstance().callFoo("A");
+        }
+
+        public void setProcessingCode(String processingCode) {
+            this.processingCode = processingCode;
         }
     }
     ////////////////////////////////////////////////////////////////////////
