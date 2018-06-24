@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:maxWidth="250dp"
             android:padding="5dp"
-            android:textColor="@android:color/holo_green_dark" />
+            android:textColor= "@color/navy"/>
 
     </LinearLayout>
 

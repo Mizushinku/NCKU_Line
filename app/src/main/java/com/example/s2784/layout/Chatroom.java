@@ -136,7 +136,17 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void updateMsg(String sender, String text) {
-        Toast.makeText(Chatroom.this,sender + ": " + text, Toast.LENGTH_LONG).show();
+        if(sender.equals(id)) {
+            Bubble.add(new bubble(1,text));
+            Bubble_list = new bubble_list(Chatroom.this,Bubble);
+            lv.setAdapter(Bubble_list);
+            lv.setSelection(Bubble_list.getCount());
+        }else {
+            Bubble.add(new bubble(0,text));
+            Bubble_list = new bubble_list(Chatroom.this,Bubble);
+            lv.setAdapter(Bubble_list);
+            lv.setSelection(Bubble_list.getCount());
+        }
     }
 
     //    private class ChatOperator extends AsyncTask<Void,Void,Void>{
