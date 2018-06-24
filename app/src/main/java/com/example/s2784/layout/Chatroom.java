@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -80,12 +81,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Main.mqtt.setProcessingCode(code);
 
+        Main.mqtt.GetRecord(code);
+
     }
 
     @Override
     public void onClick(View v) {
         if(v == btn) {
-            //Main.mqtt.test();
             String msg = code + "\t" + id + "\t" + et.getText().toString();
             if(!msg.equals("")){
                 Main.mqtt.SendMessage(msg);

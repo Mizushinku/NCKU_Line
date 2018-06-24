@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
     private ExpandableListView listView;
@@ -59,6 +62,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("TAG","OnCreate!");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -103,13 +108,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             public void onClick(View v) {
                 friendList = listHash.get(listDataHeader.get(1));
                 Intent intent_buildGroup = new Intent(Main.this,BuildGroup.class);
-                /*
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("A",(Serializable)friendList);
-                intent_buildGroup.putExtra("BUNDLE",bundle);
-                startActivity(intent_buildGroup);
-                */
-                //intent_buildGroup.putExtra("friendList", (Serializable) friendList);
+
                 startActivityForResult(intent_buildGroup,REQUEST_CODE_BuildGroup);
             }
         });
@@ -175,7 +174,18 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TAG","onDes!");
+        mqtt.disconnect();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TAG","onStop!");
+    }
 
     private void Leave(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -345,7 +355,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-
+                    Log.d("TAG","lost");
                 }
 
                 @Override
@@ -420,6 +430,10 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                 LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2]);
                             }
                             break;
+                        case "GetRecord" :
+                            String[] GR_msg = (new String(message.getPayload())).split("\t");
+                            LinkModule.getInstance().callUpdateMsg(GR_msg[0],GR_msg[1]);
+                            break;
                     }
                 }
 
@@ -428,6 +442,19 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
                 }
             });
+        }
+
+        public void disconnect() {
+            if(client != null && client.isConnected()) {
+                try {
+                    client.unsubscribe("IDF/+/" + user + "/Re");
+                    client.disconnect();
+                    client.unregisterResources();
+                    client = null;
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 
@@ -553,6 +580,16 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         public void SendMessage(String str){
             String topic = "IDF/SendMessage/" + user;
             String MSG = str;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void GetRecord(String code) {
+            String topic = "IDF/GetRecord/" + user;
+            String MSG = code;
             try {
                 client.publish(topic,MSG.getBytes(),0,false);
             }catch (MqttException e) {

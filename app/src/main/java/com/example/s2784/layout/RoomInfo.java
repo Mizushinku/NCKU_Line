@@ -3,7 +3,6 @@ package com.example.s2784.layout;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class RoomInfo implements Serializable{
 
