@@ -140,27 +140,13 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                int group_class = (int)listAdapter.getGroupId(groupPosition);
-                if(group_class == 1){
-                    RoomInfo roomInfo = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
-                    String code = roomInfo.getCode();
+                RoomInfo roomInfo = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
+                String code = roomInfo.getCode();
 
-                    Intent chat = new Intent(Main.this,Chatroom.class);
-                    chat.putExtra("code", code);
-                    chat.putExtra("id",userID);
-                    startActivity(chat);
-                } else if(group_class == 0) {
-//                    groupPosition=1;
-//                    RoomInfo tmp = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
-//                    String chatName = tmp.getRoomName();
-//                    String roomID = tmp.getStudentID();
-//
-//                    Intent chat = new Intent(Main.this,Chatroom.class);
-//                    chat.putExtra("id",userID);
-//                    chat.putExtra("friend_id",roomID);
-//                    chat.putExtra("chatName", chatName);
-//                    startActivity(chat);
-                }
+                Intent chat = new Intent(Main.this,Chatroom.class);
+                chat.putExtra("code", code);
+                chat.putExtra("id",userID);
+                startActivity(chat);
 
                 return false;
             }
