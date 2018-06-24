@@ -3,7 +3,7 @@ package com.example.s2784.layout;
 public class LinkModule {
 
     public interface MListener {
-        void foo(String s);
+        void updateMsg(String sender, String text);
     }
 
     private static LinkModule mInstance;
@@ -22,9 +22,9 @@ public class LinkModule {
         mListener = testLis;
     }
 
-    public void callFoo(String s) {
+    public void callUpdateMsg(String sender, String text) {
         if(mListener != null) {
-            mListener.foo(s);
+            mListener.updateMsg(sender,text);
         }
     }
 }

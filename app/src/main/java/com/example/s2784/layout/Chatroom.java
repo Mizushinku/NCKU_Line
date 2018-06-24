@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Intent intent = getIntent();
         code = intent.getStringExtra("code");
+        id = intent.getStringExtra("id");
 
 
 
@@ -123,18 +125,21 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if(v == btn) {
-            Main.mqtt.test();
+            //Main.mqtt.test();
+            String msg = code + "\t" + id + "\t" + et.getText().toString();
+            if(!msg.equals("")){
+                Main.mqtt.SendMessage(msg);
+            }
+            et.setText("");
         }
     }
 
     @Override
-    public void foo(String s) {
-        txv_chatName.setText(s);
+    public void updateMsg(String sender, String text) {
+        Toast.makeText(Chatroom.this,sender + ": " + text, Toast.LENGTH_LONG).show();
     }
 
-
-
-//    private class ChatOperator extends AsyncTask<Void,Void,Void>{
+    //    private class ChatOperator extends AsyncTask<Void,Void,Void>{
 //        @Override
 //        protected Void doInBackground(Void... voids) {
 //            while (true) {

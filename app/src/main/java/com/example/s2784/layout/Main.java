@@ -147,6 +147,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
                     Intent chat = new Intent(Main.this,Chatroom.class);
                     chat.putExtra("code", code);
+                    chat.putExtra("id",userID);
                     startActivity(chat);
                 } else if(group_class == 0) {
 //                    groupPosition=1;
@@ -426,6 +427,13 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                 withdrawGroupPos = -1;
                             }
                             break;
+                        case "SendMessage" :
+                            String SM_msg = new String(message.getPayload());
+                            String[] SM_msg_splitLine = SM_msg.split("\t");
+                            if(processingCode.equals(SM_msg_splitLine[0])){
+                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2]);
+                            }
+                            break;
                     }
                 }
 
@@ -551,12 +559,19 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             withdrawGroupPos = -1;
         }
 
-        public void test() {
-            LinkModule.getInstance().callFoo("A");
-        }
 
         public void setProcessingCode(String processingCode) {
             this.processingCode = processingCode;
+        }
+
+        public void SendMessage(String str){
+            String topic = "IDF/SendMessage/" + user;
+            String MSG = str;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
     }
     ////////////////////////////////////////////////////////////////////////
