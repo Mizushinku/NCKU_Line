@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,24 +17,24 @@ import java.util.ArrayList;
 public class bubble_list  extends BaseAdapter {
 
     private Context context;
-    private ArrayList<bubble> friendList;
+    private ArrayList<bubble> msgList;
     private static LayoutInflater inflater = null;
 
-    public bubble_list(Context context, ArrayList<bubble> friendList) {
+    public bubble_list(Context context, ArrayList<bubble> msgList) {
         this.context = context;
-        this.friendList = friendList;
+        this.msgList = msgList;
         inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return friendList.size();
+        return msgList.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return friendList.get(position);
+        return msgList.get(position);
     }
 
     @Override
@@ -44,10 +44,9 @@ public class bubble_list  extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View rowView, ViewGroup parent) {
         final bubble Bubble = (bubble)getItem(position);
 
-        View rowView = null;
         TextView txt_msg = null;
         int type = Bubble.getType();
         if(type == 0){
@@ -61,5 +60,19 @@ public class bubble_list  extends BaseAdapter {
         txt_msg.setText(Bubble.getTxtMsg());
 
         return rowView;
+    }
+
+    public void notifyDataSetChanged(ListView lv, int position) {
+
+        int firstVisiblePosition = lv.getFirstVisiblePosition();
+        int lastVisiblePosition = lv.getLastVisiblePosition();
+
+        if(position >= firstVisiblePosition && position <= lastVisiblePosition) {
+            View v = lv.getChildAt(position - firstVisiblePosition);
+            if(v == null) {
+                return;
+            }
+            this.getView(position,v,lv);
+        }
     }
 }

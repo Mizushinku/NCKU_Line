@@ -19,7 +19,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -33,7 +32,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
     private ExpandableListView listView;
@@ -159,7 +157,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                     int groupPos = ExpandableListView.getPackedPositionGroup(packedPos);
                     int childPos = ExpandableListView.getPackedPositionChild(packedPos);
 
-                    Toast.makeText(mCtn, "(" + groupPos + "," + childPos + ") long click", Toast.LENGTH_SHORT).show();
 
                     if (groupPos == 1) {
                         showFLCM(childPos);
@@ -235,7 +232,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
     public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = friend.get(childPos).getStudentID();
         String code = friend.get(childPos).getCode();
-        Toast.makeText(mCtn,"click " + which + " on child " + childPos, Toast.LENGTH_SHORT).show();
         switch (which) {
             case 0:
                 mqtt.setDeleteFriendPos(childPos);
@@ -294,6 +290,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
                 break;
         }
+    }
+
+    ////////////////////////////////////////////////////////
+
+    public void refreshExpListView() {
+        listView.getFirstVisiblePosition();
     }
 
 

@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -83,6 +82,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Main.mqtt.GetRecord(code);
 
+        Bubble_list = new bubble_list(Chatroom.this,Bubble);
+        lv.setAdapter(Bubble_list);
+
     }
 
     @Override
@@ -100,15 +102,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     public void updateMsg(String sender, String text) {
         if(sender.equals(id)) {
             Bubble.add(new bubble(1,text));
-            Bubble_list = new bubble_list(Chatroom.this,Bubble);
-            lv.setAdapter(Bubble_list);
-            lv.setSelection(Bubble_list.getCount());
         }else {
             Bubble.add(new bubble(0,text));
-            Bubble_list = new bubble_list(Chatroom.this,Bubble);
-            lv.setAdapter(Bubble_list);
-            lv.setSelection(Bubble_list.getCount());
         }
+        Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
+        lv.setSelection(Bubble_list.getCount());
     }
 
 }
