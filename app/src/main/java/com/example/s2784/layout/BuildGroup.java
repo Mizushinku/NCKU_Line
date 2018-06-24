@@ -36,6 +36,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         btn_selectFriend = findViewById(R.id.btn_selectFriend);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
 
+        etGroupName.setOnClickListener(this);
         btn_selectFriend.setOnClickListener(this);
         btn_CreateGroup.setOnClickListener(this);
 
@@ -48,12 +49,15 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             //intent_selectFriend.putExtra("friendList", (Serializable) friendList);
             startActivityForResult(intent_selectFriend,REQUEST_CODE_SELECT_FRIEND);
         }
-        if(v == btn_CreateGroup) {
+        else if(v == btn_CreateGroup) {
             Intent intent = getIntent();
             intent.putExtra("groupName",etGroupName.getText().toString());
             intent.putStringArrayListExtra("memberList",groupMember);
             setResult(REQUEST_CODE_BuildGroup, intent);
             this.finish();
+        }
+        else if(v == etGroupName) {
+            etGroupName.setHint(null);
         }
     }
 

@@ -41,7 +41,7 @@
             android:id="@+id/etGroupName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="輸入群組名稱" />
+            android:hint="請輸入群組名稱" />
 
         <Button
             android:id="@+id/btn_selectFriend"
