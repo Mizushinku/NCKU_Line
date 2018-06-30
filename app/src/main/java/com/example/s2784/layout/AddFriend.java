@@ -1,7 +1,5 @@
 package com.example.s2784.layout;
-//123
-//123456789
-//111111
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
@@ -30,7 +28,9 @@ import java.net.URL;
 public class AddFriend extends AppCompatActivity {
     private final static int CAMERA_RESULT = 0;
 
+    //Main REQUEST_CODE
     private static final int REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

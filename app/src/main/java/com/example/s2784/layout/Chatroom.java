@@ -69,17 +69,20 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         btn = findViewById(R.id.btn_send);
         lv = findViewById(R.id.lv);
         et = findViewById(R.id.et);
-        status = findViewById(R.id.status);
+        status = findViewById(R.id.status); // not used
 
 
-        txv_chatName = findViewById(R.id.chatName);
+        txv_chatName = findViewById(R.id.chatName); // label on the top of the chat room
 
         btn.setOnClickListener(this);
 
+        //設定該class為callback function 實作方
         LinkModule.getInstance().setListener(this);
 
+        //設定正在執行的chat room
         Main.mqtt.setProcessingCode(code);
 
+        //拿到聊天紀錄
         Main.mqtt.GetRecord(code);
 
         Bubble_list = new bubble_list(Chatroom.this,Bubble);
@@ -90,6 +93,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if(v == btn) {
+            //發送聊天紀錄
             String msg = code + "\t" + id + "\t" + et.getText().toString();
             if(!msg.equals("")){
                 Main.mqtt.SendMessage(msg);
@@ -98,6 +102,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    //callback function 實作
     @Override
     public void updateMsg(String sender, String text) {
         if(sender.equals(id)) {
@@ -105,8 +110,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }else {
             Bubble.add(new bubble(0,text));
         }
+        //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
-        lv.setSelection(Bubble_list.getCount());
+
+        //將listVie lv.setSelection(Bubble_list.getCount());
     }
 
 }

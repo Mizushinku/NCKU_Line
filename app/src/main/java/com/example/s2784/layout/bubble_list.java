@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 /**
  * Created by uscclab on 2018/5/21.
+ * 聊天室內的list view的Adapter
+ * msgList 中儲存一則則的聊天訊息
+ * notifyDataSetChanged Method 實作一次只更新一行的方法(不用一次更新整個listView)
+ * ... 2018/6/30
  */
 
 public class bubble_list  extends BaseAdapter {
@@ -63,15 +67,18 @@ public class bubble_list  extends BaseAdapter {
     }
 
     public void notifyDataSetChanged(ListView lv, int position) {
-
+        //listView 可能很長(超過手機畫面),這裡拿到處於手機畫面中,第一以及最後一個的item的index
         int firstVisiblePosition = lv.getFirstVisiblePosition();
         int lastVisiblePosition = lv.getLastVisiblePosition();
 
+        //要更新的行數處在手機畫面中才更新(不再畫面中的item,隨著listView捲動會自動更新)
         if(position >= firstVisiblePosition && position <= lastVisiblePosition) {
             View v = lv.getChildAt(position - firstVisiblePosition);
             if(v == null) {
                 return;
             }
+
+            //更新
             this.getView(position,v,lv);
         }
     }

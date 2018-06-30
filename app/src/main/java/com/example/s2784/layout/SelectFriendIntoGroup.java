@@ -49,6 +49,8 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RoomInfo roomInfo = (RoomInfo) listViewAdapter.getItem(position);
+
+                //選取成員時給user的回饋(被選中的人顏色會改變)
                 if(!groupMember.contains(roomInfo.getStudentID())) {
                     view.setBackgroundColor(Color.BLUE);
                     groupMember.add(roomInfo.getStudentID());

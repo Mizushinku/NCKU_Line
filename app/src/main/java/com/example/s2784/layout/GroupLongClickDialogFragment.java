@@ -7,6 +7,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+/**
+ * 請參考FriendLongClickDialogFragment
+ */
+
 public class GroupLongClickDialogFragment extends DialogFragment {
 
     public interface GLCMListener {

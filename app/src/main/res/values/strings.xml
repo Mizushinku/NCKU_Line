@@ -13,7 +13,7 @@
         <item>返回</item>
     </string-array>
 
-    <!-- Group Long Click Menu -->
+    <!-- Group Long Click Menu & String array -->
     <string name="GLCM_title">選項</string>
     <string-array name="groupLongClickMenu">
         <item>退出群組</item>

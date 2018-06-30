@@ -65,6 +65,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case REQUEST_CODE_SELECT_FRIEND :
+                    //拿到user想加入群組的成員清單(學號)
                     groupMember = data.getStringArrayListExtra("memberList");
                 break;
         }

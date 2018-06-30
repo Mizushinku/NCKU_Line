@@ -165,6 +165,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                     }
                 }
 
+                //必須回傳true,不然會和onClick搞混
                 return true;
             }
         });
@@ -222,6 +223,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     private void showFLCM(int childPos) {
         DialogFragment dialogFragment = new FriendLongClickDialogFragment();
+        //用Bundle傳遞參數
         Bundle bundle = new Bundle();
         bundle.putInt("childPos",childPos);
         dialogFragment.setArguments(bundle);
@@ -234,6 +236,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         String code = friend.get(childPos).getCode();
         switch (which) {
             case 0:
+                //指定哪個朋友要被刪除
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
                 break;
@@ -252,6 +255,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         String code = group.get(childPos).getCode();
         switch (which) {
             case 0:
+                //指定要退出哪個群組
                 mqtt.setWithdrawGroupPos(childPos);
                 mqtt.WithdrawFromGroup(code);
                 break;
@@ -573,7 +577,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             listHash.put(listDataHeader.get(0),group);
             withdrawGroupPos = -1;
         }
-
 
         public void setProcessingCode(String processingCode) {
             this.processingCode = processingCode;

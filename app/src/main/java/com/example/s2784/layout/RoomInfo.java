@@ -4,6 +4,10 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
+/**
+ * 儲存好友或群組的資訊 ... 2018/6/30
+ */
+
 public class RoomInfo implements Serializable{
 
     private String roomName;
