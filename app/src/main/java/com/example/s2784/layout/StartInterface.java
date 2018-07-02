@@ -84,7 +84,7 @@ public class StartInterface extends AppCompatActivity {
                     StartInterface.this.startActivity(mainIntent);
                     StartInterface.this.finish();
                 }
-            }, 3000);
+            }, 1000);
         }
 
     }

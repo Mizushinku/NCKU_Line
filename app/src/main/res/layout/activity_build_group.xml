@@ -16,12 +16,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/skyblue"
+            android:background="@color/ncku_red"
             android:gravity="center"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="創建群組"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="20dp" />
 
 
@@ -47,12 +47,18 @@
             android:id="@+id/btn_selectFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/nomal_button_stytle"
+            android:textColor="@color/white"
             android:text="選擇好友"/>
 
         <Button
             android:id="@+id/btn_CreateGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/nomal_button_stytle"
+            android:textColor="@color/white"
             android:text="創建" />
     </LinearLayout>
 
