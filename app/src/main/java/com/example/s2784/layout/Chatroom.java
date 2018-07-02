@@ -87,7 +87,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Bubble_list = new bubble_list(Chatroom.this,Bubble);
         lv.setAdapter(Bubble_list);
-        
+
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
 
-        //將listVie lv.setSelection(Bubble_list.getCount());
+        lv.setSelection(Bubble_list.getCount());
     }
 
 }
