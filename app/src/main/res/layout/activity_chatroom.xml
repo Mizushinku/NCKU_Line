@@ -26,34 +26,13 @@
         <TextView
             android:id="@+id/chatName"
             android:layout_width="match_parent"
-<<<<<<< HEAD
             android:layout_height="match_parent"
             android:text="聊天室"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="25dp" />
     </LinearLayout>
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
 
-        <!--<TextView-->
-            <!--android:id="@+id/chatName"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="0.5"-->
-            <!--android:text="chat room"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textSize="14sp" />-->
-    <!--</ScrollView>-->
-=======
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="chat room"
-            android:textAlignment="center"
-            android:textSize="14sp" />
-    </ScrollView>
->>>>>>> c68e5ee7afe4c262bdc315204f85a3b1287bc471
 
     <ListView
         android:id="@+id/lv"
