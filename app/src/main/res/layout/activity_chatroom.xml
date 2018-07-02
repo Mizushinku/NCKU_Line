@@ -19,20 +19,20 @@
         android:textAlignment="center"
         android:textSize="16dp"
         android:visibility="gone" />
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/ncku_red">
+        android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/chatName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="聊天室"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
-    </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="chat room"
+            android:textAlignment="center"
+            android:textSize="14sp" />
+    </ScrollView>
 
     <ListView
         android:id="@+id/lv"
