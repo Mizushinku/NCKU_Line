@@ -20,8 +20,8 @@
             android:paddingVertical="15dp"
             android:layout_weight="5"
             android:textSize="20dp"
-            android:background="@color/ncku_red"
-            android:textColor="@color/white"/>
+            android:background="@color/skyblue"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
     <LinearLayout

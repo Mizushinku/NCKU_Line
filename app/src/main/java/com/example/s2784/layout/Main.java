@@ -197,8 +197,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 .setNegativeButton("是", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         StartInterface.logout();
-                        Intent intent_Login = new Intent(Main.this,LogIn.class);
-                        startActivity(intent_Login);
+                        Intent intent_StartInterface = new Intent(Main.this,StartInterface.class);
+                        startActivity(intent_StartInterface);
                         finish();
                     }
                 });

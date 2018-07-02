@@ -1,69 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:layout_height="match_parent"
     tools:context=".Upload">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/buttonChoose"
+        android:layout_width="87dp"
+        android:layout_height="54dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="16dp"
+        android:text="buttonChoose"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/round_coner"
-        />
-    </LinearLayout>
-        <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-            android:padding="20dp">
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
-        <Button
-        android:id="@+id/buttonChoose"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-
-        android:background="@drawable/nomal_button_stytle"
-        android:textColor="@color/white"
-        android:text="選擇照片"
-
-        />
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
- />
-        </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
-
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="354dp"
+        android:layout_height="47dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="28dp"
-        android:text="上傳照片"
-        android:background="@drawable/nomal_button_stytle"
-        android:textColor="@color/white"
-        android:paddingHorizontal="40dp"
- />
+        android:text="buttonUpload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChoose"
+        app:layout_constraintVertical_bias="0.0" />
 
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="187dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonChoose"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</android.support.constraint.ConstraintLayout>

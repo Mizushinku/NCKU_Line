@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/lightblue3"
     tools:context=".Main">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/ncku_red"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center_vertical">
 
         <TextView
@@ -32,12 +32,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="主頁面"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp" />
 
         <Button
@@ -45,12 +45,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="加入好友"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp" />
 
         <Button
@@ -58,12 +58,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="創建群組"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"
             android:visibility="visible" />
 
@@ -72,12 +72,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="加入群組"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"
             android:visibility="gone" />
 
@@ -86,12 +86,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="訊息公告"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp" />
 
         <Button
@@ -99,12 +99,12 @@
             android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/ncku_red"
+            android:background="@color/skyblue"
             android:gravity="center_horizontal"
             android:paddingHorizontal="5dp"
             android:paddingVertical="15dp"
             android:text="登出"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp" />
 
     </LinearLayout>

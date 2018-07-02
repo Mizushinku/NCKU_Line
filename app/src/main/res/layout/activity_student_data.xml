@@ -14,9 +14,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="50dp"
-        android:layout_weight="5"
-        android:layout_marginHorizontal="40dp"
-        android:background="@drawable/round_coner"/>
+        android:layout_weight="5" />
 
     <TextView
         android:id="@+id/studentID"
@@ -42,8 +40,6 @@
         android:layout_marginBottom="50dp"
         android:layout_weight="0"
         android:onClick="onClick"
-        android:background="@drawable/nomal_button_stytle"
-        android:textColor="@color/white"
         android:text="確認"
         android:textSize="24sp" />
 </LinearLayout>

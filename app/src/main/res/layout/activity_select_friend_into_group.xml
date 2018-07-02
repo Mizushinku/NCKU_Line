@@ -6,38 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".SelectFriendIntoGroup">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/ncku_red">
-        <TextView
-            android:id="@+id/mainTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="邀請好友"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
-    </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"></ListView>
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="464dp"></ListView>
+
     <Button
         android:id="@+id/btn_OK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/nomal_button_stytle"
-        android:textColor="@color/white"
-        android:text="OK"
-        android:layout_marginBottom="20dp"/>
-    </LinearLayout>
+        android:text="OK" />
+
 </LinearLayout>

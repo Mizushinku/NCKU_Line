@@ -10,7 +10,7 @@
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/login2"
+        app:srcCompat="@drawable/welcome2"
         android:scaleType="fitXY"/>
 
     <LinearLayout
@@ -23,14 +23,10 @@
             android:id="@+id/btn_logIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
-            android:paddingVertical="15dp"
-            android:paddingHorizontal="30dp"
+            android:layout_marginTop="250dp"
             android:text="登入"
-
+            android:textAlignment="center"
             android:textSize="18sp"
-            android:background="@drawable/nomal_button_stytle"
-            android:textColor="@color/white"
             />
     </LinearLayout>
 
