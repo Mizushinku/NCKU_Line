@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".Main">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -109,11 +108,6 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="35dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,6 +119,7 @@
             android:layout_height="wrap_content">
 
         </ExpandableListView>
+
 
 
     </LinearLayout>
