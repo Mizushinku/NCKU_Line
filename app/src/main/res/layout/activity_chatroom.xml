@@ -19,20 +19,26 @@
         android:textAlignment="center"
         android:textSize="16dp"
         android:visibility="gone" />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/chatName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="chat room"
-            android:textAlignment="center"
-            android:textSize="14sp" />
-    </ScrollView>
+            android:background="@color/ncku_red"
+            android:gravity="center"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="15dp"
+            android:text="聊天室"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/lv"
@@ -49,21 +55,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/white">
 
-            <EditText
-                android:id="@+id/et"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="" />
+                android:layout_weight="20">
 
-            <ImageButton
-                android:id="@+id/btn_send"
-                android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/edtext_stytle"
+                    android:maxLines="4"
+                    android:text=""
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
-                 android:background="@drawable/send"/>
+                android:layout_weight="1"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|right"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="5dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_send"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/send"
+                        />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
