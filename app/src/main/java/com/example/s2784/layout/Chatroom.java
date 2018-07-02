@@ -87,15 +87,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Bubble_list = new bubble_list(Chatroom.this,Bubble);
         lv.setAdapter(Bubble_list);
-
+        
     }
 
     @Override
     public void onClick(View v) {
         if(v == btn) {
-            //發送聊天紀錄
-            String msg = code + "\t" + id + "\t" + et.getText().toString();
-            if(!msg.equals("")){
+            if(!et.getText().toString().equals("")) {
+                //發送聊天紀錄
+                String msg = code + "\t" + id + "\t" + et.getText().toString();
                 Main.mqtt.SendMessage(msg);
             }
             et.setText("");
