@@ -28,6 +28,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -338,6 +339,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
             options = new MqttConnectOptions();
             options.setCleanSession(true);
+            options.setAutomaticReconnect(true);
 
             try {
                 IMqttToken token = client.connect(options);
@@ -358,7 +360,14 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 e.printStackTrace();
             }
 
-            client.setCallback(new MqttCallback() {
+            client.setCallback(new MqttCallbackExtended()  {
+                @Override
+                public void connectComplete(boolean reconnect, String serverURI) {
+                    if(reconnect){
+                        mqttSub();
+                    }
+                }
+
                 @Override
                 public void connectionLost(Throwable cause) {
                     Log.d("TAG","lost");
@@ -367,6 +376,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String[] idf = topic.split("/");
+                    Log.d("MSG","MSG: " + message.toString());
                     switch (idf[1]) {
                         case "Initialize":
                             if(init_flag == 0) {
@@ -457,7 +467,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                     client.disconnect();
                     client.unregisterResources();
                     client = null;
+                    Log.d("TAG","Try Disconnect");
                 } catch (MqttException e) {
+                    Log.d("TAG","Disconnect Error");
                     e.printStackTrace();
                 }
             }
@@ -601,6 +613,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 e.printStackTrace();
             }
         }
+
     }
     ////////////////////////////////////////////////////////////////////////
 
