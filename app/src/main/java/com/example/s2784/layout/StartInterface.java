@@ -88,7 +88,6 @@ public class StartInterface extends AppCompatActivity {
         }
 
     }
-//
     public static void addData(String name,String id)
     {
         ContentValues cv=new ContentValues(2);

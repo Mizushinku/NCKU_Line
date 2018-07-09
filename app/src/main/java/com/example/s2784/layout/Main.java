@@ -34,7 +34,29 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+//for searchview
+
+import android.databinding.DataBindingUtil;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+
+import com.example.s2784.layout.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//for searchview
+
 public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
+    /*for search view*/
+
+    ActivityMainBinding activityMainBinding;
+    ListAdapter adapter;
+    List<String> arrayList= new ArrayList<>();
+
+    /*for search view*/
+
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
@@ -61,9 +83,54 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("TAG","OnCreate!");
+        /*for search view*/
 
         super.onCreate(savedInstanceState);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        arrayList.add("January");
+        arrayList.add("February");
+        arrayList.add("March");
+        arrayList.add("April");
+        arrayList.add("May");
+        arrayList.add("June");
+        arrayList.add("July");
+        arrayList.add("August");
+        arrayList.add("September");
+        arrayList.add("October");
+        arrayList.add("November");
+        arrayList.add("December");
+
+        adapter= new ListAdapter(arrayList);
+        activityMainBinding.listView.setAdapter(adapter);
+
+        activityMainBinding.search.setActivated(true);
+        activityMainBinding.search.setQueryHint("Type your keyword here");
+        activityMainBinding.search.onActionViewExpanded();
+        activityMainBinding.search.setIconified(false);
+        activityMainBinding.search.clearFocus();
+
+
+        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+        /*for search view*/
+
+        Log.d("TAG","OnCreate!");
+
+        //super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //set main title
