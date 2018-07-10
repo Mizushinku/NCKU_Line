@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,18 +51,26 @@ public class bubble_list  extends BaseAdapter {
     @Override
     public View getView(final int position, View rowView, ViewGroup parent) {
         final bubble Bubble = (bubble)getItem(position);
-
+        final RoomInfo roomInfo;
         TextView txt_msg = null;
+        TextView name = null;
+        ImageView pic = null;
         int type = Bubble.getType();
         if(type == 0){
             rowView = inflater.inflate(R.layout.bubble_chat_left, null);
+            name = (TextView) rowView.findViewById(R.id.userName);
+            name.setText(Bubble.getName());
+            pic = (ImageView) rowView.findViewById(R.id.bubblePic);
+
         }
         else{
             rowView = inflater.inflate(R.layout.bubble_chat_right, null);
         }
 
         txt_msg = (TextView) rowView.findViewById(R.id.txt_msg);
+
         txt_msg.setText(Bubble.getTxtMsg());
+
 
         return rowView;
     }

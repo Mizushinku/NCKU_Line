@@ -1,5 +1,7 @@
 package com.example.s2784.layout;
 
+import android.widget.ImageView;
+
 /**
  * Created by uscclab on 2018/5/21.
  * 儲存一則聊天訊息
@@ -10,12 +12,14 @@ package com.example.s2784.layout;
 public class bubble {
     private String txtmsg;
     private int type;
-
+    private String name;
+    private ImageView pic;
     public bubble() {}
 
-    public bubble(int type, String txtmsg) {
+    public bubble(int type, String txtmsg,String name) {
         this.txtmsg = txtmsg;
         this.type = type;
+        this.name = name;
     }
 
     public String getTxtMsg() {
@@ -32,5 +36,21 @@ public class bubble {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ImageView getPic() {
+        return pic;
+    }
+
+    public void setPic(ImageView pic) {
+        this.pic = pic;
     }
 }

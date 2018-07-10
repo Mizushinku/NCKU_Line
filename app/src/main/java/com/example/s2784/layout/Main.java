@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,7 +49,8 @@ import java.util.List;
 
 //for searchview
 
-public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
+public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener,
+        Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener{
     /*for search view*/
 
     ActivityMainBinding activityMainBinding;
@@ -368,6 +370,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     public void refreshExpListView() {
         listView.getFirstVisiblePosition();
+    }
+
+    @Override
+    //////////////////  ViewPager  /////////////////////
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 

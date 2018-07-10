@@ -107,9 +107,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void updateMsg(String sender, String text) {
         if(sender.equals(id)) {
-            Bubble.add(new bubble(1,text));
+            Bubble.add(new bubble(1,text,sender));
         }else {
-            Bubble.add(new bubble(0,text));
+            Bubble.add(new bubble(0,text,sender));
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());

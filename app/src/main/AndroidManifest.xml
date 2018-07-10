@@ -49,9 +49,11 @@
         <activity android:name=".SelectFriendIntoGroup" />
         <activity android:name=".StudentData" />
         <activity android:name=".MsgBulletin" />
-        <activity android:name=".JoinGroup"></activity>
-        <service android:name="org.eclipse.paho.android.service.MqttService" >
-        </service>
+        <activity android:name=".JoinGroup" />
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
+        <activity android:name=".Tabs"></activity>
     </application>
 
 </manifest>
