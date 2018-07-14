@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
@@ -115,6 +116,16 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
 
         lv.setSelection(Bubble_list.getCount());
+    }
+
+    @Override
+    public void fetchRecord(String record) {
+        StringTokenizer stringTokenizer = new StringTokenizer(record,",");
+        while(stringTokenizer.hasMoreElements()){
+            String token = stringTokenizer.nextToken();
+            String[] token_splitLine = token.split("\t");
+            updateMsg(token_splitLine[0],token_splitLine[1]);
+        }
     }
 
 }

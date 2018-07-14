@@ -14,6 +14,7 @@ public class LinkModule {
 
     public interface MListener {
         void updateMsg(String sender, String text);
+        void fetchRecord(String record);
         //void what_you_want();
     }
 
@@ -49,4 +50,10 @@ public class LinkModule {
             mListener.updateMsg(sender,text);
         }
     }
+    public void callFetchRecord(String record) {
+        if(mListener != null) {
+            mListener.fetchRecord(record);
+        }
+    }
+
 }

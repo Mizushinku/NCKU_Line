@@ -522,8 +522,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             }
                             break;
                         case "GetRecord" :
-                            String[] GR_msg = (new String(message.getPayload())).split("\t");
-                            LinkModule.getInstance().callUpdateMsg(GR_msg[0],GR_msg[1]);
+                            LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                             break;
                     }
                 }
@@ -554,7 +553,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         private void mqttSub() {
             try {
                 String topic = "IDF/+/" + user + "/Re";
-                client.subscribe(topic,0);
+                client.subscribe(topic,2);
             }catch (MqttException e) {
                 e.printStackTrace();
             }
