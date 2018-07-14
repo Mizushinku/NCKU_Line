@@ -133,7 +133,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         Log.d("TAG","OnCreate!");
 
         //super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         //set main title
         Intent intentFromUpload = getIntent();
