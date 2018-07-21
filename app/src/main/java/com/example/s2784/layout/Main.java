@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,9 +18,11 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
 
 //for searchview
 
@@ -44,8 +48,6 @@ import android.support.v7.widget.SearchView;
 
 import com.example.s2784.layout.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
-import java.util.List;
 
 //for searchview
 
@@ -399,11 +401,14 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         private int withdrawGroupPos = -1;
 
         private String processingCode = "";
-
+        private ArrayList<RoomInfo> roomInfoList = null; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
+        private HashMap<String,Bitmap> friendInfoMap = null;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
             this.user = user;
+            roomInfoList = new ArrayList<RoomInfo>();
+            friendInfoMap = new HashMap<String, Bitmap>();
         }
 
 
@@ -451,20 +456,36 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String[] idf = topic.split("/");
-                    Log.d("MSG","MSG: " + message.toString());
+//                    Log.d("MSG","MSG: " + message.toString());
                     switch (idf[1]) {
                         case "Initialize":
-                            if(init_flag == 0) {
-                                init_info = (new String(message.getPayload())).split("\t");
-                                if(init_info[3].equals("F")) {
-                                    init_flag = 1;
-                                } else if(init_info[3].equals("G")) {
-                                    Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], null);
+//                            if(init_flag == 0) {
+//                                init_info = (new String(message.getPayload())).split("\t");
+//                                if(init_info[3].equals("F")) {
+//                                    init_flag = 1;
+//                                } else if(init_info[3].equals("G")) {
+//                                    Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], null);
+//                                }
+//                            } else {
+//                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+//                                init_flag = 0;
+//                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
+//                            }
+                            StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()) ,",");
+                            while(stringTokenizer.hasMoreElements()){
+                                String token = stringTokenizer.nextToken();
+                                init_info = token.split("\t");
+                                RoomInfo roomInfo = new RoomInfo();
+                                roomInfo.setCode(init_info[0]);
+                                roomInfo.setRoomName(init_info[1]);
+                                roomInfo.setStudentID(init_info[2]);
+                                roomInfo.setType(init_info[3]);
+                                roomInfoList.add(roomInfo);
+                                if(init_info[3].equals("F")){
+                                    GetFriendIcon(init_info[2]);
+                                }else if(init_info[3].equals("G")){
+                                    Initialize_re(roomInfo);
                                 }
-                            } else {
-                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
-                                init_flag = 0;
-                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
                             }
                             break;
                         case "AddFriend" :
@@ -524,6 +545,19 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                         case "GetRecord" :
                             LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                             break;
+                        default:
+                            if(idf[1].contains("FriendIcon")){
+                                String[] topicSplitLine = idf[1].split(":");
+                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+                                friendInfoMap.put(topicSplitLine[1],b);
+                                for(int i = 0 ; i < roomInfoList.size() ; i++){
+                                    if(roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])){
+                                        roomInfoList.get(i).setIcon(b);
+                                        Initialize_re(roomInfoList.get(i));
+                                        break;
+                                    }
+                                }
+                            }
                     }
                 }
 
@@ -563,22 +597,17 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             String topic = "IDF/Initialize/" + user;
             String MSG = "";
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
+                client.publish(topic,MSG.getBytes(),2,false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public void Initialize_re(String code, String roomName, String ID, String type, Bitmap b) {
-            RoomInfo roomInfo = new RoomInfo();
-            roomInfo.setCode(code);
-            roomInfo.setRoomName(roomName);
-            if(type.equals("F")) {
-                roomInfo.setStudentID(ID);
-                roomInfo.setIcon(b);
+        public void Initialize_re(RoomInfo roomInfo) {
+            if(roomInfo.getType().equals("F")) {
                 friend.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
-            } else if(type.equals("G")) {
+            } else if(roomInfo.getType().equals("G")) {
                 roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 group.add(roomInfo);
                 listHash.put(listDataHeader.get(0),group);
@@ -682,7 +711,17 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             String topic = "IDF/GetRecord/" + user;
             String MSG = code;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
+                client.publish(topic,MSG.getBytes(),2,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void GetFriendIcon(String friendID){
+            String topic = "IDF/FriendIcon/" + user;
+            String MSG = friendID;
+            try {
+                client.publish(topic,MSG.getBytes(),2,false);
             }catch (MqttException e) {
                 e.printStackTrace();
             }
