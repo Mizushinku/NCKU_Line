@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
         private Context context;
-        private List<String> listDataHeader;
-        private HashMap<String,ArrayList<RoomInfo>> listHashMap;
+        private static List<String> listDataHeader;
+        private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
 
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
@@ -95,4 +95,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    //-----------------use for Main.java
+    public static int getGroupCount_ForMain() {
+        return listDataHeader.size();
+    }
+
+    public static int getChildrenCount_ForMain(int i) {
+        return listHashMap.get(listDataHeader.get(i)).size();
+    }
+
+    public static Object getChild_ForMain(int i, int j) {
+        return listHashMap.get(listDataHeader.get(i)).get(j); // i =Group Item  j = Child Item
+    }
+    //-----------------use for Main.java
 }

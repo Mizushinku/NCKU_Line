@@ -87,41 +87,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*for search view*/
 
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-//        arrayList.add("January");  //for search view test
-//        arrayList.add("February");
-//        arrayList.add("March");
-
-        adapter= new ListAdapter(arrayList);
-        activityMainBinding.listView.setAdapter(adapter);
-
-        activityMainBinding.search.setActivated(true);
-        activityMainBinding.search.setQueryHint("Type your keyword here");
-        activityMainBinding.search.onActionViewExpanded();
-        activityMainBinding.search.setIconified(false);
-        activityMainBinding.search.clearFocus();
 
 
-        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                adapter.getFilter().filter(newText);
-
-                return false;
-            }
-        });
-
-        /*for search view*/
 
         Log.d("TAG","OnCreate!");
 
@@ -232,6 +203,53 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 return true;
             }
         });
+
+        /*for search view*/
+//        arrayList.add("January");  //for search view test
+//        arrayList.add("February");
+//        arrayList.add("March");
+        int k=0;
+        arrayList.add(Integer.toString(k));
+        k++;
+        arrayList.add(Integer.toString(k));
+        for(int i=0;i<listAdapter.getGroupCount_ForMain();i++)
+        {
+            for(int j=0;j<listAdapter.getChildrenCount_ForMain(i);j++)
+            {
+                arrayList.add(Integer.toString(k));
+                k++;
+            }
+        }
+
+
+        adapter= new ListAdapter(arrayList);
+        activityMainBinding.listView.setAdapter(adapter);
+
+        activityMainBinding.search.setActivated(true);
+        activityMainBinding.search.setQueryHint("Type your keyword here");
+        activityMainBinding.search.onActionViewExpanded();
+        activityMainBinding.search.setIconified(false);
+        activityMainBinding.search.clearFocus();
+
+
+        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+        /*for search view*/
+
+
 
     }
 
