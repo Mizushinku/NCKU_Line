@@ -189,6 +189,7 @@ public class AddFriend extends AppCompatActivity {
 
                 Intent intent = getIntent();
                 intent.putExtra("StudentID",result.getContents());
+                Main.arrayList.add(result.getContents());
                 setResult(REQUEST_CODE, intent);
 
                 this.finish();

@@ -57,7 +57,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     ActivityMainBinding activityMainBinding;
     ListAdapter adapter;
-    List<String> arrayList= new ArrayList<>();
+    public static List<String> arrayList= new ArrayList<>();
 
     /*for search view*/
 
@@ -92,18 +92,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        arrayList.add("January");
-        arrayList.add("February");
-        arrayList.add("March");
-        arrayList.add("April");
-        arrayList.add("May");
-        arrayList.add("June");
-        arrayList.add("July");
-        arrayList.add("August");
-        arrayList.add("September");
-        arrayList.add("October");
-        arrayList.add("November");
-        arrayList.add("December");
+//        arrayList.add("January");  //for search view test
+//        arrayList.add("February");
+//        arrayList.add("March");
 
         adapter= new ListAdapter(arrayList);
         activityMainBinding.listView.setAdapter(adapter);
