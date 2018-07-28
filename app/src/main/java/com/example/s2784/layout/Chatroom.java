@@ -30,6 +30,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private TextView txv_chatName;
 
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -111,7 +112,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         if(sender.equals(id)) {
             Bubble.add(new bubble(1,text,sender));
         }else {
-            Bubble.add(new bubble(0,text,sender));
+            Bubble.add(new bubble(0,text,sender,Main.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());

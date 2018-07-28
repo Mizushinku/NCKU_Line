@@ -735,6 +735,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         }
 
+        public Bitmap MapBitmap(String id){
+            return friendInfoMap.get(id);
+        }
     }
     ////////////////////////////////////////////////////////////////////////
 

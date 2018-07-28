@@ -1,5 +1,6 @@
 package com.example.s2784.layout;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 /**
@@ -13,10 +14,16 @@ public class bubble {
     private String txtmsg;
     private int type;
     private String name;
-    private ImageView pic;
+    private Bitmap pic;
     public bubble() {}
 
-    public bubble(int type, String txtmsg,String name) {
+    public bubble(int type, String txtmsg, String name, Bitmap bitmap) {
+        this.txtmsg = txtmsg;
+        this.type = type;
+        this.name = name;
+        this.pic = bitmap;
+    }
+    public bubble(int type, String txtmsg, String name) {
         this.txtmsg = txtmsg;
         this.type = type;
         this.name = name;
@@ -46,11 +53,11 @@ public class bubble {
         this.name = name;
     }
 
-    public ImageView getPic() {
+    public Bitmap getPic() {
         return pic;
     }
 
-    public void setPic(ImageView pic) {
+    public void setPic(Bitmap pic) {
         this.pic = pic;
     }
 }

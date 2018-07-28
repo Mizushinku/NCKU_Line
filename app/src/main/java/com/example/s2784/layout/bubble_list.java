@@ -61,7 +61,7 @@ public class bubble_list  extends BaseAdapter {
             name = (TextView) rowView.findViewById(R.id.userName);
             name.setText(Bubble.getName());
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
-
+            pic.setImageBitmap(Bubble.getPic());
         }
         else{
             rowView = inflater.inflate(R.layout.bubble_chat_right, null);
