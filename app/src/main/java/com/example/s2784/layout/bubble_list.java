@@ -54,6 +54,7 @@ public class bubble_list  extends BaseAdapter {
         final RoomInfo roomInfo;
         TextView txt_msg = null;
         TextView name = null;
+        TextView time = null;
         ImageView pic = null;
         int type = Bubble.getType();
         if(type == 0){
@@ -67,8 +68,9 @@ public class bubble_list  extends BaseAdapter {
             rowView = inflater.inflate(R.layout.bubble_chat_right, null);
         }
 
+        time = (TextView) rowView.findViewById(R.id.msg_time);
+        time.setText(Bubble.getTime());
         txt_msg = (TextView) rowView.findViewById(R.id.txt_msg);
-
         txt_msg.setText(Bubble.getTxtMsg());
 
 

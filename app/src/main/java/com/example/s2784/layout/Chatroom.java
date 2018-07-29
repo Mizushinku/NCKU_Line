@@ -108,11 +108,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     //callback function 實作
     @Override
-    public void updateMsg(String sender, String text) {
+    public void updateMsg(String sender, String text, String time) {
         if(sender.equals(id)) {
-            Bubble.add(new bubble(1,text,sender));
+            Bubble.add(new bubble(1,text,sender,time));
         }else {
-            Bubble.add(new bubble(0,text,sender,Main.mqtt.MapBitmap(sender)));
+            Bubble.add(new bubble(0,text,sender,time,Main.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
@@ -126,7 +126,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         while(stringTokenizer.hasMoreElements()){
             String token = stringTokenizer.nextToken();
             String[] token_splitLine = token.split("\t");
-            updateMsg(token_splitLine[0],token_splitLine[1]);
+            updateMsg(token_splitLine[0],token_splitLine[1],token_splitLine[2]);
         }
     }
 

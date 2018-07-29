@@ -15,18 +15,21 @@ public class bubble {
     private int type;
     private String name;
     private Bitmap pic;
+    private String time;
     public bubble() {}
 
-    public bubble(int type, String txtmsg, String name, Bitmap bitmap) {
+    public bubble(int type, String txtmsg, String name, String time, Bitmap bitmap) {
         this.txtmsg = txtmsg;
         this.type = type;
         this.name = name;
+        this.time = time;
         this.pic = bitmap;
     }
-    public bubble(int type, String txtmsg, String name) {
+    public bubble(int type, String txtmsg, String name, String time) {
         this.txtmsg = txtmsg;
         this.type = type;
         this.name = name;
+        this.time = time;
     }
 
     public String getTxtMsg() {
@@ -35,6 +38,14 @@ public class bubble {
 
     public void setTxtMsg(String txtmsg) {
         this.txtmsg = txtmsg;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public int getType() {

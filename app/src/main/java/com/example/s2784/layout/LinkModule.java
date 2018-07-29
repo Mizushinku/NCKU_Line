@@ -13,7 +13,7 @@ package com.example.s2784.layout;
 public class LinkModule {
 
     public interface MListener {
-        void updateMsg(String sender, String text);
+        void updateMsg(String sender, String text, String time);
         void fetchRecord(String record);
         //void what_you_want();
     }
@@ -45,9 +45,9 @@ public class LinkModule {
 
 //////////////////////////////////////////////////////
 
-    public void callUpdateMsg(String sender, String text) {
+    public void callUpdateMsg(String sender, String text, String time) {
         if(mListener != null) {
-            mListener.updateMsg(sender,text);
+            mListener.updateMsg(sender,text,time);
         }
     }
     public void callFetchRecord(String record) {
