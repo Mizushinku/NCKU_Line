@@ -4,11 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Tab1">
-
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:text="好友與群組頁面"
+        android:textSize="30dp"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<ExpandableListView-->
+            <!--android:id="@+id/lvExp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+        <!--</ExpandableListView>-->
+
+
+    <!--</LinearLayout>-->
 
 </FrameLayout>
