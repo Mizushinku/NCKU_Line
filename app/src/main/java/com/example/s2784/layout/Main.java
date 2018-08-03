@@ -210,15 +210,19 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 //        arrayList.add("March");
         int k=0;
         arrayList.add(Integer.toString(k++));
-        arrayList.add(Integer.toString(k));
-        for(int i = 0; i< listAdapter.getGroupCount_ForMain(); i++)
-        {
-            for(int j = 0; j< listAdapter.getChildrenCount_ForMain(i); j++)
-            {
-                arrayList.add((String) listAdapter.getChild(i,j));
-                arrayList.add(Integer.toString(k++));
-            }
-        }
+        arrayList.add(Integer.toString(k++));
+
+//        arrayList.add (group.get(0).getRoomName());
+//        arrayList.add (friend.get(0).getRoomName());
+
+//        for(int i = 0; i< listAdapter.getGroupCount_ForMain(); i++)
+//        {
+//            for(int j = 0; j< listAdapter.getChildrenCount_ForMain(i); j++)
+//            {
+//                arrayList.add((String) listAdapter.getChild(i,j));
+//                arrayList.add(Integer.toString(k++));
+//            }
+//        }
 
 
         adapter= new ListAdapter(arrayList);
