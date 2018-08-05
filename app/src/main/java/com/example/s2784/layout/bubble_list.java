@@ -59,27 +59,31 @@ public class bubble_list extends BaseAdapter {
         ImageView pic = null;
         int type = Bubble.getType();
         if (type == 0) {
-            rowView = inflater.inflate(R.layout.bubble_chat_left, null);
+            if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
+            } else {
+                rowView = inflater.inflate(R.layout.bubble_chat_left, null);
+                date = (TextView) rowView.findViewById(R.id.date_left);
+                date.setText(Bubble.getDate());
+            }
             name = (TextView) rowView.findViewById(R.id.userName);
             name.setText(Bubble.getName());
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
             pic.setImageBitmap(Bubble.getPic());
-            date = (TextView) rowView.findViewById(R.id.date_left);
-            date.setText(Bubble.getDate());
         } else {
-            rowView = inflater.inflate(R.layout.bubble_chat_right, null);
-            date = (TextView) rowView.findViewById(R.id.date_right);
-            date.setText(Bubble.getDate());
+            if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
+            } else {
+                rowView = inflater.inflate(R.layout.bubble_chat_right, null);
+                date = (TextView) rowView.findViewById(R.id.date_right);
+                date.setText(Bubble.getDate());
+            }
         }
 
         time = (TextView) rowView.findViewById(R.id.msg_time);
         time.setText(Bubble.getTime());
         txt_msg = (TextView) rowView.findViewById(R.id.txt_msg);
         txt_msg.setText(Bubble.getTxtMsg());
-
-        if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
-            date.setText("");
-        }
 
         return rowView;
     }
