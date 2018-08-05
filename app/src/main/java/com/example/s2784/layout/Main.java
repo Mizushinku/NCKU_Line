@@ -618,10 +618,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         public void Initialize_re(RoomInfo roomInfo) {
             if(roomInfo.getType().equals("F")) {
                 friend.add(roomInfo);
+                arrayList.add(roomInfo.getStudentID());
                 listHash.put(listDataHeader.get(1),friend);
             } else if(roomInfo.getType().equals("G")) {
                 roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 group.add(roomInfo);
+                arrayList.add(roomInfo.getRoomName());
                 listHash.put(listDataHeader.get(0),group);
             }
         }
