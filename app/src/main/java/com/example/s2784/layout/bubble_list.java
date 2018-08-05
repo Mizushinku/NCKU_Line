@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * ... 2018/6/30
  */
 
-public class bubble_list  extends BaseAdapter {
+public class bubble_list extends BaseAdapter {
 
     private Context context;
     private ArrayList<bubble> msgList;
@@ -28,7 +28,7 @@ public class bubble_list  extends BaseAdapter {
     public bubble_list(Context context, ArrayList<bubble> msgList) {
         this.context = context;
         this.msgList = msgList;
-        inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -50,22 +50,26 @@ public class bubble_list  extends BaseAdapter {
 
     @Override
     public View getView(final int position, View rowView, ViewGroup parent) {
-        final bubble Bubble = (bubble)getItem(position);
+        final bubble Bubble = (bubble) getItem(position);
         final RoomInfo roomInfo;
         TextView txt_msg = null;
         TextView name = null;
         TextView time = null;
+        TextView date = null;
         ImageView pic = null;
         int type = Bubble.getType();
-        if(type == 0){
+        if (type == 0) {
             rowView = inflater.inflate(R.layout.bubble_chat_left, null);
             name = (TextView) rowView.findViewById(R.id.userName);
             name.setText(Bubble.getName());
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
             pic.setImageBitmap(Bubble.getPic());
-        }
-        else{
+            date = (TextView) rowView.findViewById(R.id.date_left);
+            date.setText(Bubble.getDate());
+        } else {
             rowView = inflater.inflate(R.layout.bubble_chat_right, null);
+            date = (TextView) rowView.findViewById(R.id.date_right);
+            date.setText(Bubble.getDate());
         }
 
         time = (TextView) rowView.findViewById(R.id.msg_time);
@@ -73,6 +77,9 @@ public class bubble_list  extends BaseAdapter {
         txt_msg = (TextView) rowView.findViewById(R.id.txt_msg);
         txt_msg.setText(Bubble.getTxtMsg());
 
+        if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+            date.setText("");
+        }
 
         return rowView;
     }
@@ -83,14 +90,14 @@ public class bubble_list  extends BaseAdapter {
         int lastVisiblePosition = lv.getLastVisiblePosition();
 
         //要更新的行數處在手機畫面中才更新(不再畫面中的item,隨著listView捲動會自動更新)
-        if(position >= firstVisiblePosition && position <= lastVisiblePosition) {
+        if (position >= firstVisiblePosition && position <= lastVisiblePosition) {
             View v = lv.getChildAt(position - firstVisiblePosition);
-            if(v == null) {
+            if (v == null) {
                 return;
             }
 
             //更新
-            this.getView(position,v,lv);
+            this.getView(position, v, lv);
         }
     }
 }
