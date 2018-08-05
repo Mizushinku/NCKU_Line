@@ -10,15 +10,15 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,19 +31,15 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.JSONObject;
 
 //for searchview
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 
 import com.example.s2784.layout.databinding.ActivityMainBinding;
@@ -58,6 +54,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
     ActivityMainBinding activityMainBinding;
     ListAdapter adapter;
     public static List<String> arrayList= new ArrayList<>();
+    private ListView listView_search;
 
     /*for search view*/
 
@@ -116,7 +113,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
         //Add Friedn Button
         Button btn_addFrd = findViewById(R.id.btn_addFrd);
-        btn_addFrd.setOnClickListener(new View.OnClickListener() {
+        btn_addFrd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent_addFrd = new Intent(Main.this,AddFriend.class);
@@ -126,7 +123,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
         //Join Group Button
         Button btn_joinGroup = findViewById(R.id.btn_joinGroup);
-        btn_joinGroup.setOnClickListener(new View.OnClickListener() {
+        btn_joinGroup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent_joinGroup = new Intent(Main.this,JoinGroup.class);
@@ -135,7 +132,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         });
         //Build Group Button
         Button btn_buildGroup = findViewById(R.id.btn_buildGroup);
-        btn_buildGroup.setOnClickListener(new View.OnClickListener() {
+        btn_buildGroup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 friendList = listHash.get(listDataHeader.get(1));
@@ -147,7 +144,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
         //Msg Bulletin Button
         Button btn_msgBulletin = findViewById(R.id.btn_msgBulletin);
-        btn_msgBulletin.setOnClickListener(new View.OnClickListener() {
+        btn_msgBulletin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent_msgBulletin = new Intent(Main.this,MsgBulletin.class);
@@ -157,7 +154,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
         //Logout Button
         Button btn_logOut = findViewById(R.id.btn_logOut);
-        btn_logOut.setOnClickListener(new View.OnClickListener() {
+        btn_logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Leave();
@@ -205,25 +202,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         });
 
         /*for search view*/
+
 //        arrayList.add("January");  //for search view test
 //        arrayList.add("February");
-//        arrayList.add("March");
-        int k=0;
-        arrayList.add(Integer.toString(k++));
-        arrayList.add(Integer.toString(k++));
-
-//        arrayList.add (group.get(0).getRoomName());
-//        arrayList.add (friend.get(0).getRoomName());
-
-//        for(int i = 0; i< listAdapter.getGroupCount_ForMain(); i++)
-//        {
-//            for(int j = 0; j< listAdapter.getChildrenCount_ForMain(i); j++)
-//            {
-//                arrayList.add((String) listAdapter.getChild(i,j));
-//                arrayList.add(Integer.toString(k++));
-//            }
-//        }
-
 
         adapter= new ListAdapter(arrayList);
         activityMainBinding.listView.setAdapter(adapter);
@@ -247,6 +228,22 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 adapter.getFilter().filter(newText);
 
                 return false;
+            }
+        });
+
+        //click to chatroom
+        listView_search = (ListView)findViewById(R.id.list_view);
+        adapter = new ListAdapter(this,listDataHeader,listHash);
+        //listView_search.setAdapter(adapter);
+        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RoomInfo roomInfo = (RoomInfo) adapter.getChild(position);
+                String code = roomInfo.getCode();
+                Intent chat = new Intent(Main.this,Chatroom.class);
+                chat.putExtra("code", code);
+                chat.putExtra("id",userID);
+                startActivity(chat);
             }
         });
 

@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import com.example.s2784.layout.databinding.RowItemBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,9 +25,23 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     ValueFilter valueFilter;
     private LayoutInflater inflater;
 
+    private Context context;
+    private static List<String> listDataHeader;
+    private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
+
+    public ListAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
+        this.context = context;
+        this.listDataHeader = listDataHeader;
+        this.listHashMap = listHashMap;
+    }
+
     public ListAdapter(List<String> cancel_type) {
         mData=cancel_type;
         mStringFilterList = cancel_type;
+    }
+
+    public Object getChild(int i) {
+        return listDataHeader.get(i);
     }
 
 
