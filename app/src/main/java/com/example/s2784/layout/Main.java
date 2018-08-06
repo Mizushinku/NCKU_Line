@@ -492,34 +492,44 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                 roomInfo.setType(init_info[3]);
                                 roomInfoList.add(roomInfo);
                                 if(init_info[3].equals("F")){
-                                    GetFriendIcon(init_info[2]);
+                                    GetFriendIcon("Init", init_info[2]);
                                 }else if(init_info[3].equals("G")){
                                     Initialize_re(roomInfo);
                                 }
                             }
                             break;
                         case "AddFriend" :
-                            if(addFriend_flag == 0) {
-                                addFriend_info = (new String(message.getPayload())).split("/");
-                                if(addFriend_info[0].equals("true")) {
-                                    addFriend_flag = 1;
-                                    sdtDta_flag = true;
-                                }
-                            } else {
-                                byte[] bit = message.getPayload();
-                                Bitmap b = BitmapFactory.decodeByteArray(bit,0,bit.length);
-
-                                if(sdtDta_flag) {
-                                    sdtDta_flag = false;
-                                    Intent studentData = new Intent(Main.this, StudentData.class);
-                                    studentData.putExtra("name", addFriend_info[1]);
-                                    studentData.putExtra("ID", addFriend_info[2]);
-                                    studentData.putExtra("image", bit);
-                                    startActivity(studentData);
-                                }
-                                AddFriend_re(addFriend_info[3],addFriend_info[2],addFriend_info[1],b);
-                                addFriend_flag = 0;
+                            addFriend_info = new String(message.getPayload()).split("/");
+                            if(addFriend_info[0].equals("true")){
+                                RoomInfo roomInfo = new RoomInfo();
+                                roomInfo.setFriendName(addFriend_info[1]);
+                                roomInfo.setStudentID(addFriend_info[2]);
+                                roomInfo.setCode(addFriend_info[3]);
+                                roomInfo.setType("F");
+                                roomInfoList.add(roomInfo);
+                                GetFriendIcon("Add",addFriend_info[2]);
                             }
+//                            if(addFriend_flag == 0) {
+//                                addFriend_info = (new String(message.getPayload())).split("/");
+//                                if(addFriend_info[0].equals("true")) {
+//                                    addFriend_flag = 1;
+//                                    sdtDta_flag = true;
+//                                }
+//                            } else {
+//                                byte[] bit = message.getPayload();
+//                                Bitmap b = BitmapFactory.decodeByteArray(bit,0,bit.length);
+//
+//                                if(sdtDta_flag) {
+//                                    sdtDta_flag = false;
+//                                    Intent studentData = new Intent(Main.this, StudentData.class);
+//                                    studentData.putExtra("name", addFriend_info[1]);
+//                                    studentData.putExtra("ID", addFriend_info[2]);
+//                                    studentData.putExtra("image", bit);
+//                                    startActivity(studentData);
+//                                }
+//                                AddFriend_re(addFriend_info[3],addFriend_info[2],addFriend_info[1],b);
+//                                addFriend_flag = 0;
+//                            }
                             break;
                         case "AddGroup" :
                             String[] AG_msg = (new String(message.getPayload())).split("/");
@@ -557,15 +567,36 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             break;
                         default:
                             if(idf[1].contains("FriendIcon")){
-                                String[] topicSplitLine = idf[1].split(":");
-                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
-                                friendInfoMap.put(topicSplitLine[1],b);
-                                for(int i = 0 ; i < roomInfoList.size() ; i++){
-                                    if(roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])){
-                                        roomInfoList.get(i).setIcon(b);
-                                        Initialize_re(roomInfoList.get(i));
-                                        break;
+                                if(idf[1].contains("Init")) {
+                                    String[] topicSplitLine = idf[1].split(":");
+                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                    friendInfoMap.put(topicSplitLine[1], b);
+                                    for (int i = 0; i < roomInfoList.size(); i++) {
+                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                            roomInfoList.get(i).setIcon(b);
+                                            Initialize_re(roomInfoList.get(i));
+                                            break;
+                                        }
                                     }
+                                }else if(idf[1].contains("Add")){
+                                    RoomInfo roomInfo = null;
+                                    String[] topicSplitLine = idf[1].split(":");
+                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                    friendInfoMap.put(topicSplitLine[1], b);
+                                    for (int i = 0; i < roomInfoList.size(); i++) {
+                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                            roomInfoList.get(i).setIcon(b);
+                                            AddFriend_re(roomInfoList.get(i));
+                                            roomInfo = roomInfoList.get(i);
+                                            break;
+                                        }
+                                    }
+                                    Intent studentData = new Intent(Main.this, StudentData.class);
+                                    studentData.putExtra("name", roomInfo.getFriendName());
+                                    studentData.putExtra("ID", roomInfo.getStudentID());
+                                    studentData.putExtra("image", b);
+                                    startActivity(studentData);
+
                                 }
                             }
                     }
@@ -636,12 +667,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         }
 
-        public void AddFriend_re(String code, String ID, String roomName, Bitmap b) {
-            RoomInfo roomInfo = new RoomInfo();
-            roomInfo.setCode(code);
-            roomInfo.setStudentID(ID);
-            roomInfo.setRoomName(roomName);
-            roomInfo.setIcon(b);
+        public void AddFriend_re(RoomInfo roomInfo) {
+//            RoomInfo roomInfo = new RoomInfo();
+//            roomInfo.setCode(code);
+//            roomInfo.setStudentID(ID);
+//            roomInfo.setRoomName(roomName);
+//            roomInfo.setIcon(b);
             friend.add(roomInfo);
             listHash.put(listDataHeader.get(1),friend);
         }
@@ -729,9 +760,9 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         }
 
-        public void GetFriendIcon(String friendID){
+        public void GetFriendIcon(String action, String friendID){
             String topic = "IDF/FriendIcon/" + user;
-            String MSG = friendID;
+            String MSG = action + ":" + friendID;
             try {
                 client.publish(topic,MSG.getBytes(),2,false);
             }catch (MqttException e) {

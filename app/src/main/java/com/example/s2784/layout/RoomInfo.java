@@ -13,6 +13,7 @@ public class RoomInfo implements Serializable{
     private String roomName;
     private String code;
     private String StudentID;
+    private String friendName;
     private String type;
     private Bitmap icon;
 
@@ -56,4 +57,8 @@ public class RoomInfo implements Serializable{
     public String getType() { return type; }
 
     public void setType(String type) { this.type = type; }
+
+    public String getFriendName() { return friendName; }
+
+    public void setFriendName(String friendName) { this.friendName = friendName; }
 }
