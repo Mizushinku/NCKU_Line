@@ -20,6 +20,9 @@
             android:layout_height="60dp"
             android:background="@color/ncku_red"
             android:gravity="center_vertical"
+            android:theme="@style/CustomToolbar"
+            app:popupTheme="@style/CustomPopupStytle"
+
             >
 
             <TextView
@@ -39,8 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@color/ncku_red"
             android:minHeight="?attr/actionBarSize"
-            app:tabTextColor="@color/white"
-            app:tabSelectedTextColor="@color/yellow"
+
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorColor="@color/navy"
 ></android.support.design.widget.TabLayout>
