@@ -503,6 +503,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             if(addFriend_info[0].equals("true")){
                                 RoomInfo roomInfo = new RoomInfo();
                                 roomInfo.setFriendName(addFriend_info[1]);
+                                roomInfo.setRoomName(addFriend_info[1]);
                                 roomInfo.setStudentID(addFriend_info[2]);
                                 roomInfo.setCode(addFriend_info[3]);
                                 roomInfo.setType("F");
@@ -575,12 +576,14 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
                                             roomInfoList.get(i).setIcon(b);
                                             Initialize_re(roomInfoList.get(i));
+                                            roomInfoList.remove(i);
                                             break;
                                         }
                                     }
                                 }else if(idf[1].contains("Add")){
                                     RoomInfo roomInfo = null;
                                     String[] topicSplitLine = idf[1].split(":");
+                                    Log.d("Create", topicSplitLine[1]);
                                     Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
                                     friendInfoMap.put(topicSplitLine[1], b);
                                     for (int i = 0; i < roomInfoList.size(); i++) {
@@ -588,6 +591,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                             roomInfoList.get(i).setIcon(b);
                                             AddFriend_re(roomInfoList.get(i));
                                             roomInfo = roomInfoList.get(i);
+                                            roomInfoList.remove(i);
                                             break;
                                         }
                                     }
@@ -596,7 +600,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                     studentData.putExtra("ID", roomInfo.getStudentID());
                                     studentData.putExtra("image", b);
                                     startActivity(studentData);
-
                                 }
                             }
                     }
@@ -673,6 +676,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 //            roomInfo.setStudentID(ID);
 //            roomInfo.setRoomName(roomName);
 //            roomInfo.setIcon(b);
+            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             friend.add(roomInfo);
             listHash.put(listDataHeader.get(1),friend);
         }
