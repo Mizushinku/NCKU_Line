@@ -205,8 +205,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
 //        arrayList.add("January");  //for search view test
 //        arrayList.add("February");
-
-        adapter= new ListAdapter(arrayList);
+        adapter = new ListAdapter(arrayList,this,listDataHeader,listHash);
+        //adapter= new ListAdapter(arrayList);
         activityMainBinding.listView.setAdapter(adapter);
 
         activityMainBinding.search.setActivated(true);
@@ -214,6 +214,22 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         activityMainBinding.search.onActionViewExpanded();
         activityMainBinding.search.setIconified(false);
         activityMainBinding.search.clearFocus();
+
+        //click to chatroom
+        listView_search = (ListView)findViewById(R.id.list_view);
+        //listView_search.setAdapter(adapter);
+        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RoomInfo roomInfo = (RoomInfo) adapter.getChild(position);
+                String code = roomInfo.getCode();
+                Intent chat = new Intent(Main.this,Chatroom.class);
+                chat.putExtra("code", code);
+                chat.putExtra("id",userID);
+                startActivity(chat);
+            }
+        });
+        //click to chatroom
 
 
         activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -231,21 +247,6 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         });
 
-        //click to chatroom
-        listView_search = (ListView)findViewById(R.id.list_view);
-        adapter = new ListAdapter(this,listDataHeader,listHash);
-        //listView_search.setAdapter(adapter);
-        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) adapter.getChild(position);
-                String code = roomInfo.getCode();
-                Intent chat = new Intent(Main.this,Chatroom.class);
-                chat.putExtra("code", code);
-                chat.putExtra("id",userID);
-                startActivity(chat);
-            }
-        });
 
         /*for search view*/
 

@@ -29,19 +29,22 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     private static List<String> listDataHeader;
     private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
 
-    public ListAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
+    public ListAdapter(List<String> cancel_type,Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
+        mData=cancel_type;
+        mStringFilterList = cancel_type;
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
     }
 
-    public ListAdapter(List<String> cancel_type) {
-        mData=cancel_type;
-        mStringFilterList = cancel_type;
-    }
+//    public ListAdapter(List<String> cancel_type) {
+//        mData=cancel_type;
+//        mStringFilterList = cancel_type;
+//    }
 
     public Object getChild(int i) {
-        return listDataHeader.get(i);
+        //return listDataHeader.get(i);
+        return listHashMap.get(i);
     }
 
 
