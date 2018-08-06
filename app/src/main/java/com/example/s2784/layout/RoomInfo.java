@@ -16,7 +16,7 @@ public class RoomInfo implements Serializable{
     private String friendName;
     private String type;
     private Bitmap icon;
-
+    private byte[] icon_data;
 
 
     public RoomInfo() {}
@@ -61,4 +61,8 @@ public class RoomInfo implements Serializable{
     public String getFriendName() { return friendName; }
 
     public void setFriendName(String friendName) { this.friendName = friendName; }
+
+    public byte[] getIcon_data() { return icon_data; }
+
+    public void setIcon_data(byte[] icon_data) { this.icon_data = icon_data; }
 }

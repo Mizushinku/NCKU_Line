@@ -580,8 +580,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                             break;
                                         }
                                     }
-                                }else if(idf[1].contains("Add")){
-                                    RoomInfo roomInfo = null;
+                                }else if(idf[1].contains("Add")){ ;
                                     String[] topicSplitLine = idf[1].split(":");
                                     Log.d("Create", topicSplitLine[1]);
                                     Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
@@ -589,17 +588,13 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
                                             roomInfoList.get(i).setIcon(b);
+                                            roomInfoList.get(i).setIcon_data(message.getPayload());
                                             AddFriend_re(roomInfoList.get(i));
-                                            roomInfo = roomInfoList.get(i);
                                             roomInfoList.remove(i);
                                             break;
                                         }
                                     }
-                                    Intent studentData = new Intent(Main.this, StudentData.class);
-                                    studentData.putExtra("name", roomInfo.getFriendName());
-                                    studentData.putExtra("ID", roomInfo.getStudentID());
-                                    studentData.putExtra("image", b);
-                                    startActivity(studentData);
+
                                 }
                             }
                     }
@@ -676,9 +671,14 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 //            roomInfo.setStudentID(ID);
 //            roomInfo.setRoomName(roomName);
 //            roomInfo.setIcon(b);
-            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
+//            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             friend.add(roomInfo);
             listHash.put(listDataHeader.get(1),friend);
+            Intent studentData = new Intent(Main.this, StudentData.class);
+            studentData.putExtra("name", roomInfo.getFriendName());
+            studentData.putExtra("ID", roomInfo.getStudentID());
+            studentData.putExtra("image", roomInfo.getIcon_data());
+            startActivity(studentData);
         }
 
         public void AddGroup(String groupName, String member_str) {
