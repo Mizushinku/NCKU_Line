@@ -152,7 +152,8 @@
     <color name="mediumblue">#0000CD</color><!--中藍色 -->
     <color name="darkblue">#00008B</color><!--暗藍色 -->
     <color name="ncku_red">#AE282D</color><!--成大紅-->
-    <color name="ncku_red_pressed">#F18185</color><!--成大紅-->
+    <color name="ncku_red_pressed">#F18185</color><!--成大紅(按壓)-->
+    <color name="tabs_pic_inactive">#a76c6e</color><!--成大紅(按壓)-->
 
 =======
 >>>>>>> c68e5ee7afe4c262bdc315204f85a3b1287bc471
