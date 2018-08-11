@@ -145,82 +145,8 @@ public class LogIn extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }}
     private boolean canMakeSmores() {
-        return(Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1);
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
-
-    public void sendBarcode_returnWebPage(String code) {
-        // 取得網頁送過來的資料
-        Intent tIntent = this.getIntent();
-
-        // 取得 URL 的 URI
-        Uri myURI = tIntent.getData();
-
-        // 取得呼叫網頁網址
-        final String call_url = myURI.getQueryParameter("callurl");
-
-        // 設定資料庫網址及條碼
-        final String sendcode_url = myURI.getQueryParameter("returnurl") + "&code=" + code;
-
-        // ---- 傳送條碼至資料庫 ----- //
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL(sendcode_url);
-                    HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                    connection.setReadTimeout(0);
-                    connection.setConnectTimeout(0);
-                    connection.setRequestMethod("GET");
-                    int responseCode = connection.getResponseCode();
-
-                    if (responseCode == 200) {
-                        Looper.prepare();
-                        Toast.makeText(LogIn.this,"條碼傳送成功",Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    } else {
-                        Looper.prepare();
-                        Toast.makeText(LogIn.this,"條碼傳送失敗",Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    }
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-
-
-        // delay 200 milisecond for finishing sending barcode
-        try{
-
-            Thread.sleep(200);
-        } catch(InterruptedException e){
-            e.printStackTrace();
-        }
-
-        // ---- 返回呼叫網頁 ---- //
-        Intent intent_main = new Intent(Intent.ACTION_VIEW);
-
-        // 指定使用 chrome 開啟
-        intent_main.setPackage("com.android.chrome");
-        intent_main.setData(Uri.parse(call_url));
-
-        // 放入 EXTRA_APPLICATION_ID ，以重複使用同一分頁
-        intent_main.putExtra(Browser.EXTRA_APPLICATION_ID, "com.android.chrome");
-
-        // 開啟網頁
-        try{
-            startActivity(intent_main);
-        }catch (ActivityNotFoundException ex){
-            // 手機沒有 chrome 的時候，改用 default browser 開啟 => package 設為 null
-            intent_main.setPackage(null);
-            startActivity(intent_main);
-            Toast.makeText(LogIn.this,"建議下載 chrome，可避免產生多餘分頁",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -240,17 +166,6 @@ public class LogIn extends AppCompatActivity {
 //                studentDataIntent.putExtra("studentID",result.getContents());
 //                startActivity(studentDataIntent);
 
-
-                if (this.getIntent().getDataString() != null) {
-                    //this.getIntent().getDataString() : usccbarcodescanner://?callurl=http://mmm.lifeacademy.org/erpweb/testbarcodeapp&returnurl=http://mmm.lifeacademy.org/erpweb/Scancode/PutScanCode?username=
-
-                    sendBarcode_returnWebPage(result.getContents());
-                    this.finish();
-                }
-                else {
-                    //Toast.makeText(this, "請從網頁開啟本程式", Toast.LENGTH_LONG).show();
-                    this.finish();
-                }
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment
@@ -318,13 +233,14 @@ public class LogIn extends AppCompatActivity {
                             String msg[] = new String(message.getPayload()).split(",");
                             if(msg[0].equals("True")){
                                 // Go Main page
+                                Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
                                 Intent mainIntent = new Intent(LogIn.this,Main.class);
                                 mainIntent.putExtra("userID",msg[1]);
                                 startActivity(mainIntent);
                                 StartInterface.addData("Login",msg[1]);
                                 finish();
                             }else if(msg[0].equals("False")){
-                                callCamera();
+                                Toast.makeText(LogIn.this,"登入失敗", Toast.LENGTH_SHORT).show();
                             }
                             break;
                     }
