@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class ListAdapter extends BaseAdapter implements Filterable {
 
-    List<String> mData;
-    List<String> mStringFilterList;
+    List<RoomInfo> mData;
+    List<RoomInfo> mStringFilterList;
     ValueFilter valueFilter;
     private LayoutInflater inflater;
 
@@ -29,7 +29,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     private static List<String> listDataHeader;
     private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
 
-    public ListAdapter(List<String> cancel_type,Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
+    public ListAdapter(List<RoomInfo> cancel_type,Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
         mData=cancel_type;
         mStringFilterList = cancel_type;
         this.context = context;
@@ -44,7 +44,8 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
     public Object getChild(int i) {
         //return listDataHeader.get(i);
-        return listHashMap.get(i);
+        return Main.arrayList.get(i);
+        //return listHashMap.get(i);
     }
 
 
@@ -54,7 +55,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public String getItem(int position) {
+    public Object getItem(int position) {
         return mData.get(position);
     }
 
@@ -71,7 +72,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         RowItemBinding rowItemBinding = DataBindingUtil.inflate(inflater, R.layout.row_item, parent, false);
-        rowItemBinding.stringName.setText(mData.get(position));
+        rowItemBinding.stringName.setText(mData.get(position).toString());
 
 
         return rowItemBinding.getRoot();
@@ -91,9 +92,9 @@ public class ListAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
 
             if (constraint != null && constraint.length() > 0) {
-                List<String> filterList = new ArrayList<>();
+                List<RoomInfo> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
-                    if ((mStringFilterList.get(i).toUpperCase()).contains(constraint.toString().toUpperCase())) {
+                    if ((mStringFilterList.get(i).toString().toUpperCase()).contains(constraint.toString().toUpperCase())) {
                         filterList.add(mStringFilterList.get(i));
                     }
                 }
@@ -110,7 +111,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
-            mData = (List<String>) results.values;
+            mData = (List<RoomInfo>) results.values;
             notifyDataSetChanged();
         }
 

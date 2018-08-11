@@ -53,7 +53,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
 
     ActivityMainBinding activityMainBinding;
     ListAdapter adapter;
-    public static List<String> arrayList= new ArrayList<>();
+    public static List<RoomInfo> arrayList= new ArrayList<>();
     private ListView listView_search;
 
     /*for search view*/
@@ -645,12 +645,12 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         public void Initialize_re(RoomInfo roomInfo) {
             if(roomInfo.getType().equals("F")) {
                 friend.add(roomInfo);
-                arrayList.add(roomInfo.getStudentID());
+                arrayList.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
             } else if(roomInfo.getType().equals("G")) {
                 roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 group.add(roomInfo);
-                arrayList.add(roomInfo.getRoomName());
+                arrayList.add(roomInfo);
                 listHash.put(listDataHeader.get(0),group);
             }
         }
