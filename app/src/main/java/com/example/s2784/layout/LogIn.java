@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Looper;
 import android.provider.Browser;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,12 +25,23 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LogIn extends AppCompatActivity {
     private final static int CAMERA_RESULT = 0;
+    private Mqtt_Client mqtt;
     //SQLite
     //public static boolean LoginOrNot = false;
     @Override
@@ -65,7 +77,17 @@ public class LogIn extends AppCompatActivity {
 //        }
 //        StartInterface.db.close();
 
+        mqtt = new Mqtt_Client(this.getApplicationContext(), Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+        mqtt.Connect();
+
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mqtt.disconnect();
+    }
+
     public void callCamera(){
         String[] permissionNeed = {
                 Manifest.permission.CAMERA,
@@ -209,21 +231,15 @@ public class LogIn extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
 
-
-                // Go Main page
-                Intent mainIntent = new Intent(this,Main.class);
-                mainIntent.putExtra("userID",result.getContents());
-                startActivity(mainIntent);
+                // send to server check id exists or not
+                Toast.makeText(this, "學號:" + result.getContents(), Toast.LENGTH_SHORT).show();
+                mqtt.Login(result.getContents());
 
                 // Go student Data page
 //                Intent studentDataIntent = new Intent(LogIn.this,StudentData.class);
 //                studentDataIntent.putExtra("studentID",result.getContents());
 //                startActivity(studentDataIntent);
 
-
-                StartInterface.addData("Login",result.getContents());
-
-                finish();
 
                 if (this.getIntent().getDataString() != null) {
                     //this.getIntent().getDataString() : usccbarcodescanner://?callurl=http://mmm.lifeacademy.org/erpweb/testbarcodeapp&returnurl=http://mmm.lifeacademy.org/erpweb/Scancode/PutScanCode?username=
@@ -242,4 +258,117 @@ public class LogIn extends AppCompatActivity {
         }   
 
     }
+
+    public class Mqtt_Client{
+        private static final String MQTT_HOST = "tcp://140.116.82.52:1883";
+        private MqttAndroidClient client;
+        private MqttConnectOptions options;
+
+        private Context context;
+        private String user;
+
+        public Mqtt_Client(Context context, String user) {
+            this.context = context;
+            this.user = user;
+        }
+
+        public void Connect(){
+            String clientId = MqttClient.generateClientId();
+            client = new MqttAndroidClient(context, MQTT_HOST, clientId);
+
+            options = new MqttConnectOptions();
+            options.setCleanSession(true);
+            options.setAutomaticReconnect(true);
+
+            try {
+                IMqttToken token = client.connect(options);
+                token.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        // We are connected
+                        mqttSub();
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        // Something went wrong e.g. connection timeout or firewall problems
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+            client.setCallback(new MqttCallbackExtended() {
+                @Override
+                public void connectComplete(boolean reconnect, String serverURI) {
+                    if(reconnect){
+                        mqttSub();
+                    }
+                }
+
+                @Override
+                public void connectionLost(Throwable cause) {
+
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                    String[] idf = topic.split("/");
+                    switch (idf[1]){
+                        case "Login":
+                            String msg[] = new String(message.getPayload()).split(",");
+                            if(msg[0].equals("True")){
+                                // Go Main page
+                                Intent mainIntent = new Intent(LogIn.this,Main.class);
+                                mainIntent.putExtra("userID",msg[1]);
+                                startActivity(mainIntent);
+                                StartInterface.addData("Login",msg[1]);
+                                finish();
+                            }else if(msg[0].equals("False")){
+                                callCamera();
+                            }
+                            break;
+                    }
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                }
+            });
+        }
+        public void disconnect() {
+            if(client != null && client.isConnected()) {
+                try {
+                    client.unsubscribe("IDF/Login/" + user + "/Re");
+                    client.disconnect();
+                    client.unregisterResources();
+                    client = null;
+                    Log.d("TAG","Try Disconnect");
+                } catch (MqttException e) {
+                    Log.d("TAG","Disconnect Error");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void mqttSub() {
+            try {
+                String topic = "IDF/Login/" + user + "/Re";
+                client.subscribe(topic,2);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void Login(String id){
+            String topic = "IDF/Login/" + user;
+            String MSG = id;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
