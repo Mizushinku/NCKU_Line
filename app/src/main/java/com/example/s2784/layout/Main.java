@@ -273,7 +273,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         builder.setMessage("是否要登出?")
                 .setPositiveButton("否", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
-
+                        dialog.cancel();
                     }
                 })
                 .setNegativeButton("是", new DialogInterface.OnClickListener() {

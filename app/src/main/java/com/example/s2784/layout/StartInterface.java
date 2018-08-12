@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -97,8 +98,8 @@ public class StartInterface extends AppCompatActivity {
     }
 
     public static void logout() {
-        db.delete(tb_name,null,null);
-        db.close();
+        db.delete(tb_name, null, null);
+//        db.close();
         LoginOrNot = false;
     }
 }
