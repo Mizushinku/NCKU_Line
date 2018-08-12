@@ -35,13 +35,14 @@ public class AddFriend extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
-        ImageButton btn_scan  = findViewById(R.id.btn_scan);
-        btn_scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callCamera();
-            }
-        });
+//        ImageButton btn_scan  = findViewById(R.id.btn_scan);
+//        btn_scan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                callCamera();
+//            }
+//        });
+        callCamera();
     }
     public void callCamera(){
         String[] permissionNeed = {

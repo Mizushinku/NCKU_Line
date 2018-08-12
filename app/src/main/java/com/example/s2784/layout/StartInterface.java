@@ -80,7 +80,7 @@ public class StartInterface extends AppCompatActivity {
                     String user = cc.getString(0);
                     //Toast.makeText(StartInterface.this,"user = " + user, Toast.LENGTH_LONG).show();
 
-                    Intent mainIntent = new Intent(StartInterface.this, Main.class);
+                    Intent mainIntent = new Intent(StartInterface.this, Tabs.class);
                     mainIntent.putExtra("userID",user);
                     StartInterface.this.startActivity(mainIntent);
                     StartInterface.this.finish();

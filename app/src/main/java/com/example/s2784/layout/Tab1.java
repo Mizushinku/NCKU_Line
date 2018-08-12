@@ -9,23 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Tab1.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Tab1#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Tab1 extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+//        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
+//        onCreate()：Fragment被創建時調用。
+//        onCreateView()：創建Fragment的佈局。
+//        onActivityCreated()：當Activity完成onCreate()時調用。
+//        onStart()：當Fragment可見時調用。
+//        onResume()：當Fragment可見且可交互時調用。
+//        onPause()：當Fragment不可交互但可見時調用。
+//        onStop()：當Fragment不可見時調用。
+//        onDestroyView()：當Fragment的UI從視圖結構中移除時調用。
+//        onDestroy()：銷毀Fragment時調用。
+//        onDetach()：當Fragment和Activity解除關聯時調用
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class Tab1 extends Fragment {
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -33,21 +30,12 @@ public class Tab1 extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab1.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Tab1 newInstance(String param1, String param2) {
+
+//目前用不到
+    public static Tab1 newInstance(int index) {
         Tab1 tab1 = new Tab1();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt("index",index);
         tab1.setArguments(args);
         return tab1;
     }
@@ -55,10 +43,7 @@ public class Tab1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
