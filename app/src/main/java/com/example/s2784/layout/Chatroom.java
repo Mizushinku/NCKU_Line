@@ -51,7 +51,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Main.mqtt.setProcessingCode("");
+        Tabs.mqtt.setProcessingCode("");
     }
 
     @Override
@@ -83,10 +83,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         LinkModule.getInstance().setListener(this);
 
         //設定正在執行的chat room
-        Main.mqtt.setProcessingCode(code);
+        Tabs.mqtt.setProcessingCode(code);
 
         //拿到聊天紀錄
-        Main.mqtt.GetRecord(code);
+        Tabs.mqtt.GetRecord(code);
 
 
         Bubble_list = new bubble_list(Chatroom.this,Bubble);
@@ -100,7 +100,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             if(!et.getText().toString().equals("")) {
                 //發送聊天紀錄
                 String msg = code + "\t" + id + "\t" + et.getText().toString();
-                Main.mqtt.SendMessage(msg);
+                Tabs.mqtt.SendMessage(msg);
             }
             et.setText("");
         }
@@ -112,7 +112,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         if(sender.equals(id)) {
             Bubble.add(new bubble(1,text,sender,time));
         }else {
-            Bubble.add(new bubble(0,text,sender,time,Main.mqtt.MapBitmap(sender)));
+            Bubble.add(new bubble(0,text,sender,time,Tabs.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());

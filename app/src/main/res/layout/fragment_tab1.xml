@@ -6,19 +6,19 @@
     tools:context=".Tab1"
     android:background="@color/green">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!--<ExpandableListView-->
-            <!--android:id="@+id/lvExp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
+        <ExpandableListView
+            android:id="@+id/lvExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <!--</ExpandableListView>-->
+        </ExpandableListView>
 
 
-    <!--</LinearLayout>-->
+    </LinearLayout>
 
 </LinearLayout>

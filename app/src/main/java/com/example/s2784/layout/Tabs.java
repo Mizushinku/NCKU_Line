@@ -2,10 +2,14 @@ package com.example.s2784.layout;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Looper;
@@ -27,10 +31,22 @@ import android.widget.Toolbar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener,Tab4.OnFragmentInteractionListener{
     private TabLayout tabLayout;
@@ -42,11 +58,27 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_JoinGroup = 4;
     private final static int CAMERA_RESULT = 0;
 
+    private TestViewModel testViewModel;
     public static ArrayList<RoomInfo> friendList = null;
+
+    public static String userID;
+    public static Mqtt_Client mqtt;
+    private Context mCtn;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabs);
+
+
+        testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
+
+        Intent intentFromUpload = getIntent();
+        userID = intentFromUpload.getStringExtra("userID");
+        mCtn = this.getApplicationContext();
+        mqtt = new Mqtt_Client(this.getApplicationContext(),userID);
+        mqtt.Connect();
 
         //For toolbar
 
@@ -239,4 +271,398 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         AlertDialog about_dialog = builder.create();
         about_dialog.show();
     }
+
+    public String getUserID(){
+        return userID;
+    }
+
+    public class Mqtt_Client {
+        private static final String MQTT_HOST = "tcp://140.116.82.52:1883";
+        private MqttAndroidClient client;
+        private MqttConnectOptions options;
+
+        private Context context;
+        private String user;
+
+        private int init_flag = 0;
+        private String[] init_info = null;
+
+        private int addFriend_flag = 0;
+        private String[] addFriend_info = null;
+        private boolean sdtDta_flag = false;
+
+        private int deleteFriendPos = -1;
+        private int withdrawGroupPos = -1;
+
+        private String processingCode = "";
+        private ArrayList<RoomInfo> roomInfoList = null; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
+        private HashMap<String,Bitmap> friendInfoMap = null;
+
+        public Mqtt_Client(Context context, String user) {
+            this.context = context;
+            this.user = user;
+            roomInfoList = new ArrayList<RoomInfo>();
+            friendInfoMap = new HashMap<String, Bitmap>();
+        }
+
+
+
+        public void Connect() {
+            String clientId = MqttClient.generateClientId();
+            client = new MqttAndroidClient(context, MQTT_HOST, clientId);
+
+            options = new MqttConnectOptions();
+            options.setCleanSession(true);
+            options.setAutomaticReconnect(true);
+
+            try {
+                IMqttToken token = client.connect(options);
+                token.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        // We are connected
+                        mqttSub();
+                        Initialize();
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        // Something went wrong e.g. connection timeout or firewall problems
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+            client.setCallback(new MqttCallbackExtended()  {
+                @Override
+                public void connectComplete(boolean reconnect, String serverURI) {
+                    if(reconnect){
+                        mqttSub();
+                    }
+                }
+
+                @Override
+                public void connectionLost(Throwable cause) {
+                    Log.d("TAG","lost");
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                    String[] idf = topic.split("/");
+//                    Log.d("MSG","MSG: " + message.toString());
+                    switch (idf[1]) {
+                        case "Initialize":
+//                            if(init_flag == 0) {
+//                                init_info = (new String(message.getPayload())).split("\t");
+//                                if(init_info[3].equals("F")) {
+//                                    init_flag = 1;
+//                                } else if(init_info[3].equals("G")) {
+//                                    Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], null);
+//                                }
+//                            } else {
+//                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
+//                                init_flag = 0;
+//                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
+//                            }
+                            StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()) ,",");
+                            while(stringTokenizer.hasMoreElements()){
+                                String token = stringTokenizer.nextToken();
+                                init_info = token.split("\t");
+                                RoomInfo roomInfo = new RoomInfo();
+                                roomInfo.setCode(init_info[0]);
+                                roomInfo.setRoomName(init_info[1]);
+                                roomInfo.setStudentID(init_info[2]);
+                                roomInfo.setType(init_info[3]);
+                                roomInfoList.add(roomInfo);
+                                if(init_info[3].equals("F")){
+                                    GetFriendIcon("Init", init_info[2]);
+                                }else if(init_info[3].equals("G")){
+                                    Initialize_re(roomInfo);
+                                }
+                            }
+                            break;
+                        case "AddFriend" :
+                            addFriend_info = new String(message.getPayload()).split("/");
+                            if(addFriend_info[0].equals("true")){
+                                RoomInfo roomInfo = new RoomInfo();
+                                roomInfo.setFriendName(addFriend_info[1]);
+                                roomInfo.setRoomName(addFriend_info[1]);
+                                roomInfo.setStudentID(addFriend_info[2]);
+                                roomInfo.setCode(addFriend_info[3]);
+                                roomInfo.setType("F");
+                                roomInfoList.add(roomInfo);
+                                GetFriendIcon("Add",addFriend_info[2]);
+                            }
+//                            if(addFriend_flag == 0) {
+//                                addFriend_info = (new String(message.getPayload())).split("/");
+//                                if(addFriend_info[0].equals("true")) {
+//                                    addFriend_flag = 1;
+//                                    sdtDta_flag = true;
+//                                }
+//                            } else {
+//                                byte[] bit = message.getPayload();
+//                                Bitmap b = BitmapFactory.decodeByteArray(bit,0,bit.length);
+//
+//                                if(sdtDta_flag) {
+//                                    sdtDta_flag = false;
+//                                    Intent studentData = new Intent(Main.this, StudentData.class);
+//                                    studentData.putExtra("name", addFriend_info[1]);
+//                                    studentData.putExtra("ID", addFriend_info[2]);
+//                                    studentData.putExtra("image", bit);
+//                                    startActivity(studentData);
+//                                }
+//                                AddFriend_re(addFriend_info[3],addFriend_info[2],addFriend_info[1],b);
+//                                addFriend_flag = 0;
+//                            }
+                            break;
+                        case "AddGroup" :
+                            String[] AG_msg = (new String(message.getPayload())).split("/");
+                            if(AG_msg[0].equals("true")) {
+                                AddGroup_re(AG_msg[1],AG_msg[2]);
+                            } else {
+                                Toast.makeText(context,"Error creating group", Toast.LENGTH_LONG).show();
+                            }
+                            break;
+                        case "DeleteFriend" :
+                            String DF_msg = new String(message.getPayload());
+                            if(DF_msg.equals("true")) {
+                                DeleteFriend_re();
+                            } else {
+                                deleteFriendPos = -1;
+                            }
+                            break;
+                        case "WithdrawFromGroup" :
+                            String WG_msg = new String(message.getPayload());
+                            if(WG_msg.equals("true")) {
+                                WithdrawFromGroup_re();
+                            } else {
+                                withdrawGroupPos = -1;
+                            }
+                            break;
+                        case "SendMessage" :
+                            String SM_msg = new String(message.getPayload());
+                            String[] SM_msg_splitLine = SM_msg.split("\t");
+                            if(processingCode.equals(SM_msg_splitLine[0])){
+                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2],SM_msg_splitLine[3]);
+                            }
+                            break;
+                        case "GetRecord" :
+                            LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
+                            break;
+                        default:
+                            if(idf[1].contains("FriendIcon")){
+                                if(idf[1].contains("Init")) {
+                                    String[] topicSplitLine = idf[1].split(":");
+                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                    friendInfoMap.put(topicSplitLine[1], b);
+                                    for (int i = 0; i < roomInfoList.size(); i++) {
+                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                            roomInfoList.get(i).setIcon(b);
+                                            Initialize_re(roomInfoList.get(i));
+                                            roomInfoList.remove(i);
+                                            break;
+                                        }
+                                    }
+                                }else if(idf[1].contains("Add")){ ;
+                                    String[] topicSplitLine = idf[1].split(":");
+                                    Log.d("Create", topicSplitLine[1]);
+                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                    friendInfoMap.put(topicSplitLine[1], b);
+                                    for (int i = 0; i < roomInfoList.size(); i++) {
+                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                            roomInfoList.get(i).setIcon(b);
+                                            roomInfoList.get(i).setIcon_data(message.getPayload());
+                                            AddFriend_re(roomInfoList.get(i));
+                                            roomInfoList.remove(i);
+                                            break;
+                                        }
+                                    }
+
+                                }
+                            }
+                    }
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                }
+            });
+        }
+
+        public void disconnect() {
+            if(client != null && client.isConnected()) {
+                try {
+                    client.unsubscribe("IDF/+/" + user + "/Re");
+                    client.disconnect();
+                    client.unregisterResources();
+                    client = null;
+                    Log.d("TAG","Try Disconnect");
+                } catch (MqttException e) {
+                    Log.d("TAG","Disconnect Error");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        private void mqttSub() {
+            try {
+                String topic = "IDF/+/" + user + "/Re";
+                client.subscribe(topic,2);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void Initialize() {
+            String topic = "IDF/Initialize/" + user;
+            String MSG = "";
+            try {
+                client.publish(topic,MSG.getBytes(),2,false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void Initialize_re(RoomInfo roomInfo) {
+            if(roomInfo.getType().equals("F")) {
+                testViewModel.addInFriend(roomInfo);
+                testViewModel.putListHash("好友",testViewModel.getFriend());
+            } else if(roomInfo.getType().equals("G")) {
+                roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+                testViewModel.addInGroup(roomInfo);
+                testViewModel.putListHash("群組",testViewModel.getGroup());
+            }
+        }
+
+        public void AddFriend(String friendID) {
+            String topic = "IDF/AddFriend/" + user;
+            String MSG = friendID;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void AddFriend_re(RoomInfo roomInfo) {
+//            RoomInfo roomInfo = new RoomInfo();
+//            roomInfo.setCode(code);
+//            roomInfo.setStudentID(ID);
+//            roomInfo.setRoomName(roomName);
+//            roomInfo.setIcon(b);
+//            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
+            testViewModel.addInFriend(roomInfo);
+            testViewModel.putListHash("好友",testViewModel.getFriend());
+            Intent studentData = new Intent(Tabs.this, StudentData.class);
+            studentData.putExtra("name", roomInfo.getFriendName());
+            studentData.putExtra("ID", roomInfo.getStudentID());
+            studentData.putExtra("image", roomInfo.getIcon_data());
+            startActivity(studentData);
+        }
+
+        public void AddGroup(String groupName, String member_str) {
+            String topic  = "IDF/AddGroup/" + user;
+            String MSG = groupName + "\t" + member_str;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void AddGroup_re(String code, String groupName) {
+            RoomInfo roomInfo = new RoomInfo();
+            roomInfo.setCode(code);
+            roomInfo.setRoomName(groupName);
+            roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+            testViewModel.addInGroup(roomInfo);
+            testViewModel.putListHash("群組",testViewModel.getGroup());
+        }
+
+        public void DeleteFriend(String friendID, String code) {
+            String topic = "IDF/DeleteFriend/" + user;
+            String MSG = friendID + "/" + code;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void setDeleteFriendPos(int deleteFriendPos) {
+            this.deleteFriendPos = deleteFriendPos;
+        }
+
+        public void DeleteFriend_re() {
+            testViewModel.removeFromFriend(deleteFriendPos);
+            testViewModel.putListHash("好友",testViewModel.getFriend());
+            deleteFriendPos = -1;
+        }
+
+        public void WithdrawFromGroup(String code) {
+            String topic = "IDF/WithdrawFromGroup/" + user;
+            String MSG = code;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void setWithdrawGroupPos(int withdrawGroupPos) {
+            this.withdrawGroupPos = withdrawGroupPos;
+        }
+
+        public void WithdrawFromGroup_re() {
+            testViewModel.removeFromGroup(withdrawGroupPos);
+            testViewModel.putListHash("群組",testViewModel.getGroup());
+            withdrawGroupPos = -1;
+        }
+
+        public void setProcessingCode(String processingCode) {
+            this.processingCode = processingCode;
+        }
+
+        public void SendMessage(String str){
+            String topic = "IDF/SendMessage/" + user;
+            String MSG = str;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void GetRecord(String code) {
+            String topic = "IDF/GetRecord/" + user;
+            String MSG = code;
+            try {
+                client.publish(topic,MSG.getBytes(),2,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void GetFriendIcon(String action, String friendID){
+            String topic = "IDF/FriendIcon/" + user;
+            String MSG = action + ":" + friendID;
+            try {
+                client.publish(topic,MSG.getBytes(),2,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public Bitmap MapBitmap(String id){
+            return friendInfoMap.get(id);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////
+
+
+
+
 }

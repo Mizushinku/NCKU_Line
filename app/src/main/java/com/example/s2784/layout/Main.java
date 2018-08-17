@@ -267,6 +267,10 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
         Log.d("TAG","onStop!");
     }
 
+    public String getUserID(){
+        return userID;
+    }
+
     private void Leave(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
