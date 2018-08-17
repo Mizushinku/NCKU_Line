@@ -226,6 +226,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     };
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mqtt.disconnect();
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         switch (viewPager.getCurrentItem()) {
             case 0:
