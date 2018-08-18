@@ -86,7 +86,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+//        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
 
 
@@ -201,54 +201,54 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             }
         });
 
-        /*for search view*/
-
-//        arrayList.add("January");  //for search view test
-//        arrayList.add("February");
-        adapter = new ListAdapter(arrayList,this,listDataHeader,listHash);
-        //adapter= new ListAdapter(arrayList);
-        activityMainBinding.listView.setAdapter(adapter);
-
-        activityMainBinding.search.setActivated(true);
-        activityMainBinding.search.setQueryHint("Type your keyword here");
-        activityMainBinding.search.onActionViewExpanded();
-        activityMainBinding.search.setIconified(false);
-        activityMainBinding.search.clearFocus();
-
-        //click to chatroom
-        listView_search = (ListView)findViewById(R.id.list_view);
-        //listView_search.setAdapter(adapter);
-        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) adapter.getChild(position);
-                String code = roomInfo.getCode();
-                Intent chat = new Intent(Main.this,Chatroom.class);
-                chat.putExtra("code", code);
-                chat.putExtra("id",userID);
-                startActivity(chat);
-            }
-        });
-        //click to chatroom
-
-
-        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                adapter.getFilter().filter(newText);
-
-                return false;
-            }
-        });
-
-
-        /*for search view*/
+//        /*for search view*/
+//
+////        arrayList.add("January");  //for search view test
+////        arrayList.add("February");
+//        //adapter = new ListAdapter(arrayList,this,listDataHeader,listHash);
+//        //adapter= new ListAdapter(arrayList);
+//        activityMainBinding.listView.setAdapter(adapter);
+//
+//        activityMainBinding.search.setActivated(true);
+//        activityMainBinding.search.setQueryHint("Type your keyword here");
+//        activityMainBinding.search.onActionViewExpanded();
+//        activityMainBinding.search.setIconified(false);
+//        activityMainBinding.search.clearFocus();
+//
+//        //click to chatroom
+//        listView_search = (ListView)findViewById(R.id.list_view);
+//        //listView_search.setAdapter(adapter);
+//        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                RoomInfo roomInfo = (RoomInfo) adapter.getChild(position);
+//                String code = roomInfo.getCode();
+//                Intent chat = new Intent(Main.this,Chatroom.class);
+//                chat.putExtra("code", code);
+//                chat.putExtra("id",userID);
+//                startActivity(chat);
+//            }
+//        });
+//        //click to chatroom
+//
+//
+//        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//
+//                adapter.getFilter().filter(newText);
+//
+//                return false;
+//            }
+//        });
+//
+//
+//        /*for search view*/
 
 
 

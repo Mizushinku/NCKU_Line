@@ -20,14 +20,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.s2784.layout.databinding.ActivityTabsBinding;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -46,9 +50,32 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.StringTokenizer;
 
+//for searchview
+
+import android.databinding.DataBindingUtil;
+import android.support.v7.widget.SearchView;
+import android.widget.ListView;
+
+import com.example.s2784.layout.databinding.ActivityMainBinding;
+
+
+//for searchview
+
 public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener,Tab4.OnFragmentInteractionListener{
+
+    /*for search view*/
+
+    ActivityTabsBinding activityTabsBinding;
+    ListAdapter adapter_ForSearch;
+    public static List<RoomInfo> arrayList= new ArrayList<>();
+    private ListView listView_search;
+
+
+    /*for search view*/
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -69,7 +96,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tabs);
+        activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
+        //setContentView(R.layout.activity_tabs);
 
 
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
@@ -168,7 +196,52 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
                     }
                 });
+        /*for search view*/
 
+//        arrayList.add("January");  //for search view test
+//        arrayList.add("February");
+        adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,TestViewModel.listHash);
+        //adapter= new ListAdapter(arrayList);
+        activityTabsBinding.listView.setAdapter(adapter_ForSearch);
+
+        activityTabsBinding.search.setActivated(true);
+        activityTabsBinding.search.setQueryHint("Type your keyword here");
+        activityTabsBinding.search.onActionViewExpanded();
+        activityTabsBinding.search.setIconified(false);
+        activityTabsBinding.search.clearFocus();
+        //click to chatroom
+        listView_search = (ListView)findViewById(R.id.list_view);
+        //listView_search.setAdapter(adapter);
+        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getChild(position);
+                String code = roomInfo.getCode();
+                Intent chat = new Intent(Tabs.this,Chatroom.class);
+                chat.putExtra("code", code);
+                chat.putExtra("id",userID);
+                startActivity(chat);
+            }
+        });
+        //click to chatroom
+
+        activityTabsBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter_ForSearch.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+
+        /*for search view*/
 
     }
     public void onFragmentInteraction(Uri uri) {
@@ -535,10 +608,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public void Initialize_re(RoomInfo roomInfo) {
             if(roomInfo.getType().equals("F")) {
                 testViewModel.addInFriend(roomInfo);
+                arrayList.add(roomInfo);
                 testViewModel.putListHash("好友",testViewModel.getFriend());
             } else if(roomInfo.getType().equals("G")) {
                 roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 testViewModel.addInGroup(roomInfo);
+                arrayList.add(roomInfo);
                 testViewModel.putListHash("群組",testViewModel.getGroup());
             }
         }

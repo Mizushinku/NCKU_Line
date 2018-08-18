@@ -12,11 +12,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+
 
 
 //        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
@@ -33,9 +36,11 @@ import java.util.List;
 
 public class Tab1 extends Fragment {
 
+
+
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
-    private List<String> listDataHeader;
+    public static List<String> listDataHeader;
     private OnFragmentInteractionListener mListener;
     private TestViewModel testViewModel;
     private String userID;
@@ -57,6 +62,9 @@ public class Tab1 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         testViewModel = ViewModelProviders.of(getActivity()).get(TestViewModel.class);
+
+
+
     }
 
     @Override
@@ -83,6 +91,7 @@ public class Tab1 extends Fragment {
                 return false;
             }
         });
+
 
 
         return view;

@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> group = new ArrayList<>();
     private final ArrayList<RoomInfo> friend = new ArrayList<>();
-    private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
+    public final static HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
 
     public void removeFromGroup(int pos){
         group.remove(pos);

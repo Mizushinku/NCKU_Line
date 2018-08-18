@@ -25,11 +25,11 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     ValueFilter valueFilter;
     private LayoutInflater inflater;
 
-    private Context context;
+    private Tabs context;
     private static List<String> listDataHeader;
     private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
 
-    public ListAdapter(List<RoomInfo> cancel_type,Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
+    public ListAdapter(List<RoomInfo> cancel_type, Tabs context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
         mData=cancel_type;
         mStringFilterList = cancel_type;
         this.context = context;
