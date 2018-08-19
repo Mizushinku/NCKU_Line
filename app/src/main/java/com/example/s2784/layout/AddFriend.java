@@ -195,16 +195,16 @@ public class AddFriend extends AppCompatActivity {
 
                 this.finish();
 
-                if (this.getIntent().getDataString() != null) {
-                    //this.getIntent().getDataString() : usccbarcodescanner://?callurl=http://mmm.lifeacademy.org/erpweb/testbarcodeapp&returnurl=http://mmm.lifeacademy.org/erpweb/Scancode/PutScanCode?username=
-
-                    sendBarcode_returnWebPage(result.getContents());
-                    this.finish();
-                }
-                else {
-                    //Toast.makeText(this, "請從網頁開啟本程式", Toast.LENGTH_LONG).show();
-                    this.finish();
-                }
+//                if (this.getIntent().getDataString() != null) {
+//                    //this.getIntent().getDataString() : usccbarcodescanner://?callurl=http://mmm.lifeacademy.org/erpweb/testbarcodeapp&returnurl=http://mmm.lifeacademy.org/erpweb/Scancode/PutScanCode?username=
+//
+//                    sendBarcode_returnWebPage(result.getContents());
+//                    this.finish();
+//                }
+//                else {
+//                    //Toast.makeText(this, "請從網頁開啟本程式", Toast.LENGTH_LONG).show();
+//                    this.finish();
+//                }
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

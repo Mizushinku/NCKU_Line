@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -85,10 +86,30 @@ public class Tab1 extends Fragment {
 
                 Intent chat = new Intent(getActivity(),Chatroom.class);
                 chat.putExtra("code", code);
-                chat.putExtra("id",Tabs.userID);
+                chat.putExtra("id",testViewModel.getUserID());
                 startActivity(chat);
 
                 return false;
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
+                    int groupPos = ExpandableListView.getPackedPositionGroup(packedPos);
+                    int childPos = ExpandableListView.getPackedPositionChild(packedPos);
+
+
+                    if (groupPos == 1) {
+                        showFLCM(childPos);
+                    } else if(groupPos == 0) {
+                        showGLCM(childPos);
+                    }
+                }
+
+                //必須回傳true,不然會和onClick搞混
+                return true;
             }
         });
 
@@ -96,6 +117,24 @@ public class Tab1 extends Fragment {
 
         return view;
     }
+
+    private void showFLCM(int childPos) {
+        DialogFragment dialogFragment = new FriendLongClickDialogFragment();
+        //用Bundle傳遞參數
+        Bundle bundle = new Bundle();
+        bundle.putInt("childPos",childPos);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getActivity().getFragmentManager(), "FLCM");
+    }
+
+    private void showGLCM(int childPos) {
+        DialogFragment dialogFragment = new GroupLongClickDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("childPos",childPos);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getActivity().getFragmentManager(), "GLCM");
+    }
+
 
     private void initData(){
         listDataHeader = new ArrayList<>();

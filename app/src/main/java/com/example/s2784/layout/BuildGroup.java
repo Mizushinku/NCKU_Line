@@ -3,6 +3,7 @@ package com.example.s2784.layout;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildGroup extends AppCompatActivity implements View.OnClickListener{
+public class BuildGroup extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_SELECT_FRIEND = 1;
     private static final int REQUEST_CODE_BuildGroup = 2;
@@ -44,19 +45,17 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if(v == btn_selectFriend) {
-            Intent intent_selectFriend = new Intent(BuildGroup.this,SelectFriendIntoGroup.class);
+        if (v == btn_selectFriend) {
+            Intent intent_selectFriend = new Intent(BuildGroup.this, SelectFriendIntoGroup.class);
             //intent_selectFriend.putExtra("friendList", (Serializable) friendList);
-            startActivityForResult(intent_selectFriend,REQUEST_CODE_SELECT_FRIEND);
-        }
-        else if(v == btn_CreateGroup) {
+            startActivityForResult(intent_selectFriend, REQUEST_CODE_SELECT_FRIEND);
+        } else if (v == btn_CreateGroup) {
             Intent intent = getIntent();
-            intent.putExtra("groupName",etGroupName.getText().toString());
-            intent.putStringArrayListExtra("memberList",groupMember);
+            intent.putExtra("groupName", etGroupName.getText().toString());
+            intent.putStringArrayListExtra("memberList", groupMember);
             setResult(REQUEST_CODE_BuildGroup, intent);
             this.finish();
-        }
-        else if(v == etGroupName) {
+        } else if (v == etGroupName) {
             etGroupName.setHint(null);
         }
     }
@@ -64,9 +63,12 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
-            case REQUEST_CODE_SELECT_FRIEND :
-                    //拿到user想加入群組的成員清單(學號)
-                    groupMember = data.getStringArrayListExtra("memberList");
+            case REQUEST_CODE_SELECT_FRIEND:
+                //拿到user想加入群組的成員清單(學號)
+                groupMember = data.getStringArrayListExtra("memberList");
+                for (int i = 0; i < groupMember.size(); i++) {
+                    Log.d("Array", "Array:" + groupMember.get(i));
+                }
                 break;
         }
     }

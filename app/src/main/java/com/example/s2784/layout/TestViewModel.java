@@ -9,6 +9,15 @@ public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> group = new ArrayList<>();
     private final ArrayList<RoomInfo> friend = new ArrayList<>();
     public final static HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
+    private String userID;
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 
     public void removeFromGroup(int pos){
         group.remove(pos);

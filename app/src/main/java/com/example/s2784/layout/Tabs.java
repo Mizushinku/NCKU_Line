@@ -2,6 +2,7 @@ package com.example.s2784.layout;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.DialogFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -64,7 +65,7 @@ import com.example.s2784.layout.databinding.ActivityMainBinding;
 
 //for searchview
 
-public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener,Tab4.OnFragmentInteractionListener{
+public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener,Tab4.OnFragmentInteractionListener,FriendLongClickDialogFragment.FLCMListener,GroupLongClickDialogFragment.GLCMListener{
 
     /*for search view*/
 
@@ -104,6 +105,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         Intent intentFromUpload = getIntent();
         userID = intentFromUpload.getStringExtra("userID");
+        testViewModel.setUserID(userID);
         mCtn = this.getApplicationContext();
         mqtt = new Mqtt_Client(this.getApplicationContext(),userID);
         mqtt.Connect();
@@ -276,14 +278,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     break;
                 case R.id.build_group:
                     msg += "創建群組";
-                 //   friendList = listHash.get(listDataHeader.get(1));
-//                    Intent intent_buildGroup = new Intent(Main.this,BuildGroup.class);
-//                    startActivityForResult(intent_buildGroup,REQUEST_CODE_BuildGroup);
+                    friendList = testViewModel.listHash.get(Tab1.listDataHeader.get(1));
+                    Intent intent_buildGroup = new Intent(Tabs.this,BuildGroup.class);
+                    startActivityForResult(intent_buildGroup,REQUEST_CODE_BuildGroup);
                     break;
                 case R.id.add_friend:
                     msg += "加入好友";
-                   Intent intent_addFriend = new Intent(Tabs.this,AddFriend.class);
-                   startActivityForResult(intent_addFriend,REQUEST_CODE);
+                    Intent intent_addFriend = new Intent(Tabs.this,AddFriend.class);
+                    startActivityForResult(intent_addFriend,REQUEST_CODE);
                     break;
                 case R.id.log_out:
                     msg += "登出";
@@ -351,8 +353,63 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         about_dialog.show();
     }
 
-    public String getUserID(){
-        return userID;
+    @Override
+    public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
+        String ID = testViewModel.getFriend().get(childPos).getStudentID();
+        String code = testViewModel.getFriend().get(childPos).getCode();
+        switch (which) {
+            case 0:
+                //指定哪個朋友要被刪除
+                mqtt.setDeleteFriendPos(childPos);
+                mqtt.DeleteFriend(ID, code);
+                break;
+        }
+    }
+
+    @Override
+    public void GLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
+        String code = testViewModel.getGroup().get(childPos).getCode();
+        switch (which) {
+            case 0:
+                //指定要退出哪個群組
+                mqtt.setWithdrawGroupPos(childPos);
+                mqtt.WithdrawFromGroup(code);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case REQUEST_CODE :
+                String addFriendID = data.getStringExtra("StudentID");
+                mqtt.AddFriend(addFriendID);
+                break;
+            case REQUEST_CODE_BuildGroup :
+                String groupName = data.getStringExtra("groupName");
+                ArrayList<String> groupMember = data.getStringArrayListExtra("memberList");
+
+                String member_str = userID;
+                if(groupMember != null) {
+                    for (int i = 0; i < groupMember.size(); ++i) {
+                        member_str += ("\t" + groupMember.get(i));
+                    }
+                }
+                mqtt.AddGroup(groupName,member_str);
+                friendList.clear();
+                break;
+            case REQUEST_CODE_JoinGroup:
+//                RoomInfo newGroup = new RoomInfo();
+//                String groupName = data.getStringExtra("groupName");
+//                newGroup.setRoomName(groupName);
+//                newGroup.setIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.bubble_out));
+//                group.add(newGroup);
+//                listHash.put(listDataHeader.get(0),group);
+                break;
+            case REQUEST_CODE_MsgBulletin :
+
+                break;
+        }
     }
 
     public class Mqtt_Client {
@@ -472,6 +529,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setType("F");
                                 roomInfoList.add(roomInfo);
                                 GetFriendIcon("Add",addFriend_info[2]);
+                            }else if(addFriend_info[0].equals("false")){
+                                Toast.makeText(Tabs.this,"加入好友失敗", Toast.LENGTH_SHORT).show();
                             }
 //                            if(addFriend_flag == 0) {
 //                                addFriend_info = (new String(message.getPayload())).split("/");
@@ -500,7 +559,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             if(AG_msg[0].equals("true")) {
                                 AddGroup_re(AG_msg[1],AG_msg[2]);
                             } else {
-                                Toast.makeText(context,"Error creating group", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context,"Error creating group"+AG_msg[0], Toast.LENGTH_LONG).show();
                             }
                             break;
                         case "DeleteFriend" :

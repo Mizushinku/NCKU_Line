@@ -37,7 +37,7 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
         //friendList = (List<RoomInfo>) intentFromBuildGroup.getSerializableExtra("friendList");
 
         listView = findViewById(R.id.listView);
-        final ListViewAdapter listViewAdapter = new  ListViewAdapter(this, Main.friendList);
+        final ListViewAdapter listViewAdapter = new ListViewAdapter(this, Tabs.friendList);
         listView.setAdapter(listViewAdapter);
 
         btn_OK = findViewById(R.id.btn_OK);

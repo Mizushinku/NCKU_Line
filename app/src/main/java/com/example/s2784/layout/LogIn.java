@@ -234,7 +234,7 @@ public class LogIn extends AppCompatActivity {
                             if(msg[0].equals("True")){
                                 // Go Main page
                                 Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
-                                Intent mainIntent = new Intent(LogIn.this,Main.class);
+                                Intent mainIntent = new Intent(LogIn.this,Tabs.class);
                                 mainIntent.putExtra("userID",msg[1]);
                                 startActivity(mainIntent);
                                 StartInterface.addData("Login",msg[1]);
