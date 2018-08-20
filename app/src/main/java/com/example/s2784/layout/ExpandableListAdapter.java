@@ -3,10 +3,13 @@ package com.example.s2784.layout;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         private Context context;
         private static List<String> listDataHeader;
         private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
+//        private Handler handler = new Handler(){
+//            @Override
+//            public void handleMessage(Message msg) {
+//                notifyDataSetChanged();//更新数据
+//                super.handleMessage(msg);
+//            }
+//        };
 
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<RoomInfo>> listHashMap) {
@@ -108,5 +118,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public static Object getChild_ForMain(int i, int j) {
         return listHashMap.get(listDataHeader.get(i)).get(j); // i =Group Item  j = Child Item
     }
+//    public void refresh(ExpandableListView expandableListView, int groupPosition){
+//        handler.sendMessage(new Message());
+//        //重新伸縮 更新數據
+//        if(expandableListView.isGroupExpanded(groupPosition)){
+//            expandableListView.collapseGroup(groupPosition);
+//            expandableListView.expandGroup(groupPosition);
+//        }
+//        else
+//        {
+//            expandableListView.expandGroup(groupPosition);
+//            expandableListView.collapseGroup(groupPosition);
+//        }
+
+//
+//    }
     //-----------------use for Main.java
 }

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +75,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     ListAdapter adapter_ForSearch;
     public static List<RoomInfo> arrayList= new ArrayList<>();
     private ListView listView_search;
-
+    private ExpandableListView ExpListView_Tab1;
 
     /*for search view*/
 
@@ -128,6 +129,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.setting_inactive).setText("其他"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive),getResources().getColor(R.color.white));
+
 
         viewPager = (ViewPager)findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
@@ -362,6 +364,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 //指定哪個朋友要被刪除
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
+
                 break;
         }
     }

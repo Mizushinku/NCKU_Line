@@ -78,6 +78,9 @@ public class Tab1 extends Fragment {
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);
+//        listView.expandGroup(0);
+//        listView.expandGroup(1);
+//        //listAdapter.refresh(listView,1);
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
