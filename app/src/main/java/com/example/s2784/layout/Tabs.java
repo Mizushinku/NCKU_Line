@@ -46,6 +46,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -87,7 +88,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private final static int CAMERA_RESULT = 0;
 
     private TestViewModel testViewModel;
-    public static ArrayList<RoomInfo> friendList = null;
 
     public static String userID;
     public static Mqtt_Client mqtt;
@@ -202,7 +202,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
 //        arrayList.add("January");  //for search view test
 //        arrayList.add("February");
-        adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,TestViewModel.listHash);
+        adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
         //adapter= new ListAdapter(arrayList);
         activityTabsBinding.listView.setAdapter(adapter_ForSearch);
 
@@ -278,8 +278,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     break;
                 case R.id.build_group:
                     msg += "創建群組";
-                    friendList = testViewModel.listHash.get(Tab1.listDataHeader.get(1));
                     Intent intent_buildGroup = new Intent(Tabs.this,BuildGroup.class);
+                    intent_buildGroup.putParcelableArrayListExtra("friendlist",testViewModel.getListHash().get("好友"));
                     startActivityForResult(intent_buildGroup,REQUEST_CODE_BuildGroup);
                     break;
                 case R.id.add_friend:
@@ -396,7 +396,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     }
                 }
                 mqtt.AddGroup(groupName,member_str);
-                friendList.clear();
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();
@@ -596,7 +595,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     friendInfoMap.put(topicSplitLine[1], b);
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon(b);
+                                            roomInfoList.get(i).setIcon_data(message.getPayload());
                                             Initialize_re(roomInfoList.get(i));
                                             roomInfoList.remove(i);
                                             break;
@@ -609,7 +608,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     friendInfoMap.put(topicSplitLine[1], b);
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon(b);
                                             roomInfoList.get(i).setIcon_data(message.getPayload());
                                             AddFriend_re(roomInfoList.get(i));
                                             roomInfoList.remove(i);
@@ -670,7 +668,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("好友",testViewModel.getFriend());
             } else if(roomInfo.getType().equals("G")) {
-                roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
+                byte[] bytes = stream.toByteArray();
+                roomInfo.setIcon_data(bytes);
                 testViewModel.addInGroup(roomInfo);
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("群組",testViewModel.getGroup());
@@ -717,8 +719,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
-            roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
-            testViewModel.addInGroup(roomInfo);
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
+            byte[] bytes = stream.toByteArray();
+            roomInfo.setIcon_data(bytes);            testViewModel.addInGroup(roomInfo);
             testViewModel.putListHash("群組",testViewModel.getGroup());
         }
 

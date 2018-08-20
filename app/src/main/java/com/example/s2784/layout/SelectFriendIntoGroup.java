@@ -26,6 +26,7 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
     private ListView listView;
     private Button btn_OK;
 
+    private ArrayList<RoomInfo> friendlist;
     public ArrayList<String> groupMember;
 
     @Override
@@ -36,8 +37,10 @@ public class SelectFriendIntoGroup extends AppCompatActivity {
         //Intent intentFromBuildGroup = getIntent();
         //friendList = (List<RoomInfo>) intentFromBuildGroup.getSerializableExtra("friendList");
 
+        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
+
         listView = findViewById(R.id.listView);
-        final ListViewAdapter listViewAdapter = new ListViewAdapter(this, Tabs.friendList);
+        final ListViewAdapter listViewAdapter = new ListViewAdapter(this,friendlist);
         listView.setAdapter(listViewAdapter);
 
         btn_OK = findViewById(R.id.btn_OK);

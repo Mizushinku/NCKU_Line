@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +86,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtlistChild = (TextView) view.findViewById(R.id.listItem);
         txtlistChild.setText(roomInfo.getRoomName());
         ImageView imageChild = (ImageView) view.findViewById(R.id.listImage);
-        imageChild.setImageBitmap(roomInfo.getIcon());
+        imageChild.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         return view;
 
     }

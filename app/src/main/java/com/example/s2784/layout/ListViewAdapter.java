@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class ListViewAdapter extends BaseAdapter {
         View rowView = inflater.inflate(R.layout.list_view_item, null);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
         TextView name = (TextView) rowView.findViewById(R.id.name);
-        imageView.setImageBitmap(roomInfo.getIcon());
+        imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         name.setText(roomInfo.getStudentID());
 
         return rowView;

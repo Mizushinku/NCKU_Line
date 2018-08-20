@@ -20,9 +20,9 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private EditText etGroupName;
     private Button btn_selectFriend;
     private Button btn_CreateGroup;
-
     private ArrayList<String> groupMember;
 
+    private ArrayList<RoomInfo> friendlist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +33,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         //friendList = (ArrayList<RoomInfo>) bundle.getSerializable("A");
         //friendList = (ArrayList<RoomInfo>)intentFromMain.getSerializableExtra("friendList");
 
+        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
         etGroupName = findViewById(R.id.etGroupName);
         btn_selectFriend = findViewById(R.id.btn_selectFriend);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
@@ -48,6 +49,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         if (v == btn_selectFriend) {
             Intent intent_selectFriend = new Intent(BuildGroup.this, SelectFriendIntoGroup.class);
             //intent_selectFriend.putExtra("friendList", (Serializable) friendList);
+            intent_selectFriend.putParcelableArrayListExtra("friendlist",friendlist);
             startActivityForResult(intent_selectFriend, REQUEST_CODE_SELECT_FRIEND);
         } else if (v == btn_CreateGroup) {
             Intent intent = getIntent();

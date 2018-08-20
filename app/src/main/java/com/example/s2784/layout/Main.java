@@ -578,7 +578,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                     friendInfoMap.put(topicSplitLine[1], b);
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon(b);
+//                                            roomInfoList.get(i).setIcon(b);
                                             Initialize_re(roomInfoList.get(i));
                                             roomInfoList.remove(i);
                                             break;
@@ -591,7 +591,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                                     friendInfoMap.put(topicSplitLine[1], b);
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon(b);
+//                                            roomInfoList.get(i).setIcon(b);
                                             roomInfoList.get(i).setIcon_data(message.getPayload());
                                             AddFriend_re(roomInfoList.get(i));
                                             roomInfoList.remove(i);
@@ -652,7 +652,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                 arrayList.add(roomInfo);
                 listHash.put(listDataHeader.get(1),friend);
             } else if(roomInfo.getType().equals("G")) {
-                roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+//                roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
                 group.add(roomInfo);
                 arrayList.add(roomInfo);
                 listHash.put(listDataHeader.get(0),group);
@@ -699,7 +699,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
-            roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
+//            roomInfo.setIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out));
             group.add(roomInfo);
             listHash.put(listDataHeader.get(0),group);
         }

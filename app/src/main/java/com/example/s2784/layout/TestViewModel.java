@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> group = new ArrayList<>();
     private final ArrayList<RoomInfo> friend = new ArrayList<>();
-    public final static HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
+    private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
     private String userID;
 
     public String getUserID() {
