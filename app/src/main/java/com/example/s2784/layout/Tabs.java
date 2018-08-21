@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TableLayout;
@@ -202,8 +203,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 });
         /*for search view*/
 
-//        arrayList.add("January");  //for search view test
-//        arrayList.add("February");
         adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
         //adapter= new ListAdapter(arrayList);
         activityTabsBinding.listView.setAdapter(adapter_ForSearch);
@@ -242,6 +241,29 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
                 return false;
             }
+        });
+
+        listView_search.setOnScrollListener(new ListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case SCROLL_STATE_IDLE:
+                        //scroll was stopped, let's show search bar again
+                        break;
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                        //user is scrolling, let's hide search bar
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem > 0) {
+                    //user scrolled down, first element is hidden
+                }
+            }
+
         });
 
 
