@@ -43,16 +43,24 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if(convertView == null){
+            viewHolder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.list_view_item,null);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            viewHolder.checkedTextView = (CheckedTextView) convertView.findViewById(R.id.name);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
         final RoomInfo roomInfo = (RoomInfo)getItem(position);
-
-        View rowView = inflater.inflate(R.layout.list_view_item, null);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-        CheckedTextView name = (CheckedTextView) rowView.findViewById(R.id.name);
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
-        name.setText(roomInfo.getStudentID());
-        return rowView;
+        viewHolder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
+        viewHolder.checkedTextView.setText(roomInfo.getStudentID());
+        return convertView;
     }
 
-
-
+    class ViewHolder{
+        public ImageView imageView ;
+        public CheckedTextView checkedTextView;
+    }
 }

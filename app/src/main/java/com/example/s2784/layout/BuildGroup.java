@@ -23,7 +23,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private static final int REQUEST_CODE_BuildGroup = 2;
 
     private EditText etGroupName;
-//    private Button btn_selectFriend;
+    //    private Button btn_selectFriend;
     private Button btn_CreateGroup;
     private ListView listView;
 
@@ -45,7 +45,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 //        btn_selectFriend = findViewById(R.id.btn_selectFriend);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
         listView = findViewById(R.id.buildGroup_friendList);
-        final ListViewAdapter listViewAdapter = new ListViewAdapter(this,friendlist);
+        final ListViewAdapter listViewAdapter = new ListViewAdapter(this, friendlist);
         listView.setAdapter(listViewAdapter);
 
         // change color when click
@@ -56,7 +56,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
                 CheckedTextView checkedTextView = view.findViewById(R.id.name);
                 checkedTextView.setChecked(!checkedTextView.isChecked());
                 //選取成員時給user的回饋(被選中的人顏色會改變)
-                if(!groupMember.contains(roomInfo.getStudentID())) {
+                if (!groupMember.contains(roomInfo.getStudentID())) {
 //                    view.setBackgroundColor(Color.BLUE);
                     groupMember.add(roomInfo.getStudentID());
                 } else {
@@ -82,14 +82,14 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 //            startActivityForResult(intent_selectFriend, REQUEST_CODE_SELECT_FRIEND);
 //        } else
         if (v == btn_CreateGroup) {
-            if(!etGroupName.getText().toString().equals("")){
+            if (!etGroupName.getText().toString().equals("")) {
                 Intent intent = getIntent();
                 intent.putExtra("groupName", etGroupName.getText().toString());
                 intent.putStringArrayListExtra("memberList", groupMember);
                 setResult(REQUEST_CODE_BuildGroup, intent);
                 this.finish();
-            }else{
-                Toast.makeText(BuildGroup.this,"請輸入群組名稱", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(BuildGroup.this, groupMember.get(0), Toast.LENGTH_SHORT).show();
             }
         } else if (v == etGroupName) {
             etGroupName.setHint(null);
