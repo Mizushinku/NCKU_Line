@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,13 +53,14 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RoomInfo roomInfo = (RoomInfo) listViewAdapter.getItem(position);
-
+                CheckedTextView checkedTextView = view.findViewById(R.id.name);
+                checkedTextView.setChecked(!checkedTextView.isChecked());
                 //選取成員時給user的回饋(被選中的人顏色會改變)
                 if(!groupMember.contains(roomInfo.getStudentID())) {
-                    view.setBackgroundColor(Color.BLUE);
+//                    view.setBackgroundColor(Color.BLUE);
                     groupMember.add(roomInfo.getStudentID());
                 } else {
-                    view.setBackgroundColor(Color.TRANSPARENT);
+//                    view.setBackgroundColor(Color.TRANSPARENT);
                     groupMember.remove(roomInfo.getStudentID());
                 }
 

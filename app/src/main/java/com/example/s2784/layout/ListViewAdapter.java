@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,10 +47,9 @@ public class ListViewAdapter extends BaseAdapter {
 
         View rowView = inflater.inflate(R.layout.list_view_item, null);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-        TextView name = (TextView) rowView.findViewById(R.id.name);
+        CheckedTextView name = (CheckedTextView) rowView.findViewById(R.id.name);
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         name.setText(roomInfo.getStudentID());
-
         return rowView;
     }
 
