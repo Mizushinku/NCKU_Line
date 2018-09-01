@@ -31,35 +31,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="8">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></LinearLayout>
 
         <EditText
             android:id="@+id/etGroupName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="請輸入群組名稱" />
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:hint="請輸入群組名稱"
+            android:textSize="25dp" />
 
-        <Button
-            android:id="@+id/btn_selectFriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/nomal_button_stytle"
-            android:textColor="@color/white"
-            android:text="選擇好友"/>
+        <!--<Button-->
+            <!--android:id="@+id/btn_selectFriend"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:background="@drawable/nomal_button_stytle"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:text="選擇好友"/>-->
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/buildGroup_friendList"
+            android:layout_weight="6" />
 
         <Button
             android:id="@+id/btn_CreateGroup"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/nomal_button_stytle"
+            android:text="創建"
             android:textColor="@color/white"
-            android:text="創建" />
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
 
