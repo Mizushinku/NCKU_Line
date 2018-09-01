@@ -27,8 +27,9 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private Button btn_CreateGroup;
     private ListView listView;
 
-    private ArrayList<String> groupMember;
+    private ArrayList<String> groupMember; //unuse now, in adapter
     private ArrayList<RoomInfo> friendlist;
+    private ListViewAdapter listViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 //        btn_selectFriend = findViewById(R.id.btn_selectFriend);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
         listView = findViewById(R.id.buildGroup_friendList);
-        final ListViewAdapter listViewAdapter = new ListViewAdapter(this, friendlist);
+        listViewAdapter = new ListViewAdapter(this, friendlist);
         listView.setAdapter(listViewAdapter);
 
         // change color when click
@@ -54,15 +55,15 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RoomInfo roomInfo = (RoomInfo) listViewAdapter.getItem(position);
                 CheckedTextView checkedTextView = view.findViewById(R.id.name);
-                checkedTextView.setChecked(!checkedTextView.isChecked());
+//                checkedTextView.setChecked(!checkedTextView.isChecked());
                 //選取成員時給user的回饋(被選中的人顏色會改變)
-                if (!groupMember.contains(roomInfo.getStudentID())) {
+//                if (!groupMember.contains(roomInfo.getStudentID())) {
 //                    view.setBackgroundColor(Color.BLUE);
-                    groupMember.add(roomInfo.getStudentID());
-                } else {
+//                    groupMember.add(roomInfo.getStudentID());
+//                } else {
 //                    view.setBackgroundColor(Color.TRANSPARENT);
-                    groupMember.remove(roomInfo.getStudentID());
-                }
+//                    groupMember.remove(roomInfo.getStudentID());
+//                }
 
             }
         });
@@ -85,11 +86,11 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             if (!etGroupName.getText().toString().equals("")) {
                 Intent intent = getIntent();
                 intent.putExtra("groupName", etGroupName.getText().toString());
-                intent.putStringArrayListExtra("memberList", groupMember);
+                intent.putStringArrayListExtra("memberList", listViewAdapter.getGroupMember());
                 setResult(REQUEST_CODE_BuildGroup, intent);
                 this.finish();
             } else {
-                Toast.makeText(BuildGroup.this, groupMember.get(0), Toast.LENGTH_SHORT).show();
+                Toast.makeText(BuildGroup.this, "請輸入群組名稱", Toast.LENGTH_SHORT).show();
             }
         } else if (v == etGroupName) {
             etGroupName.setHint(null);

@@ -12,6 +12,7 @@ import java.io.Serializable;
 
 public class RoomInfo implements Serializable, Parcelable{
 
+    private boolean checked;
     private String roomName;
     private String code;
     private String StudentID;
@@ -22,6 +23,7 @@ public class RoomInfo implements Serializable, Parcelable{
 
     public RoomInfo() {}
     public RoomInfo(Parcel in){
+        checked = in.readByte()!=0;
         roomName = in.readString();
         code = in.readString();
         StudentID = in.readString();
@@ -29,6 +31,9 @@ public class RoomInfo implements Serializable, Parcelable{
         type = in.readString();
         icon_data = in.createByteArray();
     }
+    public boolean getChecked() { return checked; }
+
+    public void setChecked(boolean checked) { this.checked = checked; }
 
     public String getRoomName() {
         return roomName;
@@ -74,6 +79,7 @@ public class RoomInfo implements Serializable, Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (checked ? 1:0));
         dest.writeString(roomName);
         dest.writeString(code);
         dest.writeString(StudentID);

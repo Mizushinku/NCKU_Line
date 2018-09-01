@@ -17,6 +17,7 @@ public class ListViewAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<RoomInfo> friendList;
     private static LayoutInflater inflater = null;
+    private ArrayList<String> groupMember = new ArrayList<String>();
 
     public ListViewAdapter(Context context, ArrayList<RoomInfo> friendList) {
         this.context = context;
@@ -43,7 +44,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.list_view_item,null);
@@ -56,7 +57,26 @@ public class ListViewAdapter extends BaseAdapter {
         final RoomInfo roomInfo = (RoomInfo)getItem(position);
         viewHolder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         viewHolder.checkedTextView.setText(roomInfo.getStudentID());
+        viewHolder.checkedTextView.setChecked(roomInfo.getChecked());
+        viewHolder.checkedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewHolder.checkedTextView.isChecked()){
+                    roomInfo.setChecked(false);
+                    groupMember.remove(roomInfo.getStudentID());
+                    notifyDataSetChanged();
+                }else {
+                    roomInfo.setChecked(true);
+                    groupMember.add(roomInfo.getStudentID());
+                    notifyDataSetChanged();
+                }
+            }
+        });
         return convertView;
+    }
+
+    public ArrayList<String> getGroupMember() {
+        return groupMember;
     }
 
     class ViewHolder{
