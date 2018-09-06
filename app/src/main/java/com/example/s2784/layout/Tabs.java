@@ -74,7 +74,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     ActivityTabsBinding activityTabsBinding;
     ListAdapter adapter_ForSearch;
-    public static List<RoomInfo> arrayList= new ArrayList<>();
+    //public static List<RoomInfo> arrayList= new ArrayList<>();
     private ListView listView_search;
     private ExpandableListView ExpListView_Tab1;
 
@@ -89,7 +89,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_JoinGroup = 4;
     private final static int CAMERA_RESULT = 0;
 
-    private TestViewModel testViewModel;
+    public static TestViewModel testViewModel;
 
     public static String userID;
     public static Mqtt_Client mqtt;
@@ -98,9 +98,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
-        //setContentView(R.layout.activity_tabs);
+            super.onCreate(savedInstanceState);
+        //activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
+        setContentView(R.layout.activity_tabs);
 
 
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
@@ -201,73 +201,73 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
                     }
                 });
-        /*for search view*/
-
-        adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
-        //adapter= new ListAdapter(arrayList);
-        activityTabsBinding.listView.setAdapter(adapter_ForSearch);
-
-        activityTabsBinding.search.setActivated(true);
-        activityTabsBinding.search.setQueryHint("Type your keyword here");
-        activityTabsBinding.search.onActionViewExpanded();
-        activityTabsBinding.search.setIconified(false);
-        activityTabsBinding.search.clearFocus();
-        //click to chatroom
-        listView_search = (ListView)findViewById(R.id.list_view);
-        //listView_search.setAdapter(adapter);
-        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getChild(position);
-                String code = roomInfo.getCode();
-                Intent chat = new Intent(Tabs.this,Chatroom.class);
-                chat.putExtra("code", code);
-                chat.putExtra("id",userID);
-                startActivity(chat);
-            }
-        });
-        //click to chatroom
-
-        activityTabsBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                adapter_ForSearch.getFilter().filter(newText);
-
-                return false;
-            }
-        });
-
-        listView_search.setOnScrollListener(new ListView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case SCROLL_STATE_IDLE:
-                        //scroll was stopped, let's show search bar again
-                        break;
-                    case SCROLL_STATE_TOUCH_SCROLL:
-                        //user is scrolling, let's hide search bar
-                        break;
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem > 0) {
-                    //user scrolled down, first element is hidden
-                }
-            }
-
-        });
-
-
-        /*for search view*/
+//        /*for search view*/
+//
+//        //adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
+//        //adapter= new ListAdapter(arrayList);
+//        activityTabsBinding.listView.setAdapter(adapter_ForSearch);
+//
+//        activityTabsBinding.search.setActivated(true);
+//        activityTabsBinding.search.setQueryHint("Type your keyword here");
+//        activityTabsBinding.search.onActionViewExpanded();
+//        activityTabsBinding.search.setIconified(false);
+//        activityTabsBinding.search.clearFocus();
+//        //click to chatroom
+//        listView_search = (ListView)findViewById(R.id.list_view);
+//        //listView_search.setAdapter(adapter);
+//        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getChild(position);
+//                String code = roomInfo.getCode();
+//                Intent chat = new Intent(Tabs.this,Chatroom.class);
+//                chat.putExtra("code", code);
+//                chat.putExtra("id",userID);
+//                startActivity(chat);
+//            }
+//        });
+//        //click to chatroom
+//
+//        activityTabsBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//
+//                adapter_ForSearch.getFilter().filter(newText);
+//
+//                return false;
+//            }
+//        });
+//
+//        listView_search.setOnScrollListener(new ListView.OnScrollListener() {
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                switch (scrollState) {
+//                    case SCROLL_STATE_IDLE:
+//                        //scroll was stopped, let's show search bar again
+//                        break;
+//                    case SCROLL_STATE_TOUCH_SCROLL:
+//                        //user is scrolling, let's hide search bar
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                if (firstVisibleItem > 0) {
+//                    //user scrolled down, first element is hidden
+//                }
+//            }
+//
+//        });
+//
+//
+//        /*for search view*/
 
     }
     public void onFragmentInteraction(Uri uri) {
@@ -299,6 +299,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     break;
                 case R.id.searchview:
                     msg += "搜尋";
+                    Intent intent_search = new Intent(Tabs.this, com.example.s2784.layout.SearchView.class);
+                    startActivityForResult(intent_search,REQUEST_CODE);
                     break;
                 case R.id.build_group:
                     msg += "創建群組";
@@ -690,7 +692,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public void Initialize_re(RoomInfo roomInfo) {
             if(roomInfo.getType().equals("F")) {
                 testViewModel.addInFriend(roomInfo);
-                arrayList.add(roomInfo);
+                com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
                 testViewModel.putListHash("好友",testViewModel.getFriend());
             } else if(roomInfo.getType().equals("G")) {
                 Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out);
@@ -699,7 +701,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 byte[] bytes = stream.toByteArray();
                 roomInfo.setIcon_data(bytes);
                 testViewModel.addInGroup(roomInfo);
-                arrayList.add(roomInfo);
+                com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
                 testViewModel.putListHash("群組",testViewModel.getGroup());
             }
         }

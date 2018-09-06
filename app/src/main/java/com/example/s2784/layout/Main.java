@@ -50,7 +50,6 @@ import com.example.s2784.layout.databinding.ActivityMainBinding;
 public class Main extends AppCompatActivity implements FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener,
         Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener{
     /*for search view*/
-
     ActivityMainBinding activityMainBinding;
     ListAdapter adapter;
     public static List<RoomInfo> arrayList= new ArrayList<>();

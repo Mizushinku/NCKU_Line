@@ -48,20 +48,20 @@
 ></android.support.design.widget.TabLayout>
 
 
-        <android.support.v7.widget.SearchView
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:clickable="true" />
+        <!--<android.support.v7.widget.SearchView-->
+            <!--android:id="@+id/search"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:clickable="true" />-->
 
 
-        <ListView
-            android:id="@+id/list_view"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/search" />
+        <!--<ListView-->
+            <!--android:id="@+id/list_view"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_below="@+id/search" />-->
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"

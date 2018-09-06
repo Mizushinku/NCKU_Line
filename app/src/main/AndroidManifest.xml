@@ -40,6 +40,7 @@
         <activity android:name=".Chatroom" />
         <activity android:name=".Upload" />
         <activity android:name=".LogIn" />
+        <activity android:name=".SearchView"/>
         <activity
             android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
