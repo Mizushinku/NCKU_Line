@@ -20,7 +20,7 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
         private Context context;
         private static List<String> listDataHeader;
-        private  static HashMap<String,ArrayList<RoomInfo>> listHashMap;
+        private static HashMap<String,ArrayList<RoomInfo>> listHashMap;
 //        private Handler handler = new Handler(){
 //            @Override
 //            public void handleMessage(Message msg) {

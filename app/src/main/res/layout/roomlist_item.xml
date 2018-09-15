@@ -6,7 +6,7 @@
     android:weightSum="5">
 
     <ImageView
-        android:id="@+id/roomPic"
+        android:id="@+id/room_Pic"
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/room_Title"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:paddingLeft="10dp"
@@ -26,7 +26,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/recentMsg"
+            android:id="@+id/room_recentMsg"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:paddingLeft="10dp"
@@ -42,7 +42,7 @@
         android:paddingTop="10dp">
 
         <TextView
-            android:id="@+id/recentDate"
+            android:id="@+id/room_recentDate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Date"
