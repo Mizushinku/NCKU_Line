@@ -3,6 +3,10 @@ package com.example.s2784.layout;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.DialogFragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -16,6 +20,7 @@ import android.os.Build;
 import android.os.Looper;
 import android.provider.Browser;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -93,7 +98,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     public static String userID;
     public static Mqtt_Client mqtt;
-    private Context mCtn;
 
 
     @Override
@@ -108,7 +112,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         Intent intentFromUpload = getIntent();
         userID = intentFromUpload.getStringExtra("userID");
         testViewModel.setUserID(userID);
-        mCtn = this.getApplicationContext();
         mqtt = new Mqtt_Client(this.getApplicationContext(), userID);
         mqtt.Connect();
 
@@ -612,15 +615,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         case "SendMessage":
                             String SM_msg = new String(message.getPayload());
                             String[] SM_msg_splitLine = SM_msg.split("\t");
-                            for(int i=0;i<testViewModel.getGroup().size();i++){
-                                if(testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])){
+                            for (int i = 0; i < testViewModel.getGroup().size(); i++) {
+                                if (testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])) {
                                     testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
                                     testViewModel.getGroup().get(i).setrMsgDate(SM_msg_splitLine[3]);
                                     break;
                                 }
                             }
-                            for(int i=0;i<testViewModel.getFriend().size();i++){
-                                if(testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])){
+                            for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                                if (testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])) {
                                     testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
                                     testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
                                     break;
@@ -632,6 +635,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             break;
                         case "GetRecord":
                             LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
+                            break;
+                        case "AddFriendNotification":
+                            AddFriendNotification_re();
                             break;
                         default:
                             if (idf[1].contains("FriendIcon")) {
@@ -745,6 +751,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             testViewModel.addInFriend(roomInfo);
             testViewModel.putListHash("好友", testViewModel.getFriend());
+
+            String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
+            String MSG = "";
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
             Intent studentData = new Intent(Tabs.this, StudentData.class);
             studentData.putExtra("name", roomInfo.getFriendName());
             studentData.putExtra("ID", roomInfo.getStudentID());
@@ -847,6 +862,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             } catch (MqttException e) {
                 e.printStackTrace();
             }
+        }
+
+        public void AddFriendNotification_re() {
+            Notification.Builder builder = new Notification.Builder(context);
+            builder.setSmallIcon(R.drawable.setting);
+            builder.setContentTitle("Title : Friend request");
+            builder.setContentText("Hello World!");
+
+            Intent intent = new Intent(context, Tabs.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(Tabs.class);
+            stackBuilder.addNextIntent(intent);
+            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            builder.setContentIntent(pendingIntent);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = 0;
+            notificationManager.notify(notificationId,builder.build());
+            
+            Toast.makeText(context,"notification!",Toast.LENGTH_LONG).show();
         }
 
         public Bitmap MapBitmap(String id) {
