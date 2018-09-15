@@ -1,6 +1,8 @@
 package com.example.s2784.layout;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +71,12 @@ public class bubble_list extends BaseAdapter {
             name = (TextView) rowView.findViewById(R.id.userName);
             name.setText(Bubble.getName());
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
-            pic.setImageBitmap(Bubble.getPic());
+            if (Bubble.getPic() == null) {
+                Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.friend);
+                pic.setImageBitmap(bitmap);
+            } else {
+                pic.setImageBitmap(Bubble.getPic());
+            }
         } else {
             if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                 rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
