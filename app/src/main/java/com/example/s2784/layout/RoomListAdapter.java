@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -65,5 +66,22 @@ public class RoomListAdapter extends BaseAdapter {
         public TextView title;
         public TextView msg;
         public TextView date;
+    }
+
+    public void notifyDataSetChanged(ListView lv, int position) {
+        //listView 可能很長(超過手機畫面),這裡拿到處於手機畫面中,第一以及最後一個的item的index
+        int firstVisiblePosition = lv.getFirstVisiblePosition();
+        int lastVisiblePosition = lv.getLastVisiblePosition();
+
+        //要更新的行數處在手機畫面中才更新(不再畫面中的item,隨著listView捲動會自動更新)
+        if (position >= firstVisiblePosition && position <= lastVisiblePosition) {
+            View v = lv.getChildAt(position - firstVisiblePosition);
+            if (v == null) {
+                return;
+            }
+
+            //更新
+            this.getView(position, v, lv);
+        }
     }
 }

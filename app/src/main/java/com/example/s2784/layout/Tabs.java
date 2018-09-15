@@ -68,7 +68,7 @@ import com.example.s2784.layout.databinding.ActivityMainBinding;
 
 //for searchview
 
-public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener,Tab2.OnFragmentInteractionListener,Tab3.OnFragmentInteractionListener,Tab4.OnFragmentInteractionListener,FriendLongClickDialogFragment.FLCMListener,GroupLongClickDialogFragment.GLCMListener{
+public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener {
 
     /*for search view*/
 
@@ -98,7 +98,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         //activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
         setContentView(R.layout.activity_tabs);
 
@@ -109,7 +109,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         userID = intentFromUpload.getStringExtra("userID");
         testViewModel.setUserID(userID);
         mCtn = this.getApplicationContext();
-        mqtt = new Mqtt_Client(this.getApplicationContext(),userID);
+        mqtt = new Mqtt_Client(this.getApplicationContext(), userID);
         mqtt.Connect();
 
         //For toolbar
@@ -122,85 +122,84 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         // For toolbar
 
 
-
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.friend).setText("個人頁面"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.chat_inactive).setText("聊天"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.news_inactive).setText("公佈欄"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.setting_inactive).setText("其他"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive),getResources().getColor(R.color.white));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive), getResources().getColor(R.color.white));
 
 
-        viewPager = (ViewPager)findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         final TextView mainTitle = findViewById(R.id.mainTitle);
         mainTitle.setText("好友&群組");
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                                              @Override
-                                              public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                                              }
+            }
 
-                                              @Override
-                                              public void onPageSelected(int position) {
-                                                  switch (position){
-                                                      case 0:
-                                                         tabLayout.getTabAt(0).setIcon(R.drawable.friend);
-                                                          tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
-                                                          tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                                                          tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                                                          mainTitle.setText("好友&群組");
-                                                          break;
-                                                      case 1:
-                                                          tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                                                          tabLayout.getTabAt(1).setIcon(R.drawable.chat);
-                                                          tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                                                          tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                                                          mainTitle.setText("聊天室");
-                                                          break;
-                                                      case 2:
-                                                          tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                                                          tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
-                                                          tabLayout.getTabAt(2).setIcon(R.drawable.news);
-                                                          tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                                                          mainTitle.setText("公佈欄");
-                                                          break;
-                                                      case 3:
-                                                          tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                                                          tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
-                                                          tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                                                          tabLayout.getTabAt(3).setIcon(R.drawable.setting);
-                                                          mainTitle.setText("其他");
-                                                          break;
-                                                  }
-                                              }
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.friend);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+                        mainTitle.setText("好友&群組");
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.chat);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+                        mainTitle.setText("聊天室");
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.news);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+                        mainTitle.setText("公佈欄");
+                        break;
+                    case 3:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.setting);
+                        mainTitle.setText("其他");
+                        break;
+                }
+            }
 
-                                              @Override
-                                              public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-                                              }
-                                          });
+            }
+        });
 
-                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        viewPager.setCurrentItem(tab.getPosition());
-                    }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        //實作Toolbar的動態更新
-                        invalidateOptionsMenu();
-                    }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //實作Toolbar的動態更新
+                invalidateOptionsMenu();
+            }
 
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-                    }
-                });
+            }
+        });
 //        /*for search view*/
 //
 //        //adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
@@ -270,9 +269,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //        /*for search view*/
 
     }
+
     public void onFragmentInteraction(Uri uri) {
 
-    }    @Override
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -281,15 +283,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.setting: //點了settings
-                Log.d("item","click settings~~~~");
+                Log.d("item", "click settings~~~~");
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    private android.support.v7.widget.Toolbar.OnMenuItemClickListener onMenuItemClick = new android.support.v7.widget.Toolbar.OnMenuItemClickListener(){
+
+    private android.support.v7.widget.Toolbar.OnMenuItemClickListener onMenuItemClick = new android.support.v7.widget.Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             String msg = "";
@@ -300,18 +303,18 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.searchview:
                     msg += "搜尋";
                     Intent intent_search = new Intent(Tabs.this, com.example.s2784.layout.SearchView.class);
-                    startActivityForResult(intent_search,REQUEST_CODE);
+                    startActivityForResult(intent_search, REQUEST_CODE);
                     break;
                 case R.id.build_group:
                     msg += "創建群組";
-                    Intent intent_buildGroup = new Intent(Tabs.this,BuildGroup.class);
-                    intent_buildGroup.putParcelableArrayListExtra("friendlist",testViewModel.getListHash().get("好友"));
-                    startActivityForResult(intent_buildGroup,REQUEST_CODE_BuildGroup);
+                    Intent intent_buildGroup = new Intent(Tabs.this, BuildGroup.class);
+                    intent_buildGroup.putParcelableArrayListExtra("friendlist", testViewModel.getListHash().get("好友"));
+                    startActivityForResult(intent_buildGroup, REQUEST_CODE_BuildGroup);
                     break;
                 case R.id.add_friend:
                     msg += "加入好友";
-                    Intent intent_addFriend = new Intent(Tabs.this,AddFriend.class);
-                    startActivityForResult(intent_addFriend,REQUEST_CODE);
+                    Intent intent_addFriend = new Intent(Tabs.this, AddFriend.class);
+                    startActivityForResult(intent_addFriend, REQUEST_CODE);
                     break;
                 case R.id.log_out:
                     msg += "登出";
@@ -319,7 +322,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     break;
             }
 
-            if(!msg.equals("")) {
+            if (!msg.equals("")) {
                 Toast.makeText(Tabs.this, msg, Toast.LENGTH_SHORT).show();
             }
             return true;
@@ -358,11 +361,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
         return super.onPrepareOptionsMenu(menu);
     }
-    private void Leave(){
+
+    private void Leave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("是否要登出?")
-                .setPositiveButton("否", new DialogInterface.OnClickListener(){
+                .setPositiveButton("否", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
@@ -370,7 +374,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 .setNegativeButton("是", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         StartInterface.logout();
-                        Intent intent_Login = new Intent(Tabs.this,LogIn.class);
+                        Intent intent_Login = new Intent(Tabs.this, LogIn.class);
                         startActivity(intent_Login);
                         finish();
                     }
@@ -408,21 +412,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
-            case REQUEST_CODE :
+            case REQUEST_CODE:
                 String addFriendID = data.getStringExtra("StudentID");
                 mqtt.AddFriend(addFriendID);
                 break;
-            case REQUEST_CODE_BuildGroup :
+            case REQUEST_CODE_BuildGroup:
                 String groupName = data.getStringExtra("groupName");
                 ArrayList<String> groupMember = data.getStringArrayListExtra("memberList");
 
                 String member_str = userID;
-                if(groupMember != null) {
+                if (groupMember != null) {
                     for (int i = 0; i < groupMember.size(); ++i) {
                         member_str += ("\t" + groupMember.get(i));
                     }
                 }
-                mqtt.AddGroup(groupName,member_str);
+                mqtt.AddGroup(groupName, member_str);
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();
@@ -432,7 +436,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //                group.add(newGroup);
 //                listHash.put(listDataHeader.get(0),group);
                 break;
-            case REQUEST_CODE_MsgBulletin :
+            case REQUEST_CODE_MsgBulletin:
 
                 break;
         }
@@ -458,7 +462,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         private String processingCode = "";
         private ArrayList<RoomInfo> roomInfoList = null; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
-        private HashMap<String,Bitmap> friendInfoMap = null;
+        private HashMap<String, Bitmap> friendInfoMap = null;
 
         public Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -466,7 +470,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             roomInfoList = new ArrayList<RoomInfo>();
             friendInfoMap = new HashMap<String, Bitmap>();
         }
-
 
 
         public void Connect() {
@@ -496,17 +499,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 e.printStackTrace();
             }
 
-            client.setCallback(new MqttCallbackExtended()  {
+            client.setCallback(new MqttCallbackExtended() {
                 @Override
                 public void connectComplete(boolean reconnect, String serverURI) {
-                    if(reconnect){
+                    if (reconnect) {
                         mqttSub();
                     }
                 }
 
                 @Override
                 public void connectionLost(Throwable cause) {
-                    Log.d("TAG","lost");
+                    Log.d("TAG", "lost");
                 }
 
                 @Override
@@ -527,8 +530,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //                                init_flag = 0;
 //                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
 //                            }
-                            StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()) ,",");
-                            while(stringTokenizer.hasMoreElements()){
+                            StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), ",");
+                            while (stringTokenizer.hasMoreElements()) {
                                 String token = stringTokenizer.nextToken();
                                 init_info = token.split("\t");
                                 RoomInfo roomInfo = new RoomInfo();
@@ -536,17 +539,19 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setRoomName(init_info[1]);
                                 roomInfo.setStudentID(init_info[2]);
                                 roomInfo.setType(init_info[3]);
+                                roomInfo.setrMsg(init_info[4]);
+                                roomInfo.setrMsgDate(init_info[5]);
                                 roomInfoList.add(roomInfo);
-                                if(init_info[3].equals("F")){
+                                if (init_info[3].equals("F")) {
                                     GetFriendIcon("Init", init_info[2]);
-                                }else if(init_info[3].equals("G")){
+                                } else if (init_info[3].equals("G")) {
                                     Initialize_re(roomInfo);
                                 }
                             }
                             break;
-                        case "AddFriend" :
+                        case "AddFriend":
                             addFriend_info = new String(message.getPayload()).split("/");
-                            if(addFriend_info[0].equals("true")){
+                            if (addFriend_info[0].equals("true")) {
                                 RoomInfo roomInfo = new RoomInfo();
                                 roomInfo.setFriendName(addFriend_info[1]);
                                 roomInfo.setRoomName(addFriend_info[1]);
@@ -554,9 +559,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setCode(addFriend_info[3]);
                                 roomInfo.setType("F");
                                 roomInfoList.add(roomInfo);
-                                GetFriendIcon("Add",addFriend_info[2]);
-                            }else if(addFriend_info[0].equals("false")){
-                                Toast.makeText(Tabs.this,"加入好友失敗", Toast.LENGTH_SHORT).show();
+                                GetFriendIcon("Add", addFriend_info[2]);
+                            } else if (addFriend_info[0].equals("false")) {
+                                Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
                             }
 //                            if(addFriend_flag == 0) {
 //                                addFriend_info = (new String(message.getPayload())).split("/");
@@ -580,43 +585,57 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //                                addFriend_flag = 0;
 //                            }
                             break;
-                        case "AddGroup" :
+                        case "AddGroup":
                             String[] AG_msg = (new String(message.getPayload())).split("/");
-                            if(AG_msg[0].equals("true")) {
-                                AddGroup_re(AG_msg[1],AG_msg[2]);
+                            if (AG_msg[0].equals("true")) {
+                                AddGroup_re(AG_msg[1], AG_msg[2]);
                             } else {
-                                Toast.makeText(context,"Error creating group"+AG_msg[0], Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error creating group" + AG_msg[0], Toast.LENGTH_LONG).show();
                             }
                             break;
-                        case "DeleteFriend" :
+                        case "DeleteFriend":
                             String DF_msg = new String(message.getPayload());
-                            if(DF_msg.equals("true")) {
+                            if (DF_msg.equals("true")) {
                                 DeleteFriend_re();
                             } else {
                                 deleteFriendPos = -1;
                             }
                             break;
-                        case "WithdrawFromGroup" :
+                        case "WithdrawFromGroup":
                             String WG_msg = new String(message.getPayload());
-                            if(WG_msg.equals("true")) {
+                            if (WG_msg.equals("true")) {
                                 WithdrawFromGroup_re();
                             } else {
                                 withdrawGroupPos = -1;
                             }
                             break;
-                        case "SendMessage" :
+                        case "SendMessage":
                             String SM_msg = new String(message.getPayload());
                             String[] SM_msg_splitLine = SM_msg.split("\t");
-                            if(processingCode.equals(SM_msg_splitLine[0])){
-                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2],SM_msg_splitLine[3]);
+                            for(int i=0;i<testViewModel.getGroup().size();i++){
+                                if(testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])){
+                                    testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
+                                    testViewModel.getGroup().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                    break;
+                                }
+                            }
+                            for(int i=0;i<testViewModel.getFriend().size();i++){
+                                if(testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])){
+                                    testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
+                                    testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                    break;
+                                }
+                            }
+                            if (processingCode.equals(SM_msg_splitLine[0])) {
+                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
                             }
                             break;
-                        case "GetRecord" :
+                        case "GetRecord":
                             LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                             break;
                         default:
-                            if(idf[1].contains("FriendIcon")){
-                                if(idf[1].contains("Init")) {
+                            if (idf[1].contains("FriendIcon")) {
+                                if (idf[1].contains("Init")) {
                                     String[] topicSplitLine = idf[1].split(":");
                                     Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
                                     friendInfoMap.put(topicSplitLine[1], b);
@@ -628,7 +647,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                             break;
                                         }
                                     }
-                                }else if(idf[1].contains("Add")){ ;
+                                } else if (idf[1].contains("Add")) {
+                                    ;
                                     String[] topicSplitLine = idf[1].split(":");
                                     Log.d("Create", topicSplitLine[1]);
                                     Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
@@ -655,15 +675,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         public void disconnect() {
-            if(client != null && client.isConnected()) {
+            if (client != null && client.isConnected()) {
                 try {
                     client.unsubscribe("IDF/+/" + user + "/Re");
                     client.disconnect();
                     client.unregisterResources();
                     client = null;
-                    Log.d("TAG","Try Disconnect");
+                    Log.d("TAG", "Try Disconnect");
                 } catch (MqttException e) {
-                    Log.d("TAG","Disconnect Error");
+                    Log.d("TAG", "Disconnect Error");
                     e.printStackTrace();
                 }
             }
@@ -673,8 +693,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void mqttSub() {
             try {
                 String topic = "IDF/+/" + user + "/Re";
-                client.subscribe(topic,2);
-            }catch (MqttException e) {
+                client.subscribe(topic, 2);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -683,26 +703,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/Initialize/" + user;
             String MSG = "";
             try {
-                client.publish(topic,MSG.getBytes(),2,false);
+                client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
         public void Initialize_re(RoomInfo roomInfo) {
-            if(roomInfo.getType().equals("F")) {
+            if (roomInfo.getType().equals("F")) {
                 testViewModel.addInFriend(roomInfo);
                 com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
-                testViewModel.putListHash("好友",testViewModel.getFriend());
-            } else if(roomInfo.getType().equals("G")) {
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out);
+                testViewModel.putListHash("好友", testViewModel.getFriend());
+            } else if (roomInfo.getType().equals("G")) {
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bytes = stream.toByteArray();
                 roomInfo.setIcon_data(bytes);
                 testViewModel.addInGroup(roomInfo);
                 com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
-                testViewModel.putListHash("群組",testViewModel.getGroup());
+                testViewModel.putListHash("群組", testViewModel.getGroup());
             }
         }
 
@@ -710,8 +730,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/AddFriend/" + user;
             String MSG = friendID;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -724,7 +744,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //            roomInfo.setIcon(b);
 //            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             testViewModel.addInFriend(roomInfo);
-            testViewModel.putListHash("好友",testViewModel.getFriend());
+            testViewModel.putListHash("好友", testViewModel.getFriend());
             Intent studentData = new Intent(Tabs.this, StudentData.class);
             studentData.putExtra("name", roomInfo.getFriendName());
             studentData.putExtra("ID", roomInfo.getStudentID());
@@ -733,11 +753,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         public void AddGroup(String groupName, String member_str) {
-            String topic  = "IDF/AddGroup/" + user;
+            String topic = "IDF/AddGroup/" + user;
             String MSG = groupName + "\t" + member_str;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -746,20 +766,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
-            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bubble_out);
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
-            roomInfo.setIcon_data(bytes);            testViewModel.addInGroup(roomInfo);
-            testViewModel.putListHash("群組",testViewModel.getGroup());
+            roomInfo.setIcon_data(bytes);
+            testViewModel.addInGroup(roomInfo);
+            testViewModel.putListHash("群組", testViewModel.getGroup());
         }
 
         public void DeleteFriend(String friendID, String code) {
             String topic = "IDF/DeleteFriend/" + user;
             String MSG = friendID + "/" + code;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -770,7 +791,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public void DeleteFriend_re() {
             testViewModel.removeFromFriend(deleteFriendPos);
-            testViewModel.putListHash("好友",testViewModel.getFriend());
+            testViewModel.putListHash("好友", testViewModel.getFriend());
             deleteFriendPos = -1;
         }
 
@@ -778,8 +799,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/WithdrawFromGroup/" + user;
             String MSG = code;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -790,7 +811,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public void WithdrawFromGroup_re() {
             testViewModel.removeFromGroup(withdrawGroupPos);
-            testViewModel.putListHash("群組",testViewModel.getGroup());
+            testViewModel.putListHash("群組", testViewModel.getGroup());
             withdrawGroupPos = -1;
         }
 
@@ -798,12 +819,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             this.processingCode = processingCode;
         }
 
-        public void SendMessage(String str){
+        public void SendMessage(String str) {
             String topic = "IDF/SendMessage/" + user;
             String MSG = str;
             try {
-                client.publish(topic,MSG.getBytes(),0,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
@@ -812,29 +833,27 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/GetRecord/" + user;
             String MSG = code;
             try {
-                client.publish(topic,MSG.getBytes(),2,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public void GetFriendIcon(String action, String friendID){
+        public void GetFriendIcon(String action, String friendID) {
             String topic = "IDF/FriendIcon/" + user;
             String MSG = action + ":" + friendID;
             try {
-                client.publish(topic,MSG.getBytes(),2,false);
-            }catch (MqttException e) {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public Bitmap MapBitmap(String id){
+        public Bitmap MapBitmap(String id) {
             return friendInfoMap.get(id);
         }
     }
     ////////////////////////////////////////////////////////////////////////
-
-
 
 
 }
