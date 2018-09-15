@@ -66,11 +66,10 @@ public class Tab2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab2,container,false);
-//        roomListView = view.findViewById(R.id.room_lv);
-//        roomList = testViewModel.getFriend();
-//        roomList.addAll(testViewModel.getGroup());
-//        roomListAdapter = new RoomListAdapter(getActivity(),roomList);
-//        roomListView.setAdapter(roomListAdapter);
+        roomListView = view.findViewById(R.id.room_lv);
+        roomList = testViewModel.getRoomList();
+        roomListAdapter = new RoomListAdapter(getActivity(),roomList);
+        roomListView.setAdapter(roomListAdapter);
         return view;
     }
 

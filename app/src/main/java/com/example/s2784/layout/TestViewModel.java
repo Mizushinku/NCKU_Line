@@ -43,6 +43,11 @@ public class TestViewModel extends ViewModel {
         return friend;
     }
 
+    public ArrayList<RoomInfo> getRoomList() {  ArrayList<RoomInfo> temp = new ArrayList<>();
+                                                temp.addAll(friend);
+                                                temp.addAll(group);
+                                                return temp;}
+
     public HashMap<String, ArrayList<RoomInfo>> getListHash() {
         return listHash;
     }
