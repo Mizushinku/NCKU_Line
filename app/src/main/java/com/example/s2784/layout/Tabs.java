@@ -870,17 +870,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             builder.setContentTitle("Title : Friend request");
             builder.setContentText("Hello World!");
 
-            Intent intent = new Intent(context, Tabs.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(Tabs.class);
-            stackBuilder.addNextIntent(intent);
-            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+            //Intent intent = new Intent(context, Tabs.class);
+            //TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            //stackBuilder.addParentStack(Tabs.class);
+            //stackBuilder.addNextIntent(intent);
+            //PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
 
-            builder.setContentIntent(pendingIntent);
+            //builder.setContentIntent(pendingIntent);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int notificationId = 0;
             notificationManager.notify(notificationId,builder.build());
-            
+
             Toast.makeText(context,"notification!",Toast.LENGTH_LONG).show();
         }
 
