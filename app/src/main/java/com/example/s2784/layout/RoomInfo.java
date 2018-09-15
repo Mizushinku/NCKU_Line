@@ -18,6 +18,8 @@ public class RoomInfo implements Serializable, Parcelable{
     private String StudentID;
     private String friendName;
     private String type;
+    private String rMsg;
+    private String rMsgDate;
     private byte[] icon_data;
 
 
@@ -29,6 +31,8 @@ public class RoomInfo implements Serializable, Parcelable{
         StudentID = in.readString();
         friendName = in.readString();
         type = in.readString();
+        rMsg = in.readString();
+        rMsgDate = in.readString();
         icon_data = in.createByteArray();
     }
     public boolean getChecked() { return checked; }
@@ -63,6 +67,14 @@ public class RoomInfo implements Serializable, Parcelable{
 
     public void setType(String type) { this.type = type; }
 
+    public String getrMsg() { return rMsg; }
+
+    public void setrMsg(String rMsg) { this.rMsg = rMsg; }
+
+    public String getrMsgDate() { return rMsgDate; }
+
+    public void setrMsgDate(String rMsgDate) { this.rMsgDate = rMsgDate; }
+
     public String getFriendName() { return friendName; }
 
     public void setFriendName(String friendName) { this.friendName = friendName; }
@@ -85,6 +97,8 @@ public class RoomInfo implements Serializable, Parcelable{
         dest.writeString(StudentID);
         dest.writeString(friendName);
         dest.writeString(type);
+        dest.writeString(rMsg);
+        dest.writeString(rMsgDate);
         dest.writeByteArray(icon_data);
     }
 
