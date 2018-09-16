@@ -89,11 +89,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private static final int REQUEST_CODE_AddFriend = 1;
+    private static final int REQUEST_CODE = 1;
     private static final int REQUEST_CODE_BuildGroup = 2;
     private static final int REQUEST_CODE_MsgBulletin = 3;
     private static final int REQUEST_CODE_JoinGroup = 4;
-    private static final int REQUEST_CODE_Search = 5;
     private final static int CAMERA_RESULT = 0;
 
     public static TestViewModel testViewModel;
@@ -319,7 +318,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.searchview:
                     msg += "搜尋";
                     Intent intent_search = new Intent(Tabs.this, com.example.s2784.layout.SearchView.class);
-                    startActivityForResult(intent_search, REQUEST_CODE_Search);
+                    startActivityForResult(intent_search, REQUEST_CODE);
                     break;
                 case R.id.build_group:
                     msg += "創建群組";
@@ -330,7 +329,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.add_friend:
                     msg += "加入好友";
                     Intent intent_addFriend = new Intent(Tabs.this, AddFriend.class);
-                    startActivityForResult(intent_addFriend, REQUEST_CODE_AddFriend);
+                    startActivityForResult(intent_addFriend, REQUEST_CODE);
                     break;
                 case R.id.log_out:
                     msg += "登出";
@@ -411,12 +410,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 //指定哪個朋友要被刪除
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
-                for(int i = 0; i < com.example.s2784.layout.SearchView.arrayList.size(); ++i) {
-                    if(com.example.s2784.layout.SearchView.arrayList.get(i).getStudentID().equals(ID)) {
-                        com.example.s2784.layout.SearchView.arrayList.remove(i);
-                        break;
-                    }
-                }
+                com.example.s2784.layout.SearchView.arrayList.remove(roomInfo);
 
                 break;
         }
@@ -437,7 +431,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
-            case REQUEST_CODE_AddFriend:
+            case REQUEST_CODE:
                 String addFriendID = data.getStringExtra("StudentID");
                 mqtt.AddFriend(addFriendID);
                 break;
@@ -462,8 +456,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //                listHash.put(listDataHeader.get(0),group);
                 break;
             case REQUEST_CODE_MsgBulletin:
-                break;
-            case REQUEST_CODE_Search:
+
                 break;
         }
     }
@@ -895,17 +888,18 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             builder.setContentTitle("Title : Friend request");
             builder.setContentText("Hello World!");
 
-//            Intent intent = new Intent(context, Tabs.class);
-//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-//            stackBuilder.addParentStack(Tabs.class);
-//            stackBuilder.addNextIntent(intent);
-//            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//            builder.setContentIntent(pendingIntent);
+            Intent intent = new Intent(context, Tabs.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(Tabs.class);
+            stackBuilder.addNextIntent(intent);
+            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            builder.setContentIntent(pendingIntent);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int notificationId = 0;
             notificationManager.notify(notificationId,builder.build());
-
+            
+            Toast.makeText(context,"notification!",Toast.LENGTH_LONG).show();
         }
 
         public Bitmap MapBitmap(String id) {
