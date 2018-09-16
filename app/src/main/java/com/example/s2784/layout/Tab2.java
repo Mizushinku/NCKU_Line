@@ -70,6 +70,19 @@ public class Tab2 extends Fragment {
         roomList = testViewModel.getRoomList();
         roomListAdapter = new RoomListAdapter(getActivity(),roomList);
         roomListView.setAdapter(roomListAdapter);
+
+        roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RoomInfo roomInfo = (RoomInfo) roomList.get(position);
+                String code = roomInfo.getCode();
+
+                Intent chat = new Intent(getActivity(),Chatroom.class);
+                chat.putExtra("code", code);
+                chat.putExtra("id",testViewModel.getUserID());
+                startActivity(chat);
+            }
+        });
         return view;
     }
 
