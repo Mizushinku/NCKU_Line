@@ -424,12 +424,22 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     @Override
     public void GLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
+        String ID = testViewModel.getGroup().get(childPos).getRoomName();
         String code = testViewModel.getGroup().get(childPos).getCode();
+        RoomInfo roomInfo = new RoomInfo();
+        roomInfo.setCode(code);
+        roomInfo.setRoomName(ID);
         switch (which) {
             case 0:
                 //指定要退出哪個群組
                 mqtt.setWithdrawGroupPos(childPos);
                 mqtt.WithdrawFromGroup(code);
+                for(int i = 0; i < com.example.s2784.layout.SearchView.arrayList.size(); ++i) {
+                    if(com.example.s2784.layout.SearchView.arrayList.get(i).getRoomName().equals(ID)) {
+                        com.example.s2784.layout.SearchView.arrayList.remove(i);
+                        break;
+                    }
+                }
                 break;
         }
     }
