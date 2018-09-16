@@ -21,12 +21,10 @@ import java.util.List;
 public class SearchView extends Activity {
     /*for search view*/
 
-    ActivityTabsBinding activityTabsBinding;
     SearchViewBinding searchViewBinding;
     ListAdapter adapter_ForSearch;
     public static List<RoomInfo> arrayList= new ArrayList<>();
     private ListView listView_search;
-    private ExpandableListView ExpListView_Tab1;
 
     /*for search view*/
 
@@ -35,7 +33,7 @@ public class SearchView extends Activity {
         searchViewBinding = DataBindingUtil.setContentView(this, R.layout.search_view);
         /*for search view*/
 
-        adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,Tabs.testViewModel.getListHash());
+        adapter_ForSearch = new ListAdapter(com.example.s2784.layout.SearchView.arrayList,this,Tab1.listDataHeader,Tabs.testViewModel.getListHash());
         //adapter= new ListAdapter(arrayList);
         searchViewBinding.listView.setAdapter(adapter_ForSearch);
 

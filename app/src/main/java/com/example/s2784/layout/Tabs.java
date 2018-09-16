@@ -390,11 +390,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = testViewModel.getFriend().get(childPos).getStudentID();
         String code = testViewModel.getFriend().get(childPos).getCode();
+        RoomInfo roomInfo = new RoomInfo();
+        roomInfo.setCode(code);
+        roomInfo.setStudentID(ID);
         switch (which) {
             case 0:
                 //指定哪個朋友要被刪除
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
+                com.example.s2784.layout.SearchView.arrayList.remove(roomInfo);
 
                 break;
         }
@@ -765,6 +769,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             studentData.putExtra("ID", roomInfo.getStudentID());
             studentData.putExtra("image", roomInfo.getIcon_data());
             startActivity(studentData);
+            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
         }
 
         public void AddGroup(String groupName, String member_str) {
@@ -788,6 +793,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             roomInfo.setIcon_data(bytes);
             testViewModel.addInGroup(roomInfo);
             testViewModel.putListHash("群組", testViewModel.getGroup());
+            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
         }
 
         public void DeleteFriend(String friendID, String code) {

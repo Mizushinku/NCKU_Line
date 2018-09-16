@@ -44,7 +44,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
     public Object getChild(int i) {
         //return listDataHeader.get(i);
-        return SearchView.arrayList.get(i);
+        return com.example.s2784.layout.SearchView.arrayList.get(i);
         //return listHashMap.get(i);
     }
 
