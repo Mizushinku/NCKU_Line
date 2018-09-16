@@ -105,7 +105,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onCreate(savedInstanceState);
         //activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
         setContentView(R.layout.activity_tabs);
-
+        com.example.s2784.layout.SearchView.arrayList.clear();
 
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
 
