@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -100,12 +101,23 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public static Mqtt_Client mqtt;
 
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
         setContentView(R.layout.activity_tabs);
         com.example.s2784.layout.SearchView.arrayList.clear();
+
+  //Change status color
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        else{
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+   //Change status color
 
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
 
