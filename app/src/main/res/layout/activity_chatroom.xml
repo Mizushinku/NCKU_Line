@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/ivory"
     tools:context=".Chatroom"
     tools:ignore="NestedWeights">
 
@@ -56,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@drawable/stroke">
 
             <LinearLayout
                 android:layout_width="wrap_content"

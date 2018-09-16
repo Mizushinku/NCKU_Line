@@ -29,7 +29,7 @@
                 android:id="@+id/mainTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
+                android:minHeight="?android:attr/actionBarSize"
                 android:gravity="center_vertical"
                 android:text=""
                 android:textSize="20sp"
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ncku_red"
-            android:minHeight="?attr/actionBarSize"
+            android:minHeight="?android:attr/actionBarSize"
 
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorColor="@color/navy"

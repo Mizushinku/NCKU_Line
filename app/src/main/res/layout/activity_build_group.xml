@@ -4,47 +4,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/azure"
+    android:background="@color/ivory"
     android:orientation="vertical"
     tools:context=".Main">
 
     <LinearLayout
+        android:id="@+id/build_group_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="60dp"
+        android:background="@color/ncku_red"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/ncku_red"
-            android:gravity="center"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="15dp"
-            android:text="創建群組"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:layout_weight="10">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="?android:attr/actionBarSize"
+                android:paddingLeft="20dp"
+                android:text="建立群組"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_CreateGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nomal_button_stytle"
+                android:paddingVertical="3dp"
+                android:text="創建"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:weightSum="8">
+        android:layout_height="match_parent">
 
-
-        <EditText
-            android:id="@+id/etGroupName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:hint="請輸入群組名稱"
-            android:textSize="25dp" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="8">
 
-        <!--<Button-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etGroupName"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/build_group_edtext_stytle"
+                        android:hint="群組名稱"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                    <TextView
+                        android:id="@+id/group_name_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="20dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/15"
+                        android:textSize="20dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--<Button-->
             <!--android:id="@+id/btn_selectFriend"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -52,24 +108,20 @@
             <!--android:background="@drawable/nomal_button_stytle"-->
             <!--android:textColor="@color/white"-->
             <!--android:text="選擇好友"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/buildGroup_friendList"
-            android:layout_weight="6" />
+                <ListView
+                    android:id="@+id/buildGroup_friendList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:background="@drawable/build_group_listview" />
 
-        <Button
-            android:id="@+id/btn_CreateGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/nomal_button_stytle"
-            android:text="創建"
-            android:textColor="@color/white"
-            android:layout_weight="1"/>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
-
-
 </LinearLayout>

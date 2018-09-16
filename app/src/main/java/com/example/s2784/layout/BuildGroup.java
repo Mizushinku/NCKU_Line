@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -26,7 +30,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     //    private Button btn_selectFriend;
     private Button btn_CreateGroup;
     private ListView listView;
-
+    private TextView groupName;
     private ArrayList<String> groupMember; //unuse now, in adapter
     private ArrayList<RoomInfo> friendlist;
     private ListViewAdapter listViewAdapter;
@@ -35,7 +39,8 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_build_group);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //Intent intentFromMain = getIntent();
         //Bundle bundle = intentFromMain.getBundleExtra("BUNDLE");
         //friendList = (ArrayList<RoomInfo>) bundle.getSerializable("A");
@@ -43,6 +48,7 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         groupMember = new ArrayList<String>();
         friendlist = getIntent().getParcelableArrayListExtra("friendlist");
         etGroupName = findViewById(R.id.etGroupName);
+        groupName = findViewById(R.id.group_name_size);
 //        btn_selectFriend = findViewById(R.id.btn_selectFriend);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
         listView = findViewById(R.id.buildGroup_friendList);
@@ -72,6 +78,31 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 //        btn_selectFriend.setOnClickListener(this);
         btn_CreateGroup.setOnClickListener(this);
 
+        etGroupName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String currentText = editable.toString();
+                int currentLength = currentText.length();
+                groupName.setText(String.valueOf(currentLength));
+                if(currentLength == 0){
+                    etGroupName.setHint("群組名稱");
+                }
+                else{
+                    etGroupName.setHint(null);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -92,9 +123,10 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             } else {
                 Toast.makeText(BuildGroup.this, "請輸入群組名稱", Toast.LENGTH_SHORT).show();
             }
-        } else if (v == etGroupName) {
-            etGroupName.setHint(null);
         }
+// else if (v == etGroupName) {
+//            etGroupName.setHint(null);
+//        }
     }
 
 //    @Override
