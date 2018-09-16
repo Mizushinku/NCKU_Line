@@ -23,7 +23,7 @@ public class SearchView extends Activity {
 
     SearchViewBinding searchViewBinding;
     ListAdapter adapter_ForSearch;
-    public static List<RoomInfo> arrayList= new ArrayList<>();
+    public static ArrayList<RoomInfo> arrayList= new ArrayList<>();
     private ListView listView_search;
 
     /*for search view*/
