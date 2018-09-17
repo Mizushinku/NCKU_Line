@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -95,6 +96,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_JoinGroup = 4;
     private static final int REQUEST_CODE_Search = 5;
     private final static int CAMERA_RESULT = 0;
+
+    private final static String CHANNEL_ID_AddFriend = "1";
+    private final static String CHANNEL_NAME_AddFriend = "1";
 
     public static TestViewModel testViewModel;
 
@@ -900,8 +904,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         public void AddFriendNotification_re() {
-            Notification.Builder builder = new Notification.Builder(context);
-            builder.setSmallIcon(R.drawable.setting);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
+            builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Friend request");
             builder.setContentText("Hello World!");
 
@@ -912,7 +916,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
 //
 //            builder.setContentIntent(pendingIntent);
+
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddFriend,CHANNEL_NAME_AddFriend,NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
             int notificationId = 0;
             notificationManager.notify(notificationId,builder.build());
 
