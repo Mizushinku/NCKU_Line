@@ -42,13 +42,14 @@ public class SearchView extends Activity {
         searchViewBinding.search.onActionViewExpanded();
         searchViewBinding.search.setIconified(false);
         searchViewBinding.search.clearFocus();
+
         //click to chatroom
         listView_search = (ListView)findViewById(R.id.list_view);
         //listView_search.setAdapter(adapter);
         listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getChild(position);
+                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getItem(position);
                 String code = roomInfo.getCode();
                 Intent chat = new Intent(SearchView.this,Chatroom.class);
                 chat.putExtra("code", code);
