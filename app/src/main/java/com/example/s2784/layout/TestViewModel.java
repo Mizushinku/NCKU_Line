@@ -12,6 +12,7 @@ public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> roomlist = new ArrayList<>();
     private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
     private String userID;
+    private boolean dataChange = false;
 
     public String getUserID() {
         return userID;
@@ -57,4 +58,8 @@ public class TestViewModel extends ViewModel {
     public void putListHash(String string,ArrayList<RoomInfo> list){
         listHash.put(string,list);
     }
+
+    public boolean isDataChange() { return dataChange; }
+
+    public void setDataChange(boolean dataChange) { this.dataChange = dataChange; }
 }
