@@ -1,12 +1,14 @@
 package com.example.s2784.layout;
 
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,27 +39,25 @@ public class Tab2 extends Fragment {
     private RoomListAdapter roomListAdapter;
     private TestViewModel testViewModel;
     private String userID;
-    private ArrayList<RoomInfo> roomList;
     public Tab2() {
         // Required empty public constructor
     }
 
 
     //目前用不到
-    public static Tab1 newInstance(int index) {
-        Tab1 tab1 = new Tab1();
+    public static Tab2 newInstance(int index) {
+        Tab2 tab2 = new Tab2();
         Bundle args = new Bundle();
         args.putInt("index",index);
-        tab1.setArguments(args);
-        return tab1;
+        tab2.setArguments(args);
+        return tab2;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         testViewModel = ViewModelProviders.of(getActivity()).get(TestViewModel.class);
-
-
+        Log.d("PAGE","tab2/size:"+testViewModel.getRoomList().size());
 
     }
 
@@ -67,14 +67,14 @@ public class Tab2 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab2,container,false);
         roomListView = view.findViewById(R.id.room_lv);
-        roomList = testViewModel.getRoomList();
-        roomListAdapter = new RoomListAdapter(getActivity(),roomList);
+//        roomList = testViewModel.getRoomList();
+        roomListAdapter = new RoomListAdapter(getActivity(),testViewModel.getRoomList());
         roomListView.setAdapter(roomListAdapter);
 
         roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) roomList.get(position);
+                RoomInfo roomInfo = (RoomInfo) testViewModel.getRoomList().get(position);
                 String code = roomInfo.getCode();
 
                 Intent chat = new Intent(getActivity(),Chatroom.class);

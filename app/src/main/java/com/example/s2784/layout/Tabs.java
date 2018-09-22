@@ -167,6 +167,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
+                        viewPager.getAdapter().notifyDataSetChanged();
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend);
                         tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
@@ -174,6 +175,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         mainTitle.setText("好友&群組");
                         break;
                     case 1:
+                        viewPager.getAdapter().notifyDataSetChanged();
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
                         tabLayout.getTabAt(1).setIcon(R.drawable.chat);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);

@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> group = new ArrayList<>();
     private final ArrayList<RoomInfo> friend = new ArrayList<>();
+    private final ArrayList<RoomInfo> roomlist = new ArrayList<>();
     private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
     private String userID;
 
@@ -43,10 +45,10 @@ public class TestViewModel extends ViewModel {
         return friend;
     }
 
-    public ArrayList<RoomInfo> getRoomList() {  ArrayList<RoomInfo> temp = new ArrayList<>();
-                                                temp.addAll(friend);
-                                                temp.addAll(group);
-                                                return temp;}
+    public ArrayList<RoomInfo> getRoomList() {  roomlist.clear();
+                                                roomlist.addAll(friend);
+                                                roomlist.addAll(group);
+                                                return roomlist; }
 
     public HashMap<String, ArrayList<RoomInfo>> getListHash() {
         return listHash;
