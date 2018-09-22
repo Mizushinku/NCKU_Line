@@ -605,6 +605,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setRoomName(addFriend_info[1]);
                                 roomInfo.setStudentID(addFriend_info[2]);
                                 roomInfo.setCode(addFriend_info[3]);
+                                roomInfo.setrMsg("No History");
+                                roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
                                 roomInfo.setType("F");
                                 roomInfoList.add(roomInfo);
                                 GetFriendIcon("Add", addFriend_info[2]);
@@ -809,6 +811,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 e.printStackTrace();
             }
 
+            Tab1_CM.getInstance().refreshExplv(1);
+
             Intent studentData = new Intent(Tabs.this, StudentData.class);
             studentData.putExtra("name", roomInfo.getFriendName());
             studentData.putExtra("ID", roomInfo.getStudentID());
@@ -831,6 +835,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
+            roomInfo.setrMsg("No History");
+            roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
             Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -840,6 +846,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.putListHash("群組", testViewModel.getGroup());
             testViewModel.setDataChange(true);
             com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+
+            Tab1_CM.getInstance().refreshExplv(0);
         }
 
         public void DeleteFriend(String friendID, String code) {
@@ -861,6 +869,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.putListHash("好友", testViewModel.getFriend());
             testViewModel.setDataChange(true);
             deleteFriendPos = -1;
+            Tab1_CM.getInstance().refreshExplv(1);
         }
 
         public void WithdrawFromGroup(String code) {
@@ -882,6 +891,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.putListHash("群組", testViewModel.getGroup());
             testViewModel.setDataChange(true);
             withdrawGroupPos = -1;
+            Tab1_CM.getInstance().refreshExplv(0);
         }
 
         public void setProcessingCode(String processingCode) {

@@ -35,7 +35,7 @@ import java.util.List;
 //        onDestroy()：銷毀Fragment時調用。
 //        onDetach()：當Fragment和Activity解除關聯時調用
 
-public class Tab1 extends Fragment {
+public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
 
 
@@ -63,6 +63,7 @@ public class Tab1 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         testViewModel = ViewModelProviders.of(getActivity()).get(TestViewModel.class);
+        Tab1_CM.getInstance().setListener(this);
 
     }
 
@@ -189,5 +190,17 @@ public class Tab1 extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void refreshExplv(int mod) {
+        if(mod == 0) {
+            listView.collapseGroup(0);
+            listView.expandGroup(0);
+        }
+        else if(mod == 1) {
+            listView.collapseGroup(1);
+            listView.expandGroup(1);
+        }
     }
 }
