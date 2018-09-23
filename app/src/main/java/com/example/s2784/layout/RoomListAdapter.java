@@ -70,7 +70,7 @@ public class RoomListAdapter extends BaseAdapter {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             String now_time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime());
-            if (now_time.substring(0, 9).equals(roomInfo.getrMsgDate().substring(0, 9))) {
+            if (now_time.substring(0, 10).equals(roomInfo.getrMsgDate().substring(0, 10))) {
                 viewHolder.date.setText(roomInfo.getrMsgDate().substring(11, 16));
             } else {
                 viewHolder.date.setText(roomInfo.getrMsgDate().substring(5, 7) + "/" + roomInfo.getrMsgDate().substring(8, 10));

@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class TestViewModel extends ViewModel {
@@ -49,6 +50,7 @@ public class TestViewModel extends ViewModel {
     public ArrayList<RoomInfo> getRoomList() {  roomlist.clear();
                                                 roomlist.addAll(friend);
                                                 roomlist.addAll(group);
+                                                Collections.sort(roomlist);
                                                 return roomlist; }
 
     public HashMap<String, ArrayList<RoomInfo>> getListHash() {
