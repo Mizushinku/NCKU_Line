@@ -498,12 +498,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private Context context;
         private String user;
 
-        private int init_flag = 0;
         private String[] init_info = null;
 
-        private int addFriend_flag = 0;
         private String[] addFriend_info = null;
-        private boolean sdtDta_flag = false;
+        private boolean addFriend_notification_flag = false;
 
         private int deleteFriendPos = -1;
         private int withdrawGroupPos = -1;
@@ -612,6 +610,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 GetFriendIcon("Add", addFriend_info[2]);
                             } else if (addFriend_info[0].equals("false")) {
                                 Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
+                                addFriend_notification_flag = false;
                             }
 //                            if(addFriend_flag == 0) {
 //                                addFriend_info = (new String(message.getPayload())).split("/");
@@ -783,6 +782,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         public void AddFriend(String friendID) {
+            addFriend_notification_flag = true;
             String topic = "IDF/AddFriend/" + user;
             String MSG = friendID;
             try {
@@ -803,21 +803,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.putListHash("好友", testViewModel.getFriend());
             testViewModel.setDataChange(true);
 
-            String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
-            String MSG = "";
-            try {
-                client.publish(topic, MSG.getBytes(), 2, false);
-            } catch (MqttException e) {
-                e.printStackTrace();
+            if(addFriend_notification_flag) {
+                String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
+                String MSG = "";
+                try {
+                    client.publish(topic, MSG.getBytes(), 2, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                addFriend_notification_flag = false;
+
+                Intent studentData = new Intent(Tabs.this, StudentData.class);
+                studentData.putExtra("name", roomInfo.getFriendName());
+                studentData.putExtra("ID", roomInfo.getStudentID());
+                studentData.putExtra("image", roomInfo.getIcon_data());
+                startActivity(studentData);
             }
 
             Tab1_CM.getInstance().refreshExplv(1);
 
-            Intent studentData = new Intent(Tabs.this, StudentData.class);
-            studentData.putExtra("name", roomInfo.getFriendName());
-            studentData.putExtra("ID", roomInfo.getStudentID());
-            studentData.putExtra("image", roomInfo.getIcon_data());
-            startActivity(studentData);
+
             com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
         }
 
