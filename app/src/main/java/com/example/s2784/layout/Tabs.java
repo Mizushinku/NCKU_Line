@@ -1,50 +1,28 @@
 package com.example.s2784.layout;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.DialogFragment;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Looper;
-import android.provider.Browser;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
-import com.example.s2784.layout.databinding.ActivityTabsBinding;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -56,34 +34,16 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.StringTokenizer;
 
-//for searchview
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.SearchView;
-import android.widget.ListView;
-
-import com.example.s2784.layout.databinding.ActivityMainBinding;
-
-
-//for searchview
 
 public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener {
 
     /*for search view*/
 
-    ActivityTabsBinding activityTabsBinding;
-    ListAdapter adapter_ForSearch;
-    //public static List<RoomInfo> arrayList= new ArrayList<>();
-    private ListView listView_search;
-    private ExpandableListView ExpListView_Tab1;
 
     /*for search view*/
 
@@ -95,7 +55,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_MsgBulletin = 3;
     private static final int REQUEST_CODE_JoinGroup = 4;
     private static final int REQUEST_CODE_Search = 5;
-    private final static int CAMERA_RESULT = 0;
 
     private final static String CHANNEL_ID_AddFriend = "1";
     private final static String CHANNEL_NAME_AddFriend = "1";
@@ -110,7 +69,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //activityTabsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tabs);
         setContentView(R.layout.activity_tabs);
         com.example.s2784.layout.SearchView.arrayList.clear();
 
@@ -142,7 +100,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         // For toolbar
 
 
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.friend).setText("個人頁面"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.chat_inactive).setText("聊天"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.news_inactive).setText("公佈欄"));
@@ -151,7 +109,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive), getResources().getColor(R.color.white));
 
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         final TextView mainTitle = findViewById(R.id.mainTitle);
@@ -467,13 +425,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 String groupName = data.getStringExtra("groupName");
                 ArrayList<String> groupMember = data.getStringArrayListExtra("memberList");
 
-                String member_str = userID;
+                StringBuilder sb = new StringBuilder(userID);
                 if (groupMember != null) {
                     for (int i = 0; i < groupMember.size(); ++i) {
-                        member_str += ("\t" + groupMember.get(i));
+                        //member_str += ("\t" + groupMember.get(i));
+                        sb.append("\t");
+                        sb.append(groupMember.get(i));
                     }
                 }
-                mqtt.AddGroup(groupName, member_str);
+                mqtt.AddGroup(groupName, sb.toString());
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();
@@ -507,18 +467,18 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private int withdrawGroupPos = -1;
 
         private String processingCode = "";
-        private ArrayList<RoomInfo> roomInfoList = null; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
-        private HashMap<String, Bitmap> friendInfoMap = null;
+        private ArrayList<RoomInfo> roomInfoList; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
+        private HashMap<String, Bitmap> friendInfoMap;
 
-        public Mqtt_Client(Context context, String user) {
+        private Mqtt_Client(Context context, String user) {
             this.context = context;
             this.user = user;
-            roomInfoList = new ArrayList<RoomInfo>();
-            friendInfoMap = new HashMap<String, Bitmap>();
+            roomInfoList = new ArrayList<>();
+            friendInfoMap = new HashMap<>();
         }
 
 
-        public void Connect() {
+        private void Connect() {
             String clientId = MqttClient.generateClientId();
             client = new MqttAndroidClient(context, MQTT_HOST, clientId);
 
@@ -559,7 +519,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 }
 
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                public void messageArrived(String topic, MqttMessage message) {
                     String[] idf = topic.split("/");
 //                    Log.d("MSG","MSG: " + message.toString());
                     switch (idf[1]) {
@@ -701,7 +661,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         }
                                     }
                                 } else if (idf[1].contains("Add")) {
-                                    ;
                                     String[] topicSplitLine = idf[1].split(":");
                                     Log.d("Create", topicSplitLine[1]);
                                     Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
@@ -727,7 +686,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             });
         }
 
-        public void disconnect() {
+        private void disconnect() {
             if (client != null && client.isConnected()) {
                 try {
                     client.unsubscribe("IDF/+/" + user + "/Re");
@@ -752,7 +711,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void Initialize() {
+        private void Initialize() {
             String topic = "IDF/Initialize/" + user;
             String MSG = "";
             try {
@@ -762,7 +721,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void Initialize_re(RoomInfo roomInfo) {
+        private void Initialize_re(RoomInfo roomInfo) {
             if (roomInfo.getType().equals("F")) {
                 testViewModel.addInFriend(roomInfo);
                 com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
@@ -781,18 +740,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void AddFriend(String friendID) {
+        private void AddFriend(String friendID) {
             addFriend_notification_flag = true;
             String topic = "IDF/AddFriend/" + user;
-            String MSG = friendID;
             try {
-                client.publish(topic, MSG.getBytes(), 0, false);
+                client.publish(topic, friendID.getBytes(), 0, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public void AddFriend_re(RoomInfo roomInfo) {
+        private void AddFriend_re(RoomInfo roomInfo) {
 //            RoomInfo roomInfo = new RoomInfo();
 //            roomInfo.setCode(code);
 //            roomInfo.setStudentID(ID);
@@ -826,7 +784,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
         }
 
-        public void AddGroup(String groupName, String member_str) {
+        private void AddGroup(String groupName, String member_str) {
             String topic = "IDF/AddGroup/" + user;
             String MSG = groupName + "\t" + member_str;
             try {
@@ -836,7 +794,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void AddGroup_re(String code, String groupName) {
+        private void AddGroup_re(String code, String groupName) {
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
@@ -855,7 +813,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             Tab1_CM.getInstance().refreshExplv(0);
         }
 
-        public void DeleteFriend(String friendID, String code) {
+        private void DeleteFriend(String friendID, String code) {
             String topic = "IDF/DeleteFriend/" + user;
             String MSG = friendID + "/" + code;
             try {
@@ -865,11 +823,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void setDeleteFriendPos(int deleteFriendPos) {
+        private void setDeleteFriendPos(int deleteFriendPos) {
             this.deleteFriendPos = deleteFriendPos;
         }
 
-        public void DeleteFriend_re() {
+        private void DeleteFriend_re() {
             testViewModel.removeFromFriend(deleteFriendPos);
             testViewModel.putListHash("好友", testViewModel.getFriend());
             testViewModel.setDataChange(true);
@@ -877,21 +835,20 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             Tab1_CM.getInstance().refreshExplv(1);
         }
 
-        public void WithdrawFromGroup(String code) {
+        private void WithdrawFromGroup(String code) {
             String topic = "IDF/WithdrawFromGroup/" + user;
-            String MSG = code;
             try {
-                client.publish(topic, MSG.getBytes(), 0, false);
+                client.publish(topic, code.getBytes(), 0, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public void setWithdrawGroupPos(int withdrawGroupPos) {
+        private void setWithdrawGroupPos(int withdrawGroupPos) {
             this.withdrawGroupPos = withdrawGroupPos;
         }
 
-        public void WithdrawFromGroup_re() {
+        private void WithdrawFromGroup_re() {
             testViewModel.removeFromGroup(withdrawGroupPos);
             testViewModel.putListHash("群組", testViewModel.getGroup());
             testViewModel.setDataChange(true);
@@ -905,9 +862,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public void SendMessage(String str) {
             String topic = "IDF/SendMessage/" + user;
-            String MSG = str;
             try {
-                client.publish(topic, MSG.getBytes(), 0, false);
+                client.publish(topic, str.getBytes(), 0, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -915,15 +871,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public void GetRecord(String code) {
             String topic = "IDF/GetRecord/" + user;
-            String MSG = code;
             try {
-                client.publish(topic, MSG.getBytes(), 2, false);
+                client.publish(topic, code.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        public void GetFriendIcon(String action, String friendID) {
+        private void GetFriendIcon(String action, String friendID) {
             String topic = "IDF/FriendIcon/" + user;
             String MSG = action + ":" + friendID;
             try {
@@ -933,7 +888,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void AddFriendNotification_re() {
+        private void AddFriendNotification_re() {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
             builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Friend request");
