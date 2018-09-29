@@ -572,9 +572,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             }
                             break;
                         case "DeleteFriend":
-                            String DF_msg = new String(message.getPayload());
-                            if (DF_msg.equals("true")) {
-                                DeleteFriend_re();
+                            String[] DF_msg = (new String(message.getPayload())).split("/");
+                            if (DF_msg[0].equals("true")) {
+                                if(DF_msg[1].equals("1")) {
+                                    DeleteFriend_re("");
+                                }else {
+                                    DeleteFriend_re(DF_msg[2]);
+                                }
                             } else {
                                 deleteFriendPos = -1;
                             }
@@ -719,12 +723,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         private void AddFriend_re(RoomInfo roomInfo, String tachiba) {
-//            RoomInfo roomInfo = new RoomInfo();
-//            roomInfo.setCode(code);
-//            roomInfo.setStudentID(ID);
-//            roomInfo.setRoomName(roomName);
-//            roomInfo.setIcon(b);
-//            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             testViewModel.addInFriend(roomInfo);
             testViewModel.putListHash("好友", testViewModel.getFriend());
             viewPager.getAdapter().notifyDataSetChanged();
@@ -794,11 +792,22 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             this.deleteFriendPos = deleteFriendPos;
         }
 
-        private void DeleteFriend_re() {
-            testViewModel.removeFromFriend(deleteFriendPos);
+        private void DeleteFriend_re(String ID) {
+            if(ID.equals("")) {
+                testViewModel.removeFromFriend(deleteFriendPos);
+                deleteFriendPos = -1;
+            }else{
+                ArrayList<RoomInfo> DF_tmpArray = testViewModel.getFriend();
+                for(int i = 0; i < DF_tmpArray.size(); ++i) {
+                    if(DF_tmpArray.get(i).getStudentID().equals(ID)) {
+                        testViewModel.removeFromFriend(i);
+                        break;
+                    }
+                }
+            }
             testViewModel.putListHash("好友", testViewModel.getFriend());
             viewPager.getAdapter().notifyDataSetChanged();
-            deleteFriendPos = -1;
+
             Tab1_CM.getInstance().refreshExplv(1);
         }
 
