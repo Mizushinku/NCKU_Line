@@ -47,7 +47,9 @@
         android:layout_weight="8.5"
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:listSelector="@android:color/transparent"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
