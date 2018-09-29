@@ -453,7 +453,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private String[] init_info = null;
 
         private String[] addFriend_info = null;
-        private boolean addFriend_notification_flag = false;
 
         private int deleteFriendPos = -1;
         private int withdrawGroupPos = -1;
@@ -541,7 +540,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setrMsgDate(init_info[5]);
                                 roomInfoList.add(roomInfo);
                                 if (init_info[3].equals("F")) {
-                                    GetFriendIcon("Init", init_info[2]);
+                                    GetFriendIcon("Init", init_info[2], "0");
                                 } else if (init_info[3].equals("G")) {
                                     Initialize_re(roomInfo);
                                 }
@@ -559,32 +558,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
                                 roomInfo.setType("F");
                                 roomInfoList.add(roomInfo);
-                                GetFriendIcon("Add", addFriend_info[2]);
+                                GetFriendIcon("Add", addFriend_info[2], addFriend_info[4]);
                             } else if (addFriend_info[0].equals("false")) {
                                 Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
-                                addFriend_notification_flag = false;
                             }
-//                            if(addFriend_flag == 0) {
-//                                addFriend_info = (new String(message.getPayload())).split("/");
-//                                if(addFriend_info[0].equals("true")) {
-//                                    addFriend_flag = 1;
-//                                    sdtDta_flag = true;
-//                                }
-//                            } else {
-//                                byte[] bit = message.getPayload();
-//                                Bitmap b = BitmapFactory.decodeByteArray(bit,0,bit.length);
-//
-//                                if(sdtDta_flag) {
-//                                    sdtDta_flag = false;
-//                                    Intent studentData = new Intent(Main.this, StudentData.class);
-//                                    studentData.putExtra("name", addFriend_info[1]);
-//                                    studentData.putExtra("ID", addFriend_info[2]);
-//                                    studentData.putExtra("image", bit);
-//                                    startActivity(studentData);
-//                                }
-//                                AddFriend_re(addFriend_info[3],addFriend_info[2],addFriend_info[1],b);
-//                                addFriend_flag = 0;
-//                            }
                             break;
                         case "AddGroup":
                             String[] AG_msg = (new String(message.getPayload())).split("/");
@@ -660,7 +637,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     for (int i = 0; i < roomInfoList.size(); i++) {
                                         if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
                                             roomInfoList.get(i).setIcon_data(message.getPayload());
-                                            AddFriend_re(roomInfoList.get(i));
+                                            AddFriend_re(roomInfoList.get(i),topicSplitLine[2]);
                                             roomInfoList.remove(i);
                                             break;
                                         }
@@ -733,16 +710,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         private void AddFriend(String friendID) {
-            addFriend_notification_flag = true;
             String topic = "IDF/AddFriend/" + user;
             try {
-                client.publish(topic, friendID.getBytes(), 0, false);
+                client.publish(topic, friendID.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        private void AddFriend_re(RoomInfo roomInfo) {
+        private void AddFriend_re(RoomInfo roomInfo, String tachiba) {
 //            RoomInfo roomInfo = new RoomInfo();
 //            roomInfo.setCode(code);
 //            roomInfo.setStudentID(ID);
@@ -753,7 +729,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.putListHash("好友", testViewModel.getFriend());
             viewPager.getAdapter().notifyDataSetChanged();
 
-            if(addFriend_notification_flag) {
+            if(tachiba.equals("1")) {
                 String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
                 String MSG = "";
                 try {
@@ -761,7 +737,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
-                addFriend_notification_flag = false;
 
                 Intent studentData = new Intent(Tabs.this, StudentData.class);
                 studentData.putExtra("name", roomInfo.getFriendName());
@@ -870,9 +845,22 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        private void GetFriendIcon(String action, String friendID) {
+        private void GetFriendIcon(String action, String friendID, String tachiba) {
             String topic = "IDF/FriendIcon/" + user;
-            String MSG = action + ":" + friendID;
+            String MSG = "";
+            switch (tachiba) {
+                case "0":
+                    MSG = action + ":" + friendID;
+                    break;
+                case "1":
+                    MSG = action + ":" + friendID + ":1";
+                    break;
+                case "2":
+                    MSG = action + ":" + friendID + ":2";
+                    break;
+                default:
+                    break;
+            }
             try {
                 client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {
