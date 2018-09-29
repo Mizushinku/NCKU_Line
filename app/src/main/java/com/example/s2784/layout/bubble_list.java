@@ -111,4 +111,5 @@ public class bubble_list extends BaseAdapter {
             this.getView(position, v, lv);
         }
     }
+
 }

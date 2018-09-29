@@ -125,10 +125,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        if(testViewModel.isDataChange()){
-                            viewPager.getAdapter().notifyDataSetChanged();
-                            testViewModel.setDataChange(false);
-                        }
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend);
                         tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
@@ -136,10 +132,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         mainTitle.setText("好友&群組");
                         break;
                     case 1:
-                        if(testViewModel.isDataChange()){
-                            viewPager.getAdapter().notifyDataSetChanged();
-                            testViewModel.setDataChange(false);
-                        }
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
                         tabLayout.getTabAt(1).setIcon(R.drawable.chat);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
@@ -638,7 +630,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             if (processingCode.equals(SM_msg_splitLine[0])) {
                                 LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
                             }
-                            testViewModel.setDataChange(true);
+                            viewPager.getAdapter().notifyDataSetChanged();
                             break;
                         case "GetRecord":
                             LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
@@ -726,7 +718,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.addInFriend(roomInfo);
                 com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
                 testViewModel.putListHash("好友", testViewModel.getFriend());
-                testViewModel.setDataChange(true);
+                viewPager.getAdapter().notifyDataSetChanged();
             } else if (roomInfo.getType().equals("G")) {
                 Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -736,7 +728,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.addInGroup(roomInfo);
                 com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
                 testViewModel.putListHash("群組", testViewModel.getGroup());
-                testViewModel.setDataChange(true);
+                viewPager.getAdapter().notifyDataSetChanged();
             }
         }
 
@@ -759,7 +751,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //            Log.d("Create",roomInfo.getCode()+","+roomInfo.getFriendName()+","+roomInfo.getStudentID());
             testViewModel.addInFriend(roomInfo);
             testViewModel.putListHash("好友", testViewModel.getFriend());
-            testViewModel.setDataChange(true);
+            viewPager.getAdapter().notifyDataSetChanged();
 
             if(addFriend_notification_flag) {
                 String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
@@ -807,7 +799,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             roomInfo.setIcon_data(bytes);
             testViewModel.addInGroup(roomInfo);
             testViewModel.putListHash("群組", testViewModel.getGroup());
-            testViewModel.setDataChange(true);
+            viewPager.getAdapter().notifyDataSetChanged();
             com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
 
             Tab1_CM.getInstance().refreshExplv(0);
@@ -830,7 +822,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void DeleteFriend_re() {
             testViewModel.removeFromFriend(deleteFriendPos);
             testViewModel.putListHash("好友", testViewModel.getFriend());
-            testViewModel.setDataChange(true);
+            viewPager.getAdapter().notifyDataSetChanged();
             deleteFriendPos = -1;
             Tab1_CM.getInstance().refreshExplv(1);
         }
@@ -851,7 +843,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void WithdrawFromGroup_re() {
             testViewModel.removeFromGroup(withdrawGroupPos);
             testViewModel.putListHash("群組", testViewModel.getGroup());
-            testViewModel.setDataChange(true);
+            viewPager.getAdapter().notifyDataSetChanged();
             withdrawGroupPos = -1;
             Tab1_CM.getInstance().refreshExplv(0);
         }
