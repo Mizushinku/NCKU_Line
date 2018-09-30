@@ -566,9 +566,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         case "AddGroup":
                             String[] AG_msg = (new String(message.getPayload())).split("/");
                             if (AG_msg[0].equals("true")) {
-                                AddGroup_re(AG_msg[1], AG_msg[2]);
+                                AddGroup_re(AG_msg[1], AG_msg[2], AG_msg[3]);
                             } else {
-                                Toast.makeText(context, "Error creating group" + AG_msg[0], Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error creating group " + AG_msg[0], Toast.LENGTH_LONG).show();
                             }
                             break;
                         case "DeleteFriend":
@@ -617,7 +617,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                             break;
                         case "AddFriendNotification":
-                            AddFriendNotification_re();
+
                             break;
                         default:
                             if (idf[1].contains("FriendIcon")) {
@@ -728,19 +728,20 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             viewPager.getAdapter().notifyDataSetChanged();
 
             if(tachiba.equals("1")) {
-                String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
-                String MSG = "";
-                try {
-                    client.publish(topic, MSG.getBytes(), 2, false);
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
+//                String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
+//                String MSG = "";
+//                try {
+//                    client.publish(topic, MSG.getBytes(), 2, false);
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
+//                }
                 Intent studentData = new Intent(Tabs.this, StudentData.class);
                 studentData.putExtra("name", roomInfo.getFriendName());
                 studentData.putExtra("ID", roomInfo.getStudentID());
                 studentData.putExtra("image", roomInfo.getIcon_data());
                 startActivity(studentData);
+            } else if(tachiba.equals("2")) {
+                AddFriendNotification(roomInfo.getRoomName());
             }
 
             Tab1_CM.getInstance().refreshExplv(1);
@@ -753,13 +754,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/AddGroup/" + user;
             String MSG = groupName + "\t" + member_str;
             try {
-                client.publish(topic, MSG.getBytes(), 0, false);
+                client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
 
-        private void AddGroup_re(String code, String groupName) {
+        private void AddGroup_re(String code, String groupName, String tachiba) {
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
@@ -775,7 +776,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             viewPager.getAdapter().notifyDataSetChanged();
             com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
 
+            if(tachiba.equals("2")) {
+                AddGroupNotification(roomInfo.getRoomName());
+            }
+
             Tab1_CM.getInstance().refreshExplv(0);
+
+            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
         }
 
         private void DeleteFriend(String friendID, String code) {
@@ -877,11 +884,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        private void AddFriendNotification_re() {
+        private void AddFriendNotification(String friendName) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
             builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Friend request");
-            builder.setContentText("Hello World!");
+            builder.setContentText(friendName);
 
 //            Intent intent = new Intent(context, Tabs.class);
 //            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -898,9 +905,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 notificationManager.createNotificationChannel(notificationChannel);
             }
 
-            int notificationId = 0;
+            int notificationId = 1;
             notificationManager.notify(notificationId,builder.build());
 
+        }
+
+        private void AddGroupNotification(String groupName) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
+            builder.setSmallIcon(R.mipmap.ncku_line2);
+            builder.setContentTitle("Title : Group request");
+            builder.setContentText(groupName);
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddFriend,CHANNEL_NAME_AddFriend,NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+            int notificationId = 0;
+            notificationManager.notify(notificationId,builder.build());
         }
 
         public Bitmap MapBitmap(String id) {
