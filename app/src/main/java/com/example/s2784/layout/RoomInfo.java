@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 /**
  * 儲存好友或群組的資訊 ... 2018/6/30
@@ -18,13 +17,12 @@ public class RoomInfo implements Serializable, Parcelable, Comparable {
     private boolean checked;
     private String roomName;
     private String code;
-    private String StudentID; // if type = "F", has value ; type = "G", no value
+    private String StudentID;
     private String friendName;
     private String type;
     private String rMsg;
     private String rMsgDate;
     private byte[] icon_data;
-    private ArrayList<String> memberID = new ArrayList<>();
 
 
     public RoomInfo() {
@@ -40,7 +38,6 @@ public class RoomInfo implements Serializable, Parcelable, Comparable {
         rMsg = in.readString();
         rMsgDate = in.readString();
         icon_data = in.createByteArray();
-        memberID = in.createStringArrayList();
     }
 
     public boolean getChecked() {
@@ -115,19 +112,6 @@ public class RoomInfo implements Serializable, Parcelable, Comparable {
         this.icon_data = icon_data;
     }
 
-    public ArrayList<String> getMemberID() {
-        return memberID;
-    }
-
-    public void setMemberID(ArrayList<String> memberID) {
-        this.memberID = memberID;
-    }
-
-    public void addMemberID(String ID){
-        this.memberID.add(ID);
-    }
-
-
 
     @Override
     public int describeContents() {
@@ -145,7 +129,6 @@ public class RoomInfo implements Serializable, Parcelable, Comparable {
         dest.writeString(rMsg);
         dest.writeString(rMsgDate);
         dest.writeByteArray(icon_data);
-        dest.writeStringList(memberID);
     }
 
     public static Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {

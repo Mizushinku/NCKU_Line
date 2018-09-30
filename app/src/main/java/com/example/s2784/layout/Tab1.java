@@ -16,11 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+
 
 
 //        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
@@ -38,23 +38,23 @@ import java.util.List;
 public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
 
+
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     public static List<String> listDataHeader;
     private OnFragmentInteractionListener mListener;
     private TestViewModel testViewModel;
     private String userID;
-
     public Tab1() {
         // Required empty public constructor
     }
 
 
-    //目前用不到
+//目前用不到
     public static Tab1 newInstance(int index) {
         Tab1 tab1 = new Tab1();
         Bundle args = new Bundle();
-        args.putInt("index", index);
+        args.putInt("index",index);
         tab1.setArguments(args);
         return tab1;
     }
@@ -74,9 +74,9 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         // Inflate the layout for this fragment
         initData();
 
-        View view = inflater.inflate(R.layout.fragment_tab1, container, false);
-        listView = (ExpandableListView) view.findViewById(R.id.lvExp);
-        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, testViewModel.getListHash());
+        View view = inflater.inflate(R.layout.fragment_tab1,container,false);
+        listView = (ExpandableListView)view.findViewById(R.id.lvExp);
+        listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);
 //        listView.expandGroup(0);
 //        listView.expandGroup(1);
@@ -84,26 +84,13 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                RoomInfo roomInfo = (RoomInfo) listAdapter.getChild(groupPosition, childPosition);
-
-                String member = "";
-                for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
-                    if (i == 0) {
-                        member += roomInfo.getMemberID().get(i) ;
-                    }else{
-                        member += "," + roomInfo.getMemberID().get(i) ;
-                    }
-                }
-
+                RoomInfo roomInfo = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
                 String code = roomInfo.getCode();
 
-                Intent chat = new Intent(getActivity(), Chatroom.class);
+                Intent chat = new Intent(getActivity(),Chatroom.class);
                 chat.putExtra("code", code);
-                chat.putExtra("id", testViewModel.getUserID());
-                chat.putExtra("member",member);
+                chat.putExtra("id",testViewModel.getUserID());
                 startActivity(chat);
-
-
 
                 return false;
             }
@@ -111,7 +98,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                if(ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
                     int groupPos = ExpandableListView.getPackedPositionGroup(packedPos);
                     int childPos = ExpandableListView.getPackedPositionChild(packedPos);
@@ -119,7 +106,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
                     if (groupPos == 1) {
                         showFLCM(childPos);
-                    } else if (groupPos == 0) {
+                    } else if(groupPos == 0) {
                         showGLCM(childPos);
                     }
                 }
@@ -130,6 +117,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         });
 
 
+
         return view;
     }
 
@@ -137,7 +125,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         DialogFragment dialogFragment = new FriendLongClickDialogFragment();
         //用Bundle傳遞參數
         Bundle bundle = new Bundle();
-        bundle.putInt("childPos", childPos);
+        bundle.putInt("childPos",childPos);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getActivity().getFragmentManager(), "FLCM");
     }
@@ -145,13 +133,13 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
     private void showGLCM(int childPos) {
         DialogFragment dialogFragment = new GroupLongClickDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("childPos", childPos);
+        bundle.putInt("childPos",childPos);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getActivity().getFragmentManager(), "GLCM");
     }
 
 
-    private void initData() {
+    private void initData(){
         listDataHeader = new ArrayList<>();
         listDataHeader.add("群組");
         listDataHeader.add("好友");
@@ -159,9 +147,10 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 //        group = new ArrayList<>();
 //        friend = new ArrayList<>();
 
-        testViewModel.putListHash(listDataHeader.get(0), testViewModel.getGroup());
-        testViewModel.putListHash(listDataHeader.get(1), testViewModel.getFriend());
+        testViewModel.putListHash(listDataHeader.get(0),testViewModel.getGroup());
+        testViewModel.putListHash(listDataHeader.get(1),testViewModel.getFriend());
     }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -205,10 +194,11 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
     @Override
     public void refreshExplv(int mod) {
-        if (mod == 0) {
+        if(mod == 0) {
             listView.collapseGroup(0);
             listView.expandGroup(0);
-        } else if (mod == 1) {
+        }
+        else if(mod == 1) {
             listView.collapseGroup(1);
             listView.expandGroup(1);
         }
