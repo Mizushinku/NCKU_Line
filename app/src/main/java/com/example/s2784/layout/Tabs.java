@@ -58,6 +58,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     private final static String CHANNEL_ID_AddFriend = "1";
     private final static String CHANNEL_NAME_AddFriend = "1";
+    private final static String CHANNEL_ID_AddGroup = "2";
+    private final static String CHANNEL_NAME_AddGroup = "2";
 
     public static TestViewModel testViewModel;
 
@@ -69,6 +71,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent stopServiceIntent = new Intent(this,NCKU_MessageService.class);
+        stopService(stopServiceIntent);
+
         setContentView(R.layout.activity_tabs);
         com.example.s2784.layout.SearchView.arrayList.clear();
 
@@ -246,6 +252,48 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //
 //        /*for search view*/
 
+        Log.d("TAG", "Tabs : onCtrate()");
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("TAG", "Tabs : onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("TAG", "Tabs : onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TAG", "Tabs : onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TAG", "Tabs : onStop()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TAG", "Tabs : onRestart()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mqtt.disconnect();
+        Intent intent = new Intent(this,NCKU_MessageService.class);
+        intent.putExtra("userID",userID);
+        startService(intent);
+        Log.d("TAG", "Tabs : onDestroy()");
     }
 
     public void onFragmentInteraction(Uri uri) {
@@ -264,7 +312,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         switch (item.getItemId()) {
 
             case R.id.setting: //點了settings
-                Log.d("item", "click settings~~~~");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -307,11 +354,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
     };
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mqtt.disconnect();
-    }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -506,149 +549,134 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
                 @Override
                 public void connectionLost(Throwable cause) {
-                    Log.d("TAG", "lost");
+                    Log.d("TAG", "mqtt connection lost");
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) {
                     String[] idf = topic.split("/");
-//                    Log.d("MSG","MSG: " + message.toString());
-                    switch (idf[1]) {
-                        case "Initialize":
-//                            if(init_flag == 0) {
-//                                init_info = (new String(message.getPayload())).split("\t");
-//                                if(init_info[3].equals("F")) {
-//                                    init_flag = 1;
-//                                } else if(init_info[3].equals("G")) {
-//                                    Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], null);
-//                                }
-//                            } else {
-//                                Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(),0,message.getPayload().length);
-//                                init_flag = 0;
-//                                Initialize_re(init_info[0], init_info[1], init_info[2], init_info[3], b);
-//                            }
-                            StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), ",");
-                            while (stringTokenizer.hasMoreElements()) {
-                                String token = stringTokenizer.nextToken();
-                                init_info = token.split("\t");
-                                RoomInfo roomInfo = new RoomInfo();
-                                roomInfo.setCode(init_info[0]);
-                                roomInfo.setRoomName(init_info[1]);
-                                roomInfo.setStudentID(init_info[2]);
-                                roomInfo.setType(init_info[3]);
-                                roomInfo.setrMsg(init_info[4]);
-                                roomInfo.setrMsgDate(init_info[5]);
-                                roomInfoList.add(roomInfo);
-                                if (init_info[3].equals("F")) {
-                                    GetFriendIcon("Init", init_info[2], "0");
-                                } else if (init_info[3].equals("G")) {
-                                    Initialize_re(roomInfo);
-                                }
-                            }
-                            break;
-                        case "AddFriend":
-                            addFriend_info = new String(message.getPayload()).split("/");
-                            if (addFriend_info[0].equals("true")) {
-                                RoomInfo roomInfo = new RoomInfo();
-                                roomInfo.setFriendName(addFriend_info[1]);
-                                roomInfo.setRoomName(addFriend_info[1]);
-                                roomInfo.setStudentID(addFriend_info[2]);
-                                roomInfo.setCode(addFriend_info[3]);
-                                roomInfo.setrMsg("No History");
-                                roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
-                                roomInfo.setType("F");
-                                roomInfoList.add(roomInfo);
-                                GetFriendIcon("Add", addFriend_info[2], addFriend_info[4]);
-                            } else if (addFriend_info[0].equals("false")) {
-                                Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                        case "AddGroup":
-                            String[] AG_msg = (new String(message.getPayload())).split("/");
-                            if (AG_msg[0].equals("true")) {
-                                AddGroup_re(AG_msg[1], AG_msg[2], AG_msg[3]);
-                            } else {
-                                Toast.makeText(context, "Error creating group " + AG_msg[0], Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        case "DeleteFriend":
-                            String[] DF_msg = (new String(message.getPayload())).split("/");
-                            if (DF_msg[0].equals("true")) {
-                                if(DF_msg[1].equals("1")) {
-                                    DeleteFriend_re("");
-                                }else {
-                                    DeleteFriend_re(DF_msg[2]);
-                                }
-                            } else {
-                                deleteFriendPos = -1;
-                            }
-                            break;
-                        case "WithdrawFromGroup":
-                            String WG_msg = new String(message.getPayload());
-                            if (WG_msg.equals("true")) {
-                                WithdrawFromGroup_re();
-                            } else {
-                                withdrawGroupPos = -1;
-                            }
-                            break;
-                        case "SendMessage":
-                            String SM_msg = new String(message.getPayload());
-                            String[] SM_msg_splitLine = SM_msg.split("\t");
-                            for (int i = 0; i < testViewModel.getGroup().size(); i++) {
-                                if (testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])) {
-                                    testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
-                                    testViewModel.getGroup().get(i).setrMsgDate(SM_msg_splitLine[3]);
-                                    break;
-                                }
-                            }
-                            for (int i = 0; i < testViewModel.getFriend().size(); i++) {
-                                if (testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])) {
-                                    testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
-                                    testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
-                                    break;
-                                }
-                            }
-                            if (processingCode.equals(SM_msg_splitLine[0])) {
-                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
-                            }
-                            viewPager.getAdapter().notifyDataSetChanged();
-                            break;
-                        case "GetRecord":
-                            LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
-                            break;
-                        case "AddFriendNotification":
-
-                            break;
-                        default:
-                            if (idf[1].contains("FriendIcon")) {
-                                if (idf[1].contains("Init")) {
-                                    String[] topicSplitLine = idf[1].split(":");
-                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
-                                    friendInfoMap.put(topicSplitLine[1], b);
-                                    for (int i = 0; i < roomInfoList.size(); i++) {
-                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon_data(message.getPayload());
-                                            Initialize_re(roomInfoList.get(i));
-                                            roomInfoList.remove(i);
-                                            break;
-                                        }
+                    if(idf[0].equals("IDF")) {
+                        switch (idf[1]) {
+                            case "Initialize":
+                                StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), ",");
+                                while (stringTokenizer.hasMoreElements()) {
+                                    String token = stringTokenizer.nextToken();
+                                    init_info = token.split("\t");
+                                    RoomInfo roomInfo = new RoomInfo();
+                                    roomInfo.setCode(init_info[0]);
+                                    roomInfo.setRoomName(init_info[1]);
+                                    roomInfo.setStudentID(init_info[2]);
+                                    roomInfo.setType(init_info[3]);
+                                    roomInfo.setrMsg(init_info[4]);
+                                    roomInfo.setrMsgDate(init_info[5]);
+                                    roomInfoList.add(roomInfo);
+                                    if (init_info[3].equals("F")) {
+                                        GetFriendIcon("Init", init_info[2], "0");
+                                    } else if (init_info[3].equals("G")) {
+                                        Initialize_re(roomInfo);
                                     }
-                                } else if (idf[1].contains("Add")) {
-                                    String[] topicSplitLine = idf[1].split(":");
-                                    Log.d("Create", topicSplitLine[1]);
-                                    Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
-                                    friendInfoMap.put(topicSplitLine[1], b);
-                                    for (int i = 0; i < roomInfoList.size(); i++) {
-                                        if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
-                                            roomInfoList.get(i).setIcon_data(message.getPayload());
-                                            AddFriend_re(roomInfoList.get(i),topicSplitLine[2]);
-                                            roomInfoList.remove(i);
-                                            break;
-                                        }
-                                    }
-
                                 }
-                            }
+                                break;
+                            case "AddFriend":
+                                addFriend_info = new String(message.getPayload()).split("/");
+                                if (addFriend_info[0].equals("true")) {
+                                    RoomInfo roomInfo = new RoomInfo();
+                                    roomInfo.setFriendName(addFriend_info[1]);
+                                    roomInfo.setRoomName(addFriend_info[1]);
+                                    roomInfo.setStudentID(addFriend_info[2]);
+                                    roomInfo.setCode(addFriend_info[3]);
+                                    roomInfo.setrMsg("No History");
+                                    roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
+                                    roomInfo.setType("F");
+                                    roomInfoList.add(roomInfo);
+                                    GetFriendIcon("Add", addFriend_info[2], addFriend_info[4]);
+                                } else if (addFriend_info[0].equals("false")) {
+                                    Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case "AddGroup":
+                                String[] AG_msg = (new String(message.getPayload())).split("/");
+                                if (AG_msg[0].equals("true")) {
+                                    AddGroup_re(AG_msg[1], AG_msg[2], AG_msg[3]);
+                                } else {
+                                    Toast.makeText(context, "Error creating group " + AG_msg[0], Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                            case "DeleteFriend":
+                                String[] DF_msg = (new String(message.getPayload())).split("/");
+                                if (DF_msg[0].equals("true")) {
+                                    if (DF_msg[1].equals("1")) {
+                                        DeleteFriend_re("");
+                                    } else {
+                                        DeleteFriend_re(DF_msg[2]);
+                                    }
+                                } else {
+                                    deleteFriendPos = -1;
+                                }
+                                break;
+                            case "WithdrawFromGroup":
+                                String WG_msg = new String(message.getPayload());
+                                if (WG_msg.equals("true")) {
+                                    WithdrawFromGroup_re();
+                                } else {
+                                    withdrawGroupPos = -1;
+                                }
+                                break;
+                            case "SendMessage":
+                                String SM_msg = new String(message.getPayload());
+                                String[] SM_msg_splitLine = SM_msg.split("\t");
+                                for (int i = 0; i < testViewModel.getGroup().size(); i++) {
+                                    if (testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])) {
+                                        testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
+                                        testViewModel.getGroup().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                        break;
+                                    }
+                                }
+                                for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                                    if (testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])) {
+                                        testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
+                                        testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                        break;
+                                    }
+                                }
+                                if (processingCode.equals(SM_msg_splitLine[0])) {
+                                    LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
+                                }
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                break;
+                            case "GetRecord":
+                                LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
+                                break;
+                            default:
+                                if (idf[1].contains("FriendIcon")) {
+                                    if (idf[1].contains("Init")) {
+                                        String[] topicSplitLine = idf[1].split(":");
+                                        Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                        friendInfoMap.put(topicSplitLine[1], b);
+                                        for (int i = 0; i < roomInfoList.size(); i++) {
+                                            if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                                roomInfoList.get(i).setIcon_data(message.getPayload());
+                                                Initialize_re(roomInfoList.get(i));
+                                                roomInfoList.remove(i);
+                                                break;
+                                            }
+                                        }
+                                    } else if (idf[1].contains("Add")) {
+                                        String[] topicSplitLine = idf[1].split(":");
+                                        Bitmap b = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                        friendInfoMap.put(topicSplitLine[1], b);
+                                        for (int i = 0; i < roomInfoList.size(); i++) {
+                                            if (roomInfoList.get(i).getStudentID().equals(topicSplitLine[1])) {
+                                                roomInfoList.get(i).setIcon_data(message.getPayload());
+                                                AddFriend_re(roomInfoList.get(i), topicSplitLine[2]);
+                                                roomInfoList.remove(i);
+                                                break;
+                                            }
+                                        }
+
+                                    }
+                                }
+                        }
                     }
                 }
 
@@ -728,13 +756,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             viewPager.getAdapter().notifyDataSetChanged();
 
             if(tachiba.equals("1")) {
-//                String topic = "IDF/AddFriendNotification/" + roomInfo.getStudentID();
-//                String MSG = "";
-//                try {
-//                    client.publish(topic, MSG.getBytes(), 2, false);
-//                } catch (MqttException e) {
-//                    e.printStackTrace();
-//                }
+                String topic = "Service/AddFriendNotification/" + roomInfo.getStudentID();
+                String MSG = roomInfo.getRoomName();
+                try {
+                    client.publish(topic, MSG.getBytes(), 2, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
                 Intent studentData = new Intent(Tabs.this, StudentData.class);
                 studentData.putExtra("name", roomInfo.getFriendName());
                 studentData.putExtra("ID", roomInfo.getStudentID());
@@ -911,7 +939,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         private void AddGroupNotification(String groupName) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddGroup);
             builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Group request");
             builder.setContentText(groupName);
@@ -919,7 +947,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddFriend,CHANNEL_NAME_AddFriend,NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddGroup,CHANNEL_NAME_AddGroup,NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
 

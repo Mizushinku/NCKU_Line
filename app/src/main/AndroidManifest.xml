@@ -40,7 +40,7 @@
         <activity android:name=".Chatroom" />
         <activity android:name=".Upload" />
         <activity android:name=".LogIn" />
-        <activity android:name=".SearchView"/>
+        <activity android:name=".SearchView" />
         <activity
             android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
@@ -54,7 +54,12 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
-        <activity android:name=".Tabs"></activity>
+        <activity android:name=".Tabs" />
+
+        <service
+            android:name=".NCKU_MessageService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
