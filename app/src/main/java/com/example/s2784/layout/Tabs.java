@@ -666,6 +666,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 break;
                             case "MemberChange":
                                 String MC_msg = new String(message.getPayload());
+//                                Log.d("MEM",MC_msg);
                                 String[] MC_msg_splitLine = MC_msg.split("\t");
                                 String code = MC_msg_splitLine[0];
                                 String memberID = MC_msg_splitLine[1];

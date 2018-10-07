@@ -81,15 +81,15 @@ public class Tab2 extends Fragment {
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());
 
-                String memberID = "";
-                for(int i =0;i<roomInfo.getMemberID().size();i++){
-                    if(i==0){
-                        memberID += roomInfo.getMemberID().get(i);
-                    }else {
-                        memberID += "," + roomInfo.getMemberID().get(i);
-                    }
-                }
-                chat.putExtra("memberID",memberID);
+//                String memberID = "";
+//                for(int i =0;i<roomInfo.getMemberID().size();i++){
+//                    if(i==0){
+//                        memberID += roomInfo.getMemberID().get(i);
+//                    }else {
+//                        memberID += "," + roomInfo.getMemberID().get(i);
+//                    }
+//                }
+//                chat.putExtra("memberID",memberID);
                 startActivity(chat);
             }
         });
