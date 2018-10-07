@@ -664,6 +664,23 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "GetRecord":
                                 LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                                 break;
+                            case "MemberChange":
+                                String MC_msg = new String(message.getPayload());
+                                String[] MC_msg_splitLine = MC_msg.split("\t");
+                                String code = MC_msg_splitLine[0];
+                                String memberID = MC_msg_splitLine[1];
+                                for(int i = 0;i<testViewModel.getGroup().size();i++){
+                                    if(testViewModel.getGroup().get(i).getCode().equals(code)){
+                                        testViewModel.getGroup().get(i).getMemberID().clear();
+                                        StringTokenizer split_member = new StringTokenizer(memberID,"-");
+                                        while (split_member.hasMoreElements()){
+                                            String member = split_member.nextToken();
+                                            testViewModel.getGroup().get(i).addMemberID(member);
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
