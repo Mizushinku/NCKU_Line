@@ -562,16 +562,31 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 while (stringTokenizer.hasMoreElements()) {
                                     String token = stringTokenizer.nextToken();
                                     init_info = token.split("\t");
+                                    //Log.d("MEM",init_info[2]);
                                     RoomInfo roomInfo = new RoomInfo();
                                     roomInfo.setCode(init_info[0]);
                                     roomInfo.setRoomName(init_info[1]);
-                                    roomInfo.setStudentID(init_info[2]);
+                                    StringTokenizer split_member = new StringTokenizer(init_info[2],"-");
+                                    while (split_member.hasMoreElements()){
+                                        String memberID = split_member.nextToken();
+                                        roomInfo.addMemberID(memberID);
+                                    }
+                                    if(init_info[3].equals("F")) { //maintain studentID, type F has value, type "G" has not
+                                        for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
+                                            if (!roomInfo.getMemberID().get(i).equals(userID)) {
+                                                roomInfo.setStudentID(roomInfo.getMemberID().get(i));
+                                                break;
+                                            }
+                                        }
+                                    }else{
+                                        roomInfo.setStudentID("");
+                                    }
                                     roomInfo.setType(init_info[3]);
                                     roomInfo.setrMsg(init_info[4]);
                                     roomInfo.setrMsgDate(init_info[5]);
                                     roomInfoList.add(roomInfo);
                                     if (init_info[3].equals("F")) {
-                                        GetFriendIcon("Init", init_info[2], "0");
+                                        GetFriendIcon("Init", roomInfo.getStudentID(), "0");
                                     } else if (init_info[3].equals("G")) {
                                         Initialize_re(roomInfo);
                                     }
@@ -584,6 +599,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     roomInfo.setFriendName(addFriend_info[1]);
                                     roomInfo.setRoomName(addFriend_info[1]);
                                     roomInfo.setStudentID(addFriend_info[2]);
+                                    roomInfo.addMemberID(user);
+                                    roomInfo.addMemberID(addFriend_info[2]);
                                     roomInfo.setCode(addFriend_info[3]);
                                     roomInfo.setrMsg("No History");
                                     roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
@@ -597,7 +614,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "AddGroup":
                                 String[] AG_msg = (new String(message.getPayload())).split("/");
                                 if (AG_msg[0].equals("true")) {
-                                    AddGroup_re(AG_msg[1], AG_msg[2], AG_msg[3]);
+                                    AddGroup_re(AG_msg[1], AG_msg[2], AG_msg[3], AG_msg[4]);
                                 } else {
                                     Toast.makeText(context, "Error creating group " + AG_msg[0], Toast.LENGTH_LONG).show();
                                 }
@@ -788,10 +805,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        private void AddGroup_re(String code, String groupName, String tachiba) {
+        private void AddGroup_re(String code, String groupName, String memberID, String tachiba) {
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
+            roomInfo.setStudentID("");
+            StringTokenizer split_member = new StringTokenizer(memberID,"-");
+            while (split_member.hasMoreElements()){
+                String member = split_member.nextToken();
+                roomInfo.addMemberID(member);
+            }
             roomInfo.setrMsg("No History");
             roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
             Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);

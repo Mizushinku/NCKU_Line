@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -28,6 +29,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     private String chatName;
     private TextView txv_chatName;
+
+    private String memberID;
 
 
 
@@ -67,6 +70,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         Intent intent = getIntent();
         code = intent.getStringExtra("code");
         id = intent.getStringExtra("id");
+        memberID = intent.getStringExtra("memberID");
 
 
         btn = findViewById(R.id.btn_send);
@@ -103,6 +107,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 Tabs.mqtt.SendMessage(msg);
             }
             et.setText("");
+            Toast.makeText(Chatroom.this,memberID,Toast.LENGTH_LONG).show();
         }
     }
 
