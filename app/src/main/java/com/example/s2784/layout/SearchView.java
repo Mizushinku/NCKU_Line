@@ -19,21 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchView extends Activity {
-    /*for search view*/
 
-    SearchViewBinding searchViewBinding;
-    ListAdapter adapter_ForSearch;
-    public static ArrayList<RoomInfo> arrayList= new ArrayList<>();
+    private SearchViewBinding searchViewBinding;
+    private ListAdapter adapter_ForSearch;
     private ListView listView_search;
 
-    /*for search view*/
-
     protected void onCreate(Bundle savedInstanceState) {
+        ArrayList<RoomInfo> friend_and_group_list;
+        friend_and_group_list = getIntent().getParcelableArrayListExtra("friend_and_group_list");
         super.onCreate(savedInstanceState);
         searchViewBinding = DataBindingUtil.setContentView(this, R.layout.search_view);
-        /*for search view*/
 
-        adapter_ForSearch = new ListAdapter(com.example.s2784.layout.SearchView.arrayList,this,Tab1.listDataHeader,Tabs.testViewModel.getListHash());
+        adapter_ForSearch = new ListAdapter(friend_and_group_list,this,Tab1.listDataHeader,Tabs.testViewModel.getListHash());
         //adapter= new ListAdapter(arrayList);
         searchViewBinding.listView.setAdapter(adapter_ForSearch);
 

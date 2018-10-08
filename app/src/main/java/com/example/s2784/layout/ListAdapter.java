@@ -37,18 +37,6 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         this.listHashMap = listHashMap;
     }
 
-//    public ListAdapter(List<String> cancel_type) {
-//        mData=cancel_type;
-//        mStringFilterList = cancel_type;
-//    }
-
-    public Object getChild(int i) {
-        //return listDataHeader.get(i);
-        return com.example.s2784.layout.SearchView.arrayList.get(i);
-        //return listHashMap.get(i);
-    }
-
-
     @Override
     public int getCount() {
         return mData.size();

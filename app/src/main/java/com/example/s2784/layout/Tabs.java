@@ -42,10 +42,7 @@ import java.util.StringTokenizer;
 
 public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener {
 
-    /*for search view*/
-
-
-    /*for search view*/
+    private ArrayList<RoomInfo> arrayList= new ArrayList<>(); /*for search view*/
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -76,7 +73,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         stopService(stopServiceIntent);
 
         setContentView(R.layout.activity_tabs);
-        com.example.s2784.layout.SearchView.arrayList.clear();
+        arrayList.clear();
 
   //Change status color
 
@@ -328,6 +325,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.searchview:
                     msg += "搜尋";
                     Intent intent_search = new Intent(Tabs.this, com.example.s2784.layout.SearchView.class);
+                    intent_search.putParcelableArrayListExtra("friend_and_group_list",arrayList);
                     startActivityForResult(intent_search, REQUEST_CODE_Search);
                     break;
                 case R.id.build_group:
@@ -416,9 +414,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 //指定哪個朋友要被刪除
                 mqtt.setDeleteFriendPos(childPos);
                 mqtt.DeleteFriend(ID, code);
-                for(int i = 0; i < com.example.s2784.layout.SearchView.arrayList.size(); ++i) {
-                    if(com.example.s2784.layout.SearchView.arrayList.get(i).getStudentID().equals(ID)) {
-                        com.example.s2784.layout.SearchView.arrayList.remove(i);
+                for(int i = 0; i < arrayList.size(); ++i) {
+                    if(arrayList.get(i).getStudentID().equals(ID)) {
+                        arrayList.remove(i);
                         break;
                     }
                 }
@@ -439,9 +437,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 //指定要退出哪個群組
                 mqtt.setWithdrawGroupPos(childPos);
                 mqtt.WithdrawFromGroup(code);
-                for(int i = 0; i < com.example.s2784.layout.SearchView.arrayList.size(); ++i) {
-                    if(com.example.s2784.layout.SearchView.arrayList.get(i).getRoomName().equals(ID)) {
-                        com.example.s2784.layout.SearchView.arrayList.remove(i);
+                for(int i = 0; i < arrayList.size(); ++i) {
+                    if(arrayList.get(i).getRoomName().equals(ID)) {
+                        arrayList.remove(i);
                         break;
                     }
                 }
@@ -760,7 +758,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void Initialize_re(RoomInfo roomInfo) {
             if (roomInfo.getType().equals("F")) {
                 testViewModel.addInFriend(roomInfo);
-                com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+                arrayList.add(roomInfo);
                 testViewModel.putListHash("好友", testViewModel.getFriend());
                 viewPager.getAdapter().notifyDataSetChanged();
             } else if (roomInfo.getType().equals("G")) {
@@ -770,7 +768,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 byte[] bytes = stream.toByteArray();
                 roomInfo.setIcon_data(bytes);
                 testViewModel.addInGroup(roomInfo);
-                com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+                arrayList.add(roomInfo);
                 testViewModel.putListHash("群組", testViewModel.getGroup());
                 viewPager.getAdapter().notifyDataSetChanged();
             }
@@ -810,7 +808,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             Tab1_CM.getInstance().refreshExplv(1);
 
 
-            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+            arrayList.add(roomInfo);
         }
 
         private void AddGroup(String groupName, String member_str) {
@@ -843,7 +841,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             testViewModel.addInGroup(roomInfo);
             testViewModel.putListHash("群組", testViewModel.getGroup());
             viewPager.getAdapter().notifyDataSetChanged();
-            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+            arrayList.add(roomInfo);
 
             if(tachiba.equals("2")) {
                 AddGroupNotification(roomInfo.getRoomName());
@@ -851,7 +849,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
             Tab1_CM.getInstance().refreshExplv(0);
 
-            com.example.s2784.layout.SearchView.arrayList.add(roomInfo);
+            arrayList.add(roomInfo);
         }
 
         private void DeleteFriend(String friendID, String code) {
