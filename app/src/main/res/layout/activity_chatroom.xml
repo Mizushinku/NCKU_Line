@@ -24,14 +24,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/chat_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ncku_red"
-            android:gravity="center"
-            app:contentInsetStartWithNavigation="0dp"
-            />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/chat_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ncku_red"
+                android:gravity="center"
+                app:contentInsetStartWithNavigation="0dp">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/arrow_down"
+                        />
+            </android.support.v7.widget.Toolbar>
 
 
     </LinearLayout>
