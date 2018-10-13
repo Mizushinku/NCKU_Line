@@ -62,7 +62,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
-        getWindow().setBackgroundDrawableResource(R.drawable.chattingbackground) ;
+        getWindow().setBackgroundDrawableResource(R.drawable.chatroom3) ;
         Log.d("TAG","Create");
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
