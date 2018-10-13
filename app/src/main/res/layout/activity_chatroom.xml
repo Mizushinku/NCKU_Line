@@ -24,17 +24,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/chatName"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chat_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ncku_red"
             android:gravity="center"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="15dp"
-            android:text="聊天室"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+            app:contentInsetStartWithNavigation="0dp"
+            />
 
 
     </LinearLayout>

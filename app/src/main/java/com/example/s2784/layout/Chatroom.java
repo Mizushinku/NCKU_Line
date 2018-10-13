@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -24,12 +26,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private TextView status;
     private EditText et;
     private RoomInfo roomInfo;
+    private android.support.v7.widget.Toolbar toolbar;
 
     private String id;
     private String code;
-
-    private String chatName;
-    private TextView txv_chatName;
 
     private String memberID;
 
@@ -74,14 +74,23 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         roomInfo = intent.getParcelableExtra("roomInfo");
 
 
-
+        toolbar = findViewById(R.id.chat_toolbar);
+        if(roomInfo.getType().equals("F")){
+            toolbar.setTitle(roomInfo.getRoomName());
+        }else{
+            toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
+        }
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         btn = findViewById(R.id.btn_send);
         lv = findViewById(R.id.lv);
         et = findViewById(R.id.et);
         status = findViewById(R.id.status); // not used
 
-
-        txv_chatName = findViewById(R.id.chatName); // label on the top of the chat room
 
         btn.setOnClickListener(this);
 
@@ -155,5 +164,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
