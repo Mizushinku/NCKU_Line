@@ -15,6 +15,7 @@ public class LinkModule {
     public interface MListener {
         void updateMsg(String sender, String text, String time);
         void fetchRecord(String record);
+        void memberChange(String memberID);
         //void what_you_want();
     }
 
@@ -55,5 +56,11 @@ public class LinkModule {
             mListener.fetchRecord(record);
         }
     }
+    public void callMemberChange(String memberID){
+        if(mListener != null){
+            mListener.memberChange(memberID);
+        }
+    }
+
 
 }

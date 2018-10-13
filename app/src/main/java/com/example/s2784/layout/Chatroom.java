@@ -72,14 +72,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         code = intent.getStringExtra("code");
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
-//        memberID = "";
-//        for(int i=0;i<roomInfo.getMemberID().size();i++){
-//            if(i==0){
-//                memberID += roomInfo.getMemberID().get(i);
-//            }else{
-//                memberID += "," + roomInfo.getMemberID().get(i);
-//            }
-//        }
+
 
 
         btn = findViewById(R.id.btn_send);
@@ -116,7 +109,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 Tabs.mqtt.SendMessage(msg);
             }
             et.setText("");
-//            Toast.makeText(Chatroom.this,memberID,Toast.LENGTH_LONG).show();
+            memberID = "";
+            for(int i=0;i<roomInfo.getMemberID().size();i++){
+                if(i==0){
+                    memberID += roomInfo.getMemberID().get(i);
+                }else{
+                    memberID += "," + roomInfo.getMemberID().get(i);
+                }
+            }
+            Toast.makeText(Chatroom.this,memberID,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -143,5 +144,16 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             updateMsg(token_splitLine[0],token_splitLine[1],token_splitLine[2]);
         }
     }
+
+    @Override
+    public void memberChange(String memberID) {
+        roomInfo.getMemberID().clear();
+        StringTokenizer split_member = new StringTokenizer(memberID,"-");
+        while (split_member.hasMoreElements()){
+            String member = split_member.nextToken();
+            roomInfo.addMemberID(member);
+        }
+    }
+
 
 }

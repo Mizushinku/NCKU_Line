@@ -676,6 +676,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                             String member = split_member.nextToken();
                                             testViewModel.getGroup().get(i).addMemberID(member);
                                         }
+                                        LinkModule.getInstance().callMemberChange(memberID);
                                         break;
                                     }
                                 }
