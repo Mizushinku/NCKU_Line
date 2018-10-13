@@ -90,6 +90,8 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
                 Intent chat = new Intent(getActivity(),Chatroom.class);
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());
+                chat.putExtra("roomInfo",testViewModel.getRoomInfo(code));
+
                 startActivity(chat);
 
                 return false;

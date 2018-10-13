@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * 儲存好友或群組的資訊 ... 2018/6/30
  */
 
-public class RoomInfo implements Serializable, Parcelable, Comparable {
+public class RoomInfo implements Parcelable, Comparable {
 
     private boolean checked;
     private String roomName;

@@ -1,7 +1,6 @@
 package com.example.s2784.layout;
 
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +60,20 @@ public class TestViewModel extends ViewModel {
         listHash.put(string,list);
     }
 
-//    public boolean isDataChange() { return dataChange; }
-
-//    public void setDataChange(boolean dataChange) { this.dataChange = dataChange; }
+    public RoomInfo getRoomInfo(String code){
+        RoomInfo roomInfo = new RoomInfo();
+        for(int i=0;i<friend.size();i++){
+            roomInfo = friend.get(i);
+            if(code.equals(roomInfo.getCode())){
+                return roomInfo;
+            }
+        }
+        for (int i=0;i<group.size();i++) {
+            roomInfo = group.get(i);
+            if(code.equals(roomInfo.getCode())){
+                return roomInfo;
+            }
+        }
+        return roomInfo;
+    }
 }

@@ -23,6 +23,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private bubble_list Bubble_list;
     private TextView status;
     private EditText et;
+    private RoomInfo roomInfo;
 
     private String id;
     private String code;
@@ -70,7 +71,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         Intent intent = getIntent();
         code = intent.getStringExtra("code");
         id = intent.getStringExtra("id");
-//        memberID = intent.getStringExtra("memberID");
+        roomInfo = intent.getParcelableExtra("roomInfo");
+//        memberID = "";
+//        for(int i=0;i<roomInfo.getMemberID().size();i++){
+//            if(i==0){
+//                memberID += roomInfo.getMemberID().get(i);
+//            }else{
+//                memberID += "," + roomInfo.getMemberID().get(i);
+//            }
+//        }
 
 
         btn = findViewById(R.id.btn_send);
