@@ -2,12 +2,15 @@ package com.example.s2784.layout;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.s2784.layout.databinding.RowItemBinding;
 
@@ -62,6 +65,19 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         RowItemBinding rowItemBinding = DataBindingUtil.inflate(inflater, R.layout.row_item, parent, false);
         rowItemBinding.stringName.setText(mData.get(position).getRoomName());
 
+        //for room image
+//        final ViewHolder viewHolder;
+//        if (convertView == null) {
+//            viewHolder = new ViewHolder();
+//            convertView = inflater.inflate(R.layout.row_item, null);
+//            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.room_Pic);
+//            convertView.setTag(viewHolder);
+//        } else {
+//            viewHolder = (ViewHolder) convertView.getTag();
+//        }
+//        final RoomInfo roomInfo = (RoomInfo) getItem(position);
+//        viewHolder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(), 0, roomInfo.getIcon_data().length));
+
 
         return rowItemBinding.getRoot();
     }
@@ -104,5 +120,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         }
 
     }
-
+    class ViewHolder {
+        public ImageView imageView;
+    }
 }
