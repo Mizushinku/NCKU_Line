@@ -23,6 +23,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -68,9 +73,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent stopServiceIntent = new Intent(this,NCKU_MessageService.class);
-        stopService(stopServiceIntent);
 
         setContentView(R.layout.activity_tabs);
         arrayList.clear();
@@ -287,9 +289,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     protected void onDestroy() {
         super.onDestroy();
         mqtt.disconnect();
-        Intent intent = new Intent(this,NCKU_MessageService.class);
-        intent.putExtra("userID",userID);
-        startService(intent);
+
+        Log.d("TAG", "token : " + FirebaseInstanceId.getInstance().getToken());
         Log.d("TAG", "Tabs : onDestroy()");
     }
 
