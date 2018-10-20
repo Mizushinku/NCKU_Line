@@ -23,37 +23,70 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/chat_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/ncku_red"
-                android:gravity="center"
-                app:contentInsetStartWithNavigation="0dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/ncku_red"
+            android:gravity="center"
+            app:contentInsetStartWithNavigation="0dp">
 
-                    <Button
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/arrow_down"
-                        />
-            </android.support.v7.widget.Toolbar>
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:id="@+id/slide_btn"
+                android:background="@drawable/arrow_down"
+                />
+        </android.support.v7.widget.Toolbar>
 
 
     </LinearLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="8.5">
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp"
+            android:scrollbars="vertical"
+            android:listSelector="@android:color/transparent"
+            />
+        <SlidingDrawer
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/slide_drawer"
+            android:orientation="vertical"
+            android:animateOnClick="true"
+            android:allowSingleTap="true"
+            android:content="@id/grid_view"
+            android:handle="@id/handle_btn"
+            android:rotation="180">
+
+            <Button
+                android:id="@+id/handle_btn"
+                android:layout_height="0dp"
+                android:layout_width="0dp">
+            </Button>
+            <GridView
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:id="@+id/grid_view"
+                android:numColumns="4"
+                android:gravity="center"
+                android:columnWidth="50pt"
+                android:stretchMode="columnWidth">
+            </GridView>
+        </SlidingDrawer>
+    </FrameLayout>
 
 
-    <ListView
-        android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8.5"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"
-        android:scrollbars="vertical"
-        android:listSelector="@android:color/transparent"
-        />
 
     <ScrollView
         android:layout_width="match_parent"

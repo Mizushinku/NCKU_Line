@@ -1,15 +1,20 @@
 package com.example.s2784.layout;
 
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -20,13 +25,16 @@ import java.util.StringTokenizer;
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
     private ImageButton btn;
+    private Button slide_btn;
     private ListView lv;
     private ArrayList<bubble> Bubble = new ArrayList<>();
     private bubble_list Bubble_list;
-    private TextView status;
     private EditText et;
     private RoomInfo roomInfo;
     private android.support.v7.widget.Toolbar toolbar;
+    private SlidingDrawer slidingDrawer;
+    private Button handle_btn;
+    private GridView gridView;
 
     private String id;
     private String code;
@@ -73,7 +81,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
 
-
         toolbar = findViewById(R.id.chat_toolbar);
         if(roomInfo.getType().equals("F")){
             toolbar.setTitle(roomInfo.getRoomName());
@@ -89,11 +96,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         btn = findViewById(R.id.btn_send);
         lv = findViewById(R.id.lv);
         et = findViewById(R.id.et);
-        status = findViewById(R.id.status); // not used
-
+        slide_btn = toolbar.findViewById(R.id.slide_btn);
+        handle_btn = findViewById(R.id.handle_btn);
+        slidingDrawer = findViewById(R.id.slide_drawer);
+        slidingDrawer.close();
+        gridView = findViewById(R.id.grid_view);
 
         btn.setOnClickListener(this);
-
+        slide_btn.setOnClickListener(this);
         //設定該class為callback function 實作方
         LinkModule.getInstance().setListener(this);
 
@@ -111,25 +121,31 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if(v == btn) {
-            if(!et.getText().toString().equals("")) {
+        if (v == btn) {
+            if (!et.getText().toString().equals("")) {
                 //發送聊天紀錄
                 String msg = code + "\t" + id + "\t" + et.getText().toString();
                 Tabs.mqtt.SendMessage(msg);
             }
             et.setText("");
             memberID = "";
-            for(int i=0;i<roomInfo.getMemberID().size();i++){
-                if(i==0){
+            for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
+                if (i == 0) {
                     memberID += roomInfo.getMemberID().get(i);
-                }else{
+                } else {
                     memberID += "," + roomInfo.getMemberID().get(i);
                 }
             }
-            Toast.makeText(Chatroom.this,memberID,Toast.LENGTH_LONG).show();
+            Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
+        } else if (v == slide_btn) {
+            slidingDrawer.animateToggle();
+            if(slidingDrawer.isOpened()){
+                Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
+            }
         }
     }
-
     //callback function 實作
     @Override
     public void updateMsg(String sender, String text, String time) {
