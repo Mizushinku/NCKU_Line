@@ -30,6 +30,9 @@ import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
+    String letters[] = {"群組成員","邀請好友"};
+    int icons[] = { R.drawable.friend,R.drawable.build_group};
+
     private ImageButton btn;
     private Button slide_btn;
     private ListView lv;
@@ -108,6 +111,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         slidingDrawer.close();
         gridView = findViewById(R.id.grid_view);
 
+        Grid_Adapter grid_adapter = new Grid_Adapter(this,icons,letters);
+        gridView.setAdapter(grid_adapter);
+        
         btn.setOnClickListener(this);
         slide_btn.setOnClickListener(this);
         //設定該class為callback function 實作方
