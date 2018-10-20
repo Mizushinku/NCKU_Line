@@ -1,5 +1,6 @@
 package com.example.s2784.layout;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,15 +10,20 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import android.widget.ViewAnimator;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -121,30 +127,35 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if (v == btn) {
-            if (!et.getText().toString().equals("")) {
-                //發送聊天紀錄
-                String msg = code + "\t" + id + "\t" + et.getText().toString();
-                Tabs.mqtt.SendMessage(msg);
-            }
-            et.setText("");
-            memberID = "";
-            for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
-                if (i == 0) {
-                    memberID += roomInfo.getMemberID().get(i);
-                } else {
-                    memberID += "," + roomInfo.getMemberID().get(i);
+        switch (v.getId()){
+            case R.id.btn_send :
+                if (!et.getText().toString().equals("")) {
+                    //發送聊天紀錄
+                    String msg = code + "\t" + id + "\t" + et.getText().toString();
+                    Tabs.mqtt.SendMessage(msg);
                 }
-            }
-            Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
-        } else if (v == slide_btn) {
-            slidingDrawer.animateToggle();
-            if(slidingDrawer.isOpened()){
-                Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
-            }
+                et.setText("");
+                memberID = "";
+                for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
+                    if (i == 0) {
+                        memberID += roomInfo.getMemberID().get(i);
+                    } else {
+                        memberID += "," + roomInfo.getMemberID().get(i);
+                    }
+                }
+                Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
+                break;
+            case R.id.slide_btn:
+                float deg = (slide_btn.getRotation() == 180F) ? 0F : 180F;
+                slide_btn.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
+                slidingDrawer.animateToggle();
+                if(slidingDrawer.isOpened()){
+                    Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
+                }
         }
+
     }
     //callback function 實作
     @Override
