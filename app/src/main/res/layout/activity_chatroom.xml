@@ -27,7 +27,7 @@
             android:id="@+id/chat_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ncku_red"
+            android:background="@drawable/gradient_ncku_red"
             android:gravity="center"
             app:contentInsetStartWithNavigation="0dp">
 
@@ -57,33 +57,38 @@
             android:scrollbars="vertical"
             android:listSelector="@android:color/transparent"
             />
-        <SlidingDrawer
+        <com.example.s2784.layout.WrappingSlidingDrawer
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:id="@+id/slide_drawer"
+            android:minHeight="400dp"
             android:orientation="vertical"
             android:animateOnClick="true"
             android:allowSingleTap="true"
             android:content="@id/grid_view"
             android:handle="@id/handle_btn"
-            android:rotation="180">
+            android:rotation="180"
+            android:padding="10dp"
+            >
 
             <Button
                 android:id="@+id/handle_btn"
                 android:layout_height="0dp"
-                android:layout_width="0dp">
+                android:layout_width="0dp"
+                android:text="">
             </Button>
             <GridView
                 android:layout_width="match_parent"
-                android:background="@color/lightgray"
                 android:layout_height="wrap_content"
+                android:background="@color/lightpink"
+                android:horizontalSpacing="5dp"
+                android:verticalSpacing="5dp"
                 android:id="@+id/grid_view"
                 android:numColumns="4"
-                android:gravity="center"
-                android:columnWidth="50pt"
                 android:stretchMode="columnWidth">
+
             </GridView>
-        </SlidingDrawer>
+        </com.example.s2784.layout.WrappingSlidingDrawer>
     </FrameLayout>
 
 
@@ -101,7 +106,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="20">
+                android:layout_weight="20"
+                >
 
                 <EditText
                     android:id="@+id/et"

@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
     String letters[] = {"群組成員","邀請好友"};
-    int icons[] = { R.drawable.friend,R.drawable.build_group};
+    int icons[] = { R.drawable.group_member,R.drawable.invite_friend};
 
     private ImageButton btn;
     private Button slide_btn;
