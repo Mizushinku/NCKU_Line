@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 //import android.support.v7.widget.SearchView;
@@ -50,7 +51,8 @@ public class SearchView extends Activity {
                 String code = roomInfo.getCode();
                 Intent chat = new Intent(SearchView.this,Chatroom.class);
                 chat.putExtra("code", code);
-                chat.putExtra("id",Tabs.userID);
+                chat.putExtra("id",Tabs.testViewModel.getUserID());
+                chat.putExtra("roomInfo",Tabs.testViewModel.getRoomInfo(code));
                 startActivity(chat);
             }
         });
