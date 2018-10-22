@@ -39,6 +39,12 @@
         android:orderInCategory="100"
         android:title="APP個人化"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/network_check"
+        android:orderInCategory="100"
+        android:title="檢查網路"
+        android:icon="@drawable/build_group"
+        app:showAsAction="never" />
 
 
 </menu>

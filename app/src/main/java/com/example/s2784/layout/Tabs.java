@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
@@ -51,6 +53,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private NetworkInfo mNetworkInfo;
+    private ConnectivityManager mConnectivityManager;
 
     private static final int REQUEST_CODE_AddFriend = 1;
     private static final int REQUEST_CODE_BuildGroup = 2;
@@ -78,6 +82,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         arrayList.clear();
 
   //Change status color
+
+        //Check network connection
+        mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+
+        //Check network connection
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getColor(R.color.ncku_red));
@@ -344,11 +354,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     msg += "登出";
                     Leave();
                     break;
+                case R.id.network_check:
+                    msg += "檢查網路";
+                    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+                    networkCheck(mNetworkInfo);
+                    break;
             }
 
-            if (!msg.equals("")) {
-                Toast.makeText(Tabs.this, msg, Toast.LENGTH_SHORT).show();
-            }
+//            if (!msg.equals("")) {
+//                Toast.makeText(Tabs.this, msg, Toast.LENGTH_SHORT).show();
+//            }
             return true;
         }
     };
@@ -1001,6 +1016,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
     }
     ////////////////////////////////////////////////////////////////////////
+    private void networkCheck(NetworkInfo mNetworkInfo){
+
+        if(mNetworkInfo != null)
+        {
+            if(mNetworkInfo.isConnected())
+            {
+                Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 
 }
