@@ -27,8 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -261,6 +259,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 //
 //        /*for search view*/
 
+
         Log.d("TAG", "Tabs : onCtrate()");
 
     }
@@ -300,7 +299,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onDestroy();
         mqtt.disconnect();
 
-        Log.d("TAG", "token : " + FirebaseInstanceId.getInstance().getToken());
+        Log.d("TAG", "token : " + getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token","empty"));
         Log.d("TAG", "Tabs : onDestroy()");
     }
 
@@ -1031,6 +1030,5 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
     }
-
 
 }

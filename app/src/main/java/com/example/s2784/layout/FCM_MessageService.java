@@ -10,8 +10,7 @@ public class FCM_MessageService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d("TAG","Refreshed token: " + token);
-
-        sendRegistrationToServer(token);
+        getSharedPreferences("FCM_Token", MODE_PRIVATE).edit().putString("token", token).apply();
     }
 
     @Override
@@ -22,7 +21,4 @@ public class FCM_MessageService extends FirebaseMessagingService {
         }
     }
 
-    private void sendRegistrationToServer(String token) {
-
-    }
 }
