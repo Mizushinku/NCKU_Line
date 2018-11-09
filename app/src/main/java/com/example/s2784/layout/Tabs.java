@@ -653,18 +653,22 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "SendMessage":
                                 String SM_msg = new String(message.getPayload());
                                 String[] SM_msg_splitLine = SM_msg.split("\t");
+                                boolean isFound = false;
                                 for (int i = 0; i < testViewModel.getGroup().size(); i++) {
                                     if (testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])) {
                                         testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
                                         testViewModel.getGroup().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                        isFound = true;
                                         break;
                                     }
                                 }
-                                for (int i = 0; i < testViewModel.getFriend().size(); i++) {
-                                    if (testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])) {
-                                        testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
-                                        testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
-                                        break;
+                                if(!isFound) {
+                                    for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                                        if (testViewModel.getFriend().get(i).getCode().equals(SM_msg_splitLine[0])) {
+                                            testViewModel.getFriend().get(i).setrMsg(SM_msg_splitLine[2]);
+                                            testViewModel.getFriend().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                            break;
+                                        }
                                     }
                                 }
                                 if (processingCode.equals(SM_msg_splitLine[0])) {

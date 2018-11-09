@@ -137,7 +137,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             case R.id.btn_send :
                 if (!et.getText().toString().equals("")) {
                     //發送聊天紀錄
-                    String msg = code + "\t" + id + "\t" + et.getText().toString();
+                    String text = et.getText().toString().replace("\t","    ");
+                    String msg = code + "\t" + id + "\t" + text;
                     Tabs.mqtt.SendMessage(msg);
                 }
                 et.setText("");
