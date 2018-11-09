@@ -26,8 +26,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -299,7 +297,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onDestroy();
         mqtt.disconnect();
 
-        Log.d("TAG", "token : " + getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token","empty"));
         Log.d("TAG", "Tabs : onDestroy()");
     }
 
@@ -541,6 +538,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         // We are connected
                         mqttSub();
                         Initialize();
+                        SubmitFCMToken();
                     }
 
                     @Override
@@ -1012,6 +1010,20 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public Bitmap MapBitmap(String id) {
             return friendInfoMap.get(id);
+        }
+
+        private void SubmitFCMToken() {
+            String token = getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token", "empty");
+            if(token.equals("empty")) {
+                Toast.makeText(Tabs.this,"FCM token error. 請重新安裝或清除資料再啟動", Toast.LENGTH_LONG).show();
+                System.exit(0);
+            }
+            String topic = "IDF/SubmitFCMToken/" + user;
+            try {
+                client.publish(topic, token.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
     }
     ////////////////////////////////////////////////////////////////////////
