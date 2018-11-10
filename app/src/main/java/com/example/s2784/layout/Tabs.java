@@ -58,10 +58,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_JoinGroup = 4;
     private static final int REQUEST_CODE_Search = 5;
 
-    private final static String CHANNEL_ID_AddFriend = "1";
-    private final static String CHANNEL_NAME_AddFriend = "1";
-    private final static String CHANNEL_ID_AddGroup = "2";
-    private final static String CHANNEL_NAME_AddGroup = "2";
+    //private final static String CHANNEL_ID_AddFriend = "1";
+    //private final static String CHANNEL_NAME_AddFriend = "1";
+    //private final static String CHANNEL_ID_AddGroup = "2";
+    //private final static String CHANNEL_NAME_AddGroup = "2";
 
     public static TestViewModel testViewModel;
 
@@ -970,7 +970,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         private void AddFriendNotification(String friendName) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddFriend);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,NotiValues.CHANNEL_ID_AddFriend);
             builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Friend request");
             builder.setContentText(friendName);
@@ -986,17 +986,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddFriend,CHANNEL_NAME_AddFriend,NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel notificationChannel = new NotificationChannel(NotiValues.CHANNEL_ID_AddFriend,NotiValues.CHANNEL_NAME_AddFriend,NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
 
-            int notificationId = 1;
-            notificationManager.notify(notificationId,builder.build());
+            notificationManager.notify(NotiValues.notificationId_AddFriend,builder.build());
 
         }
 
         private void AddGroupNotification(String groupName) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID_AddGroup);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,NotiValues.CHANNEL_ID_AddGroup);
             builder.setSmallIcon(R.mipmap.ncku_line2);
             builder.setContentTitle("Title : Group request");
             builder.setContentText(groupName);
@@ -1004,12 +1003,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_AddGroup,CHANNEL_NAME_AddGroup,NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel notificationChannel = new NotificationChannel(NotiValues.CHANNEL_ID_AddGroup,NotiValues.CHANNEL_NAME_AddGroup,NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
 
-            int notificationId = 0;
-            notificationManager.notify(notificationId,builder.build());
+            notificationManager.notify(NotiValues.notificationId_AddGroup,builder.build());
         }
 
         public Bitmap MapBitmap(String id) {

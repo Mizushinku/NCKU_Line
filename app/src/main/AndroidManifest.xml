@@ -19,6 +19,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysHidden">
+
+        <!-- Set custom default icon and color for FCM notification-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ncku_line2" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/crimson" />
+
         <activity android:name=".StartInterface">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

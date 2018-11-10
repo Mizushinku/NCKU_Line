@@ -20,6 +20,9 @@
         <item>返回</item>
     </string-array>
 
+    <!-- Notification id, channel id, channel name -->
+    <string name="CHANNEL_ID_AddFriend">1</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
