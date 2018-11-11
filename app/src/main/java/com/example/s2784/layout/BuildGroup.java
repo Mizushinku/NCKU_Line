@@ -52,15 +52,6 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
         listViewAdapter = new ListViewAdapter(this, friendlist);
         listView.setAdapter(listViewAdapter);
 
-        // change color when click
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RoomInfo roomInfo = (RoomInfo) listViewAdapter.getItem(position);
-                CheckedTextView checkedTextView = view.findViewById(R.id.name);
-            }
-        });
-
         etGroupName.setOnClickListener(this);
 //        btn_selectFriend.setOnClickListener(this);
         btn_CreateGroup.setOnClickListener(this);

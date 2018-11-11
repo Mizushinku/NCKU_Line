@@ -61,6 +61,7 @@
         <activity android:name=".StudentData" />
         <activity android:name=".MsgBulletin" />
         <activity android:name=".JoinGroup" />
+        <activity android:name=".InviteFriend" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

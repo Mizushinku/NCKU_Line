@@ -844,6 +844,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             roomInfo.setCode(code);
             roomInfo.setRoomName(groupName);
             roomInfo.setStudentID("");
+            roomInfo.setType("G");
             StringTokenizer split_member = new StringTokenizer(memberID,"-");
             while (split_member.hasMoreElements()){
                 String member = split_member.nextToken();

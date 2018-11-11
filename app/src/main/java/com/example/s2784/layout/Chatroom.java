@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -113,7 +114,32 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         Grid_Adapter grid_adapter = new Grid_Adapter(this,icons,letters);
         gridView.setAdapter(grid_adapter);
-        
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        memberID = "";
+                        for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
+                            if (i == 0) {
+                                memberID += roomInfo.getMemberID().get(i);
+                            } else {
+                                memberID += "," + roomInfo.getMemberID().get(i);
+                            }
+                        }
+                        Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
+                        startActivity(invite_friend);
+                        break;
+                    default:
+                        Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
+
         btn.setOnClickListener(this);
         slide_btn.setOnClickListener(this);
         //設定該class為callback function 實作方
@@ -142,15 +168,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                     Tabs.mqtt.SendMessage(msg);
                 }
                 et.setText("");
-                memberID = "";
-                for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
-                    if (i == 0) {
-                        memberID += roomInfo.getMemberID().get(i);
-                    } else {
-                        memberID += "," + roomInfo.getMemberID().get(i);
-                    }
-                }
-                Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
                 break;
             case R.id.slide_btn:
                 float deg = (slide_btn.getRotation() == 180F) ? 0F : 180F;
@@ -205,4 +222,5 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
