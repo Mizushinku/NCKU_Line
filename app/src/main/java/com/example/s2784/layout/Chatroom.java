@@ -31,8 +31,11 @@ import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
-    String letters[] = {"群組成員","邀請好友"};
-    int icons[] = { R.drawable.group_member,R.drawable.invite_friend};
+    String group_letters[] = {"群組成員","邀請好友"};
+    int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend};
+    String friend_letters[] = {"群組成員"};
+    int friend_icons[] = { R.drawable.group_member};
+
 
     private ImageButton btn;
     private Button slide_btn;
@@ -41,10 +44,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private bubble_list Bubble_list;
     private EditText et;
     private RoomInfo roomInfo;
+    private ArrayList<RoomInfo> friendlist;
     private android.support.v7.widget.Toolbar toolbar;
     private SlidingDrawer slidingDrawer;
     private Button handle_btn;
     private GridView gridView;
+    private Grid_Adapter gridAdapter;
 
     private String id;
     private String code;
@@ -90,6 +95,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         code = intent.getStringExtra("code");
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
+        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
 
         toolbar = findViewById(R.id.chat_toolbar);
         if(roomInfo.getType().equals("F")){
@@ -112,8 +118,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         slidingDrawer.close();
         gridView = findViewById(R.id.grid_view);
 
-        Grid_Adapter grid_adapter = new Grid_Adapter(this,icons,letters);
-        gridView.setAdapter(grid_adapter);
+        if(roomInfo.getType().equals("F")){
+            gridAdapter = new Grid_Adapter(this,friend_icons,friend_letters);
+        }else if(roomInfo.getType().equals("G")){
+            gridAdapter = new Grid_Adapter(this,group_icons,group_letters);
+        }
+        gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -131,6 +141,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                         break;
                     case 1:
                         Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
+                        invite_friend.putExtra("code",roomInfo.getCode());
+                        invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
                         startActivity(invite_friend);
                         break;
                     default:
@@ -213,6 +225,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             String member = split_member.nextToken();
             roomInfo.addMemberID(member);
         }
+        toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
     }
 
     @Override

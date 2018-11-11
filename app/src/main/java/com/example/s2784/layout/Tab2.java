@@ -81,6 +81,8 @@ public class Tab2 extends Fragment {
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());
                 chat.putExtra("roomInfo",testViewModel.getRoomInfo(code));
+                chat.putParcelableArrayListExtra("friendlist", testViewModel.getFriend());
+
                 startActivity(chat);
             }
         });

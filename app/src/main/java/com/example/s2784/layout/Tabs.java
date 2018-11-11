@@ -698,6 +698,31 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     }
                                 }
                                 break;
+                            case "SendNewChatroom":
+                                String SNC_msg = new String(message.getPayload());
+                                String[] SNC_msg_splitLine = SNC_msg.split("\t");
+                                RoomInfo roomInfo = new RoomInfo();
+                                roomInfo.setCode(SNC_msg_splitLine[0]);
+                                roomInfo.setRoomName(SNC_msg_splitLine[1]);
+                                StringTokenizer split_member = new StringTokenizer(SNC_msg_splitLine[2],"-");
+                                while (split_member.hasMoreElements()){
+                                    String str = split_member.nextToken();
+                                    roomInfo.addMemberID(str);
+                                }
+                                roomInfo.setType(SNC_msg_splitLine[3]);
+                                roomInfo.setrMsg(SNC_msg_splitLine[4]);
+                                roomInfo.setrMsgDate(SNC_msg_splitLine[5]);
+
+                                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                byte[] bytes = stream.toByteArray();
+                                roomInfo.setIcon_data(bytes);
+                                testViewModel.addInGroup(roomInfo);
+                                testViewModel.putListHash("群組", testViewModel.getGroup());
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                Tab1_CM.getInstance().refreshExplv(0);
+                                break;
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
@@ -868,7 +893,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
             Tab1_CM.getInstance().refreshExplv(0);
 
-            arrayList.add(roomInfo);
         }
 
         private void DeleteFriend(String friendID, String code) {
@@ -969,6 +993,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 e.printStackTrace();
             }
         }
+
+        public void InviteFriend(String code, String member){
+            String topic = "IDF/InviteFriend/" + user;
+            String MSG = code + "\t" + member;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         private void AddFriendNotification(String friendName) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context,NotiValues.CHANNEL_ID_AddFriend);
