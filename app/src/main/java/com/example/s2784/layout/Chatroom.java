@@ -186,9 +186,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 slide_btn.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
                 slidingDrawer.animateToggle();
                 if(slidingDrawer.isOpened()){
-                    Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
                 }
         }
 

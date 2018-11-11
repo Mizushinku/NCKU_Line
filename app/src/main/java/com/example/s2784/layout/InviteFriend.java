@@ -44,7 +44,7 @@ public class InviteFriend extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-            Toast.makeText(InviteFriend.this, member, Toast.LENGTH_LONG).show();
+//            Toast.makeText(InviteFriend.this, member, Toast.LENGTH_LONG).show();
             if(!member.equals("")) {
                 Tabs.mqtt.InviteFriend(code, member);
             }
