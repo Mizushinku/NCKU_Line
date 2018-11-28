@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class FCM_MessageService extends FirebaseMessagingService {
 
+    private static boolean tabsVisible = false;
+
     @Override
     public void onNewToken(String token) {
         Log.d("TAG","Refreshed token: " + token);
@@ -25,18 +27,18 @@ public class FCM_MessageService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d("TAG", "onMessageReceived");
         if(remoteMessage.getData().size() > 0) {
             Map<String,String> data = remoteMessage.getData();
             String msgTitle = data.get("msgTitle");
             String msgText = data.get("msgText");
-            Log.d("TAG", "title = " + msgTitle);
-            Log.d("TAG", "text = " + msgText);
-            SendNotification(msgTitle, msgText);
+
+            if(!tabsVisible) {
+                sendNotification(msgTitle, msgText);
+            }
         }
     }
 
-    private void SendNotification(String title, String text) {
+    private void sendNotification(String title, String text) {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -58,6 +60,10 @@ public class FCM_MessageService extends FirebaseMessagingService {
         }
 
         manager.notify(NotiValues.notificationId_ReceiveMsg, builder.build());
+    }
+
+    public static void setTabsVisible(boolean tabsVisible) {
+        FCM_MessageService.tabsVisible = tabsVisible;
     }
 
 }
