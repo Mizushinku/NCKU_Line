@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class FCM_MessageService extends FirebaseMessagingService {
 
-    private static boolean tabsVisible = false;
+    private static String visibleRoomCode = "";
 
     @Override
     public void onNewToken(String token) {
@@ -31,8 +31,9 @@ public class FCM_MessageService extends FirebaseMessagingService {
             Map<String,String> data = remoteMessage.getData();
             String msgTitle = data.get("msgTitle");
             String msgText = data.get("msgText");
+            String code = data.get("code");
 
-            if(!tabsVisible) {
+            if(!code.equals(visibleRoomCode)) {
                 sendNotification(msgTitle, msgText);
             }
         }
@@ -62,8 +63,8 @@ public class FCM_MessageService extends FirebaseMessagingService {
         manager.notify(NotiValues.notificationId_ReceiveMsg, builder.build());
     }
 
-    public static void setTabsVisible(boolean tabsVisible) {
-        FCM_MessageService.tabsVisible = tabsVisible;
+    public static void setVisibleRoomCode(String visibleRoomCode) {
+        FCM_MessageService.visibleRoomCode = visibleRoomCode;
     }
 
 }

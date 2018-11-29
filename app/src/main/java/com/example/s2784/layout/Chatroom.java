@@ -82,6 +82,18 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FCM_MessageService.setVisibleRoomCode(code);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FCM_MessageService.setVisibleRoomCode("");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);

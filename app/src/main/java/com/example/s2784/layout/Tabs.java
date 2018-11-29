@@ -265,7 +265,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onStart() {
         super.onStart();
-        FCM_MessageService.setTabsVisible(true);
         Log.d("TAG", "Tabs : onStart()");
     }
 
@@ -284,7 +283,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onStop() {
         super.onStop();
-        FCM_MessageService.setTabsVisible(false);
         Log.d("TAG", "Tabs : onStop()");
     }
 
