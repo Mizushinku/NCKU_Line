@@ -31,10 +31,10 @@ import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
-    String group_letters[] = {"群組成員","邀請好友"};
-    int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend};
-    String friend_letters[] = {"群組成員"};
-    int friend_icons[] = { R.drawable.group_member};
+    String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
+    int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
+    String friend_letters[] = {"群組成員","選擇圖片"};
+    int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
 
 
     private ImageButton btn;
@@ -139,27 +139,33 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        memberID = "";
-                        for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
-                            if (i == 0) {
-                                memberID += roomInfo.getMemberID().get(i);
-                            } else {
-                                memberID += "," + roomInfo.getMemberID().get(i);
-                            }
-                        }
-                        Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
-                        break;
-                    case 1:
-                        Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
-                        invite_friend.putExtra("code",roomInfo.getCode());
-                        invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
-                        startActivity(invite_friend);
-                        break;
-                    default:
-                        Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
-                        break;
+                if(roomInfo.getType().equals("G")) {
+                    switch (position) {
+                        case 0:
+                            toastMembes();
+                            break;
+                        case 1:
+                            inviteFriend();
+                            break;
+                        case 2:
+                            choosePic();
+                            break;
+                        default:
+                            Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
+                            break;
+                    }
+                } else if(roomInfo.getType().equals("F")) {
+                    switch (position) {
+                        case 0:
+                            toastMembes();
+                            break;
+                        case 1:
+                            choosePic();
+                            break;
+                        default:
+                            Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
+                            break;
+                    }
                 }
             }
         });
@@ -246,6 +252,29 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void inviteFriend() {
+        Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
+        invite_friend.putExtra("code",roomInfo.getCode());
+        invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
+        startActivity(invite_friend);
+    }
+
+    private void toastMembes() {
+        memberID = "";
+        for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
+            if (i == 0) {
+                memberID += roomInfo.getMemberID().get(i);
+            } else {
+                memberID += "," + roomInfo.getMemberID().get(i);
+            }
+        }
+        Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
+    }
+
+    private void choosePic() {
+
     }
 
 }
