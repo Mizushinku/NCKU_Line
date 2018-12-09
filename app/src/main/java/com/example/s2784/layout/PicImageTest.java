@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -42,19 +44,35 @@ public class PicImageTest extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             Uri uri = data.getData();
             if(uri != null) {
-                Log.d("imgt", uri.getPath());
-
                 ContentResolver cr = this.getContentResolver();
                 try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-                    ImageView imageView = (ImageView)findViewById(R.id.imgv);
-                    imageView.setImageBitmap(bitmap);
+                    final BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(cr.openInputStream(uri), null,options);
+                    int reqWidth = 688, reqHeight = 387;
+                    int inSampleSize = 1;
+                    if(options.outWidth > reqWidth || options.outHeight > reqHeight) {
+                        final int heightRatio = Math.round((float)options.outHeight / (float)reqHeight);
+                        final int widthRatio = Math.round((float)options.outWidth / (float)reqWidth);
+                        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+                    }
+                    options.inSampleSize = inSampleSize;
+                    options.inJustDecodeBounds = false;
 
+                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
 
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+                    TextView textView = findViewById(R.id.tv_img_size);
+                    String size_tv = "Size : " + (baos.toByteArray().length/1024) + "KB";
+                    textView.setText(size_tv);
+                    textView.setTextSize(40);
+                    Bitmap cmpBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.toByteArray().length);
+                    ImageView imageView = findViewById(R.id.imgv);
+                    imageView.setImageBitmap(cmpBitmap);
                 } catch (FileNotFoundException e) {
                     Log.d("imgt", e.getMessage(), e);
                 }
-
             } else {
                 Log.d("imgt", "uri is null!");
             }

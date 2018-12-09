@@ -976,7 +976,20 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public void SendImg(Uri uri) {
             ContentResolver cr = context.getContentResolver();
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeStream(cr.openInputStream(uri), null,options);
+                int reqWidth = 688, reqHeight = 387;
+                int inSampleSize = 1;
+                if(options.outWidth > reqWidth || options.outHeight > reqHeight) {
+                    final int heightRatio = Math.round((float)options.outHeight / (float)reqHeight);
+                    final int widthRatio = Math.round((float)options.outWidth / (float)reqWidth);
+                    inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+                }
+                options.inSampleSize = inSampleSize;
+                options.inJustDecodeBounds = false;
+
+                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 String topic = "IDF/SendImg/" + user;
