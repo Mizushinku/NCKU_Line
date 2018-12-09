@@ -35,6 +35,9 @@ public class FCM_MessageService extends FirebaseMessagingService {
 
             if(!code.equals(visibleRoomCode)) {
                 sendNotification(msgTitle, msgText);
+                SQLiteManager.setContext(getApplicationContext());
+                SQLiteManager.DBinit();
+                SQLiteManager.queryForBadge(code);
             }
         }
     }

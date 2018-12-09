@@ -75,6 +75,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_tabs);
+
+        // SQLite table create if not exist
+        SQLiteManager.setContext(this);
+        SQLiteManager.DBinit();
+        SQLiteManager.createTableForBadge();
+
+
         arrayList.clear();
 
   //Change status color
@@ -405,6 +412,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 .setNegativeButton("是", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         StartInterface.logout();
+                        SQLiteManager.deleteAllBadge();
                         Intent intent_Login = new Intent(Tabs.this, LogIn.class);
                         startActivity(intent_Login);
                         finish();

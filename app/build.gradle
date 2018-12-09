@@ -61,6 +61,8 @@ dependencies {
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-messaging:17.3.3'
+    implementation "me.leolin:ShortcutBadger:1.1.18@aar"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

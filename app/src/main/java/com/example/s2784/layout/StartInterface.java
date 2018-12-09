@@ -26,6 +26,10 @@ public class StartInterface extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_interface);
 
+        // For Badge's table
+        SQLiteManager.setContext(this);
+        SQLiteManager.DBinit();
+        SQLiteManager.createTableForBadge();
 
 
 //
