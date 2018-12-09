@@ -1,30 +1,24 @@
 package com.example.s2784.layout;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.support.v4.widget.DrawerLayout;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-import android.widget.ViewAnimator;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -55,6 +49,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private String code;
 
     private String memberID;
+
+    private static final int REQUEST_CODE_CHOOSEPIC = 1;
 
 
 
@@ -203,11 +199,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 float deg = (slide_btn.getRotation() == 180F) ? 0F : 180F;
                 slide_btn.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
                 slidingDrawer.animateToggle();
-                if(slidingDrawer.isOpened()){
-//                    Toast.makeText(Chatroom.this, "close", Toast.LENGTH_LONG).show();
-                }else {
-//                    Toast.makeText(Chatroom.this, "open", Toast.LENGTH_LONG).show();
-                }
+                break;
         }
 
     }
@@ -274,7 +266,44 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void choosePic() {
+        /*
+        Intent intent = new Intent(Chatroom.this, PicImageTest.class);
+        startActivity(intent);
+        */
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_CODE_CHOOSEPIC);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            new SendingImg().execute(uri);
+        }
+    }
+
+    private class SendingImg extends AsyncTask<Uri, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Uri...params) {
+            Uri uri = params[0];
+            Tabs.mqtt.SendImg(uri);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+        }
     }
 
 }
+

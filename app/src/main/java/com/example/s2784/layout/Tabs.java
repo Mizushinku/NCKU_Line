@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -957,6 +960,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/SendMessage/" + user;
             try {
                 client.publish(topic, str.getBytes(), 0, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void SendImg(Uri uri) {
+            ContentResolver cr = context.getContentResolver();
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                String topic = "IDF/SendImg/" + user;
+                client.publish(topic, baos.toByteArray(), 2, false);
+            } catch (FileNotFoundException e) {
+                Log.d("imgt", e.getMessage(), e);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
