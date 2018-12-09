@@ -177,6 +177,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //拿到聊天紀錄
         Tabs.mqtt.GetRecord(code);
 
+        //已讀
+        SQLiteManager.badgeClear(code);
 
         Bubble_list = new bubble_list(Chatroom.this,Bubble);
         lv.setAdapter(Bubble_list);
