@@ -991,7 +991,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
                 Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
                 String topic = "IDF/SendImg/" + user;
                 client.publish(topic, baos.toByteArray(), 2, false);
             } catch (FileNotFoundException e) {
