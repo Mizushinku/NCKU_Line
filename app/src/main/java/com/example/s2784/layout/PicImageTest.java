@@ -1,11 +1,13 @@
 package com.example.s2784.layout;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +23,19 @@ import java.io.FileNotFoundException;
 public class PicImageTest extends AppCompatActivity {
 
     private Button btn_choosePic;
+    private Context context;
+    private TextView textView;
+    private ImageView imageView;
+    int imgsize = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_image_test);
+
+        context = this.getApplicationContext();
+        textView = findViewById(R.id.tv_img_size);
+        imageView = findViewById(R.id.imgv);
 
         btn_choosePic = (Button)findViewById(R.id.button);
         btn_choosePic.setOnClickListener(new Button.OnClickListener() {
@@ -44,7 +54,27 @@ public class PicImageTest extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             Uri uri = data.getData();
             if(uri != null) {
-                ContentResolver cr = this.getContentResolver();
+                new SendingImg().execute(uri);
+            } else {
+                Log.d("imgt", "uri is null!");
+            }
+
+
+        }
+    }
+
+    private class SendingImg extends AsyncTask<Uri, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Bitmap doInBackground(Uri...params) {
+            Uri uri = params[0];
+            if(uri != null) {
+                ContentResolver cr = context.getContentResolver();
                 try {
                     final BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
@@ -63,21 +93,26 @@ public class PicImageTest extends AppCompatActivity {
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                    TextView textView = findViewById(R.id.tv_img_size);
-                    String size_tv = "Size : " + (baos.toByteArray().length/1024) + "KB";
-                    textView.setText(size_tv);
-                    textView.setTextSize(40);
+                    imgsize = baos.toByteArray().length/1024;
                     Bitmap cmpBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.toByteArray().length);
-                    ImageView imageView = findViewById(R.id.imgv);
-                    imageView.setImageBitmap(cmpBitmap);
+                    return cmpBitmap;
                 } catch (FileNotFoundException e) {
                     Log.d("imgt", e.getMessage(), e);
                 }
-            } else {
-                Log.d("imgt", "uri is null!");
             }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Bitmap img) {
+            super.onPostExecute(img);
+            String size_tv = "Size : " + imgsize + "KB";
+            textView.setText(size_tv);
+            textView.setTextSize(40);
 
+            imageView.setImageBitmap(img);
+
+            findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
     }
 }

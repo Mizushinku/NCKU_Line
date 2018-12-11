@@ -268,15 +268,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void choosePic() {
-        /*
         Intent intent = new Intent(Chatroom.this, PicImageTest.class);
         startActivity(intent);
-        */
-
+        /*
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_CODE_CHOOSEPIC);
+        */
     }
 
     @Override

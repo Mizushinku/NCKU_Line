@@ -36,4 +36,15 @@
         android:layout_marginTop="92dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_img"
+        android:visibility="gone"
+        android:layout_width="80dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_img_size" />
 </android.support.constraint.ConstraintLayout>
