@@ -17,8 +17,10 @@ public class bubble {
     private Bitmap pic;
     private String time;
     private String date;
+    private Bitmap image;
     public bubble() {}
 
+    //constructor for text message
     public bubble(int type, String txtmsg, String name, String time, Bitmap bitmap) {
         this.txtmsg = txtmsg;
         this.type = type;
@@ -36,6 +38,26 @@ public class bubble {
         this.date = tokens[0];
         this.time = tokens[1].substring(0,5);
     }
+
+    //constructor foe image message
+    public bubble(int type, Bitmap image, String name, String time, Bitmap bitmap) {
+        this.image = image;
+        this.type = type;
+        this.name = name;
+        String[] tokens = time.split(" ");
+        this.date = tokens[0];
+        this.time = tokens[1].substring(0,5);
+        this.pic = bitmap;
+    }
+    public bubble(int type, Bitmap image, String name, String time) {
+        this.image = image;
+        this.type = type;
+        this.name = name;
+        String[] tokens = time.split(" ");
+        this.date = tokens[0];
+        this.time = tokens[1].substring(0,5);
+    }
+
 
     public String getTxtMsg() {
         return txtmsg;
@@ -78,4 +100,12 @@ public class bubble {
     public String getDate() { return date; }
 
     public void setDate(String date) { this.date = date; }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
 }

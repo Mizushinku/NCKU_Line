@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -216,6 +217,17 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
 
+        lv.setSelection(Bubble_list.getCount());
+    }
+
+    @Override
+    public void updateImg(String sender, Bitmap image, String time) {
+        if(sender.equals(id)) {
+            Bubble.add(new bubble(1, image, sender,time));
+        }else {
+            Bubble.add(new bubble(0, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
+        }
+        Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
         lv.setSelection(Bubble_list.getCount());
     }
 
