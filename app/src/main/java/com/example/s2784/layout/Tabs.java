@@ -695,7 +695,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 isFound = false;
                                 for (int i = 0; i < testViewModel.getGroup().size(); i++) {
                                     if (testViewModel.getGroup().get(i).getCode().equals(tsl[3])) {
-                                        testViewModel.getGroup().get(i).setrMsg(SI_msg);
+                                        testViewModel.getGroup().get(i).setrMsg("a new image");
                                         testViewModel.getGroup().get(i).setrMsgDate(tsl[4]);
                                         isFound = true;
                                         break;
@@ -704,7 +704,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 if(!isFound) {
                                     for (int i = 0; i < testViewModel.getFriend().size(); i++) {
                                         if (testViewModel.getFriend().get(i).getCode().equals(tsl[3])) {
-                                            testViewModel.getFriend().get(i).setrMsg(SI_msg);
+                                            testViewModel.getFriend().get(i).setrMsg("a new image");
                                             testViewModel.getFriend().get(i).setrMsgDate(tsl[4]);
                                             break;
                                         }
