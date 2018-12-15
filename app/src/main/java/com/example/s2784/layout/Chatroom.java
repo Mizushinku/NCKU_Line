@@ -268,14 +268,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void choosePic() {
+        /*
         Intent intent = new Intent(Chatroom.this, PicImageTest.class);
         startActivity(intent);
-        /*
+        */
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_CODE_CHOOSEPIC);
-        */
     }
 
     @Override
@@ -296,7 +296,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         @Override
         protected Void doInBackground(Uri...params) {
             Uri uri = params[0];
-            Tabs.mqtt.SendImg(uri);
+            Tabs.mqtt.SendImg(uri, code);
             return null;
         }
 

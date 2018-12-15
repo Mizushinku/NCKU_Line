@@ -578,6 +578,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 public void messageArrived(String topic, MqttMessage message) {
                     String[] idf = topic.split("/");
                     if(idf[0].equals("IDF")) {
+                        boolean isFound;
                         switch (idf[1]) {
                             case "Initialize":
                                 StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), ",");
@@ -664,7 +665,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "SendMessage":
                                 String SM_msg = new String(message.getPayload());
                                 String[] SM_msg_splitLine = SM_msg.split("\t");
-                                boolean isFound = false;
+                                isFound = false;
                                 for (int i = 0; i < testViewModel.getGroup().size(); i++) {
                                     if (testViewModel.getGroup().get(i).getCode().equals(SM_msg_splitLine[0])) {
                                         testViewModel.getGroup().get(i).setrMsg(SM_msg_splitLine[2]);
@@ -684,6 +685,33 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 }
                                 if (processingCode.equals(SM_msg_splitLine[0])) {
                                     LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
+                                }
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                break;
+                            case "SendImg":
+                                Log.d("imgd","on mqtt SendImg callback");
+                                String SI_msg = new String(message.getPayload());
+                                String[] tsl = topic.split("/"); // IDF/SendImg/id/code/time
+                                isFound = false;
+                                for (int i = 0; i < testViewModel.getGroup().size(); i++) {
+                                    if (testViewModel.getGroup().get(i).getCode().equals(tsl[3])) {
+                                        testViewModel.getGroup().get(i).setrMsg(SI_msg);
+                                        testViewModel.getGroup().get(i).setrMsgDate(tsl[4]);
+                                        isFound = true;
+                                        break;
+                                    }
+                                }
+                                if(!isFound) {
+                                    for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                                        if (testViewModel.getFriend().get(i).getCode().equals(tsl[3])) {
+                                            testViewModel.getFriend().get(i).setrMsg(SI_msg);
+                                            testViewModel.getFriend().get(i).setrMsgDate(tsl[4]);
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (processingCode.equals(tsl[3])) {
+                                    LinkModule.getInstance().callUpdateMsg(tsl[2], SI_msg, tsl[4]);
                                 }
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 break;
@@ -778,6 +806,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             if (client != null && client.isConnected()) {
                 try {
                     client.unsubscribe("IDF/+/" + user + "/Re");
+                    client.unsubscribe("IDF/SendImg/" + user + "/+/+/Re");
                     client.disconnect();
                     client.unregisterResources();
                     client = null;
@@ -793,6 +822,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void mqttSub() {
             try {
                 String topic = "IDF/+/" + user + "/Re";
+                client.subscribe(topic, 2);
+                topic = "IDF/SendImg/" + user + "/+/+/Re";
                 client.subscribe(topic, 2);
             } catch (MqttException e) {
                 e.printStackTrace();
@@ -973,7 +1004,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void SendImg(Uri uri) {
+        public void SendImg(Uri uri, String code) {
             ContentResolver cr = context.getContentResolver();
             try {
                 final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -992,7 +1023,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                String topic = "IDF/SendImg/" + user;
+                String topic = "IDF/SendImg/" + user + "/" + code;
                 client.publish(topic, baos.toByteArray(), 2, false);
             } catch (FileNotFoundException e) {
                 Log.d("imgt", e.getMessage(), e);
