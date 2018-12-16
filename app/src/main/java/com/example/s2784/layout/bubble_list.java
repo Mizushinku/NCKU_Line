@@ -128,6 +128,7 @@ public class bubble_list extends BaseAdapter {
         //要更新的行數處在手機畫面中才更新(不再畫面中的item,隨著listView捲動會自動更新)
         if (position >= firstVisiblePosition && position <= lastVisiblePosition) {
             View v = lv.getChildAt(position - firstVisiblePosition);
+
             if (v == null) {
                 return;
             }
@@ -136,5 +137,6 @@ public class bubble_list extends BaseAdapter {
             this.getView(position, v, lv);
         }
     }
+
 
 }

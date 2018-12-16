@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
 
@@ -216,7 +215,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
-
         lv.setSelection(Bubble_list.getCount());
     }
 
@@ -229,16 +227,20 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
         lv.setSelection(Bubble_list.getCount());
+        if(image != null) {
+            findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void updateImg(Bitmap image, int pos) {
+        Bubble.get(pos).setImage(image);
+        //Bubble_list.notifyDataSetChanged(lv, pos);
     }
 
     @Override
     public void fetchRecord(String record) {
-        StringTokenizer stringTokenizer = new StringTokenizer(record,",");
-        while(stringTokenizer.hasMoreElements()){
-            String token = stringTokenizer.nextToken();
-            String[] token_splitLine = token.split("\t");
-            updateMsg(token_splitLine[0],token_splitLine[1],token_splitLine[2]);
-        }
+        new FetchRecord().execute(record);
     }
 
     @Override
@@ -250,6 +252,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             roomInfo.addMemberID(member);
         }
         toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
+    }
+
+    @Override
+    public void refreshListView() {
+        Bubble_list.notifyDataSetChanged();
+        lv.setSelection(Bubble_list.getCount());
     }
 
     @Override
@@ -303,12 +311,48 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         protected void onPreExecute() {
             super.onPreExecute();
             findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+            findViewById(R.id.progressBar_img).bringToFront();
         }
 
         @Override
         protected Void doInBackground(Uri...params) {
             Uri uri = params[0];
             Tabs.mqtt.SendImg(uri, code);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            //findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+        }
+    }
+
+    private class FetchRecord extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+            findViewById(R.id.progressBar_img).bringToFront();
+        }
+
+        @Override
+        protected Void doInBackground(String...params) {
+            String record = params[0];
+            StringTokenizer stringTokenizer = new StringTokenizer(record,",");
+            int i = 0;
+            while(stringTokenizer.hasMoreElements()){
+                String token = stringTokenizer.nextToken();
+                String[] token_splitLine = token.split("\t");
+                //if type == 'text'
+                if(token_splitLine[3].equals("text")) {
+                    updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
+                } else if(token_splitLine[3].equals("img")) {
+                    updateImg(token_splitLine[0], null, token_splitLine[2]);
+                    Tabs.mqtt.RecordImgBack(token_splitLine[1], i);
+                }
+                ++i;
+            }
             return null;
         }
 

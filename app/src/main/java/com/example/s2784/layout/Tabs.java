@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -718,6 +717,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "GetRecord":
                                 LinkModule.getInstance().callFetchRecord(new String(message.getPayload()));
                                 break;
+                            case "RecordImgBack":
+                                int pos = Integer.parseInt(topic.split("/")[3]);
+                                Bitmap image = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                LinkModule.getInstance().callUpdateImg(image, pos);
+                                LinkModule.getInstance().callRefreshListView();
+                                break;
                             case "MemberChange":
                                 String MC_msg = new String(message.getPayload());
 //                                Log.d("MEM",MC_msg);
@@ -807,6 +812,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 try {
                     client.unsubscribe("IDF/+/" + user + "/Re");
                     client.unsubscribe("IDF/SendImg/" + user + "/+/+/Re");
+                    client.unsubscribe("IDF/RecordImgBack/" + user + "/+/Re");
                     client.disconnect();
                     client.unregisterResources();
                     client = null;
@@ -821,9 +827,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         private void mqttSub() {
             try {
+                /*
+                * IDF/      +      /"user"/  Re
+                * IDF/   SendImg   /"user"/  +  /  +   /Re
+                * IDF/RecordImgBack/"user"/  +  /  Re
+                */
                 String topic = "IDF/+/" + user + "/Re";
                 client.subscribe(topic, 2);
                 topic = "IDF/SendImg/" + user + "/+/+/Re";
+                client.subscribe(topic, 2);
+                topic = "IDF/RecordImgBack/" + user + "/+/Re";
                 client.subscribe(topic, 2);
             } catch (MqttException e) {
                 e.printStackTrace();
@@ -1036,6 +1049,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/GetRecord/" + user;
             try {
                 client.publish(topic, code.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void RecordImgBack(String path, int pos) {
+            String topic = "IDF/RecordImgBack/" + user + "/" + pos;
+            try {
+                client.publish(topic, path.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }

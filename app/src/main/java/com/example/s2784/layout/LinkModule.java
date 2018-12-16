@@ -17,8 +17,10 @@ public class LinkModule {
     public interface MListener {
         void updateMsg(String sender, String text, String time);
         void updateImg(String sender, Bitmap image, String time);
+        void updateImg(Bitmap image, int pos);
         void fetchRecord(String record);
         void memberChange(String memberID);
+        void refreshListView();
         //void what_you_want();
     }
 
@@ -59,6 +61,11 @@ public class LinkModule {
             mListener.updateImg(sender,image,time);
         }
     }
+    public void callUpdateImg(Bitmap image, int pos) {
+        if(mListener != null) {
+            mListener.updateImg(image, pos);
+        }
+    }
     public void callFetchRecord(String record) {
         if(mListener != null) {
             mListener.fetchRecord(record);
@@ -67,6 +74,11 @@ public class LinkModule {
     public void callMemberChange(String memberID){
         if(mListener != null){
             mListener.memberChange(memberID);
+        }
+    }
+    public void callRefreshListView(){
+        if(mListener != null){
+            mListener.refreshListView();
         }
     }
 
