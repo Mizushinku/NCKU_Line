@@ -49,8 +49,10 @@ public class LogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-
-
+        SQLiteManager.setContext(this);
+        SQLiteManager.DBinit();
+        SQLiteManager.createTableForBadge();
+        SQLiteManager.createTableForLogin();
 
         Button btn_logIn = findViewById(R.id.btn_logIn);
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
@@ -234,10 +236,10 @@ public class LogIn extends AppCompatActivity {
                             if(msg[0].equals("True")){
                                 // Go Main page
                                 Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
+                                SQLiteManager.addUser(msg[1]);
                                 Intent mainIntent = new Intent(LogIn.this,Tabs.class);
                                 mainIntent.putExtra("userID",msg[1]);
                                 startActivity(mainIntent);
-                                StartInterface.addData("Login",msg[1]);
                                 finish();
                             }else if(msg[0].equals("False")){
                                 Toast.makeText(LogIn.this,"登入失敗", Toast.LENGTH_SHORT).show();
