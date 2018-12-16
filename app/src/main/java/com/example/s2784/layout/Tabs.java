@@ -690,27 +690,27 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "SendImg":
                                 Log.d("imgd","on mqtt SendImg callback");
                                 Bitmap SI_img = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
-                                String[] tsl = topic.split("/"); // IDF/SendImg/id/code/time
+                                String[] tsl = topic.split("/"); // IDF/SendImg/user/sender/code/time/Re
                                 isFound = false;
                                 for (int i = 0; i < testViewModel.getGroup().size(); i++) {
-                                    if (testViewModel.getGroup().get(i).getCode().equals(tsl[3])) {
+                                    if (testViewModel.getGroup().get(i).getCode().equals(tsl[4])) {
                                         testViewModel.getGroup().get(i).setrMsg("a new image");
-                                        testViewModel.getGroup().get(i).setrMsgDate(tsl[4]);
+                                        testViewModel.getGroup().get(i).setrMsgDate(tsl[5]);
                                         isFound = true;
                                         break;
                                     }
                                 }
                                 if(!isFound) {
                                     for (int i = 0; i < testViewModel.getFriend().size(); i++) {
-                                        if (testViewModel.getFriend().get(i).getCode().equals(tsl[3])) {
+                                        if (testViewModel.getFriend().get(i).getCode().equals(tsl[4])) {
                                             testViewModel.getFriend().get(i).setrMsg("a new image");
-                                            testViewModel.getFriend().get(i).setrMsgDate(tsl[4]);
+                                            testViewModel.getFriend().get(i).setrMsgDate(tsl[5]);
                                             break;
                                         }
                                     }
                                 }
-                                if (processingCode.equals(tsl[3])) {
-                                    LinkModule.getInstance().callUpdateImg(tsl[2], SI_img, tsl[4]);
+                                if (processingCode.equals(tsl[4])) {
+                                    LinkModule.getInstance().callUpdateImg(tsl[3], SI_img, tsl[5]);
                                 }
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 break;
@@ -811,7 +811,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             if (client != null && client.isConnected()) {
                 try {
                     client.unsubscribe("IDF/+/" + user + "/Re");
-                    client.unsubscribe("IDF/SendImg/" + user + "/+/+/Re");
+                    client.unsubscribe("IDF/SendImg/" + user + "/+/+/+/Re");
                     client.unsubscribe("IDF/RecordImgBack/" + user + "/+/Re");
                     client.disconnect();
                     client.unregisterResources();
@@ -834,7 +834,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 */
                 String topic = "IDF/+/" + user + "/Re";
                 client.subscribe(topic, 2);
-                topic = "IDF/SendImg/" + user + "/+/+/Re";
+                topic = "IDF/SendImg/" + user + "/+/+/+/Re";
                 client.subscribe(topic, 2);
                 topic = "IDF/RecordImgBack/" + user + "/+/Re";
                 client.subscribe(topic, 2);
