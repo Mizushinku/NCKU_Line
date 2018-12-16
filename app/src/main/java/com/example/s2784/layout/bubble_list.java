@@ -54,19 +54,29 @@ public class bubble_list extends BaseAdapter {
     public View getView(final int position, View rowView, ViewGroup parent) {
         final bubble Bubble = (bubble) getItem(position);
         final RoomInfo roomInfo;
-        TextView txt_msg = null;
         TextView name = null;
         TextView time = null;
         TextView date = null;
         ImageView pic = null;
         int type = Bubble.getType();
+        int data_t = Bubble.getData_t();
         if (type == 0) {
-            if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
-                rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
-            } else {
-                rowView = inflater.inflate(R.layout.bubble_chat_left, null);
-                date = (TextView) rowView.findViewById(R.id.date_left);
-                date.setText(Bubble.getDate());
+            if(data_t == 0) {
+                if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                    rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
+                } else {
+                    rowView = inflater.inflate(R.layout.bubble_chat_left, null);
+                    date = (TextView) rowView.findViewById(R.id.date_left);
+                    date.setText(Bubble.getDate());
+                }
+            }else if(data_t == 1) {
+                if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                    rowView = inflater.inflate(R.layout.bubble_chat_img_left_nodate, null);
+                } else {
+                    rowView = inflater.inflate(R.layout.bubble_chat_img_left, null);
+                    date = (TextView) rowView.findViewById(R.id.date_left);
+                    date.setText(Bubble.getDate());
+                }
             }
             name = (TextView) rowView.findViewById(R.id.userName);
             name.setText(Bubble.getName());
@@ -78,19 +88,34 @@ public class bubble_list extends BaseAdapter {
                 pic.setImageBitmap(Bubble.getPic());
             }
         } else {
-            if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
-                rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
-            } else {
-                rowView = inflater.inflate(R.layout.bubble_chat_right, null);
-                date = (TextView) rowView.findViewById(R.id.date_right);
-                date.setText(Bubble.getDate());
+            if(data_t == 0) {
+                if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                    rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
+                } else {
+                    rowView = inflater.inflate(R.layout.bubble_chat_right, null);
+                    date = (TextView) rowView.findViewById(R.id.date_right);
+                    date.setText(Bubble.getDate());
+                }
+            } else if(data_t == 1) {
+                if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
+                    rowView = inflater.inflate(R.layout.bubble_chat_img_right_nodate, null);
+                } else {
+                    rowView = inflater.inflate(R.layout.bubble_chat_img_right, null);
+                    date = (TextView) rowView.findViewById(R.id.date_right);
+                    date.setText(Bubble.getDate());
+                }
             }
         }
 
         time = (TextView) rowView.findViewById(R.id.msg_time);
         time.setText(Bubble.getTime());
-        txt_msg = (TextView) rowView.findViewById(R.id.txt_msg);
-        txt_msg.setText(Bubble.getTxtMsg());
+        if(data_t == 0) {
+            TextView txt_msg = rowView.findViewById(R.id.txt_msg);
+            txt_msg.setText(Bubble.getTxtMsg());
+        } else if(data_t == 1) {
+            ImageView imageView = rowView.findViewById(R.id.img_msg);
+            imageView.setImageBitmap(Bubble.getImage());
+        }
 
         return rowView;
     }

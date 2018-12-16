@@ -12,17 +12,25 @@ import android.widget.ImageView;
 
 public class bubble {
     private String txtmsg;
-    private int type;
     private String name;
     private Bitmap pic;
     private String time;
     private String date;
     private Bitmap image;
+
+    //message from others or self, 0 = others, 1 = self
+    private int type;
+
+    //message type, 0 = text data, 1 = image data
+    private int data_t;
+
+
     public bubble() {}
 
     //constructor for text message
-    public bubble(int type, String txtmsg, String name, String time, Bitmap bitmap) {
+    public bubble(int type, int data_t, String txtmsg, String name, String time, Bitmap bitmap) {
         this.txtmsg = txtmsg;
+        this.data_t = data_t;
         this.type = type;
         this.name = name;
         String[] tokens = time.split(" ");
@@ -30,8 +38,9 @@ public class bubble {
         this.time = tokens[1].substring(0,5);
         this.pic = bitmap;
     }
-    public bubble(int type, String txtmsg, String name, String time) {
+    public bubble(int type, int data_t, String txtmsg, String name, String time) {
         this.txtmsg = txtmsg;
+        this.data_t = data_t;
         this.type = type;
         this.name = name;
         String[] tokens = time.split(" ");
@@ -40,8 +49,9 @@ public class bubble {
     }
 
     //constructor foe image message
-    public bubble(int type, Bitmap image, String name, String time, Bitmap bitmap) {
+    public bubble(int type, int data_t, Bitmap image, String name, String time, Bitmap bitmap) {
         this.image = image;
+        this.data_t = data_t;
         this.type = type;
         this.name = name;
         String[] tokens = time.split(" ");
@@ -49,8 +59,9 @@ public class bubble {
         this.time = tokens[1].substring(0,5);
         this.pic = bitmap;
     }
-    public bubble(int type, Bitmap image, String name, String time) {
+    public bubble(int type, int data_t, Bitmap image, String name, String time) {
         this.image = image;
+        this.data_t = data_t;
         this.type = type;
         this.name = name;
         String[] tokens = time.split(" ");
@@ -107,5 +118,9 @@ public class bubble {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public int getData_t() {
+        return data_t;
     }
 }

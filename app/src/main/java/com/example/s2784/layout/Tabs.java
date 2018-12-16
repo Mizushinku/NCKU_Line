@@ -690,7 +690,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 break;
                             case "SendImg":
                                 Log.d("imgd","on mqtt SendImg callback");
-                                String SI_msg = new String(message.getPayload());
+                                Bitmap SI_img = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
                                 String[] tsl = topic.split("/"); // IDF/SendImg/id/code/time
                                 isFound = false;
                                 for (int i = 0; i < testViewModel.getGroup().size(); i++) {
@@ -711,7 +711,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     }
                                 }
                                 if (processingCode.equals(tsl[3])) {
-                                    LinkModule.getInstance().callUpdateMsg(tsl[2], SI_msg, tsl[4]);
+                                    LinkModule.getInstance().callUpdateImg(tsl[2], SI_img, tsl[4]);
                                 }
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 break;

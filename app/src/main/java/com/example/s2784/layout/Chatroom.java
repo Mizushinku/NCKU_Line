@@ -210,9 +210,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void updateMsg(String sender, String text, String time) {
         if(sender.equals(id)) {
-            Bubble.add(new bubble(1,text,sender,time));
+            Bubble.add(new bubble(1,0,text,sender,time));
         }else {
-            Bubble.add(new bubble(0,text,sender,time,Tabs.mqtt.MapBitmap(sender)));
+            Bubble.add(new bubble(0,0,text,sender,time,Tabs.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
@@ -223,9 +223,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void updateImg(String sender, Bitmap image, String time) {
         if(sender.equals(id)) {
-            Bubble.add(new bubble(1, image, sender,time));
+            Bubble.add(new bubble(1, 1, image, sender,time));
         }else {
-            Bubble.add(new bubble(0, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
+            Bubble.add(new bubble(0, 1, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
         }
         Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
         lv.setSelection(Bubble_list.getCount());
