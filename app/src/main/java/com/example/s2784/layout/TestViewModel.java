@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.arch.lifecycle.ViewModel;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,10 @@ public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> roomlist = new ArrayList<>();
     private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
     private String userID;
+    private String userName = "USER";
+    private Bitmap userIcon;
 //    private boolean dataChange = false;
+
 
     public String getUserID() {
         return userID;
@@ -21,6 +25,14 @@ public class TestViewModel extends ViewModel {
     public void setUserID(String userID) {
         this.userID = userID;
     }
+
+    public String getUserName() { return userName; }
+
+    public void setUserName(String userName) { this.userName = userName; }
+
+    public Bitmap getUserIcon() { return userIcon; }
+
+    public void setUserIcon(Bitmap userIcon) { this.userIcon = userIcon; }
 
     public void removeFromGroup(int pos){
         group.remove(pos);

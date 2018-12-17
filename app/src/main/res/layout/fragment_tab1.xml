@@ -11,7 +11,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userIcon_tab1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/userName_tab1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="USER"
+                android:textSize="18dp"
+                android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>>
 
         <ExpandableListView
             android:id="@+id/lvExp"

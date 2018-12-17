@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 //        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
@@ -38,7 +42,8 @@ import java.util.List;
 public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
 
-
+    private CircleImageView userIcon_tab1;
+    private TextView userName_tab1;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     public static List<String> listDataHeader;
@@ -75,6 +80,14 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         initData();
 
         View view = inflater.inflate(R.layout.fragment_tab1,container,false);
+
+        userIcon_tab1 = (CircleImageView) view.findViewById(R.id.userIcon_tab1);
+        userName_tab1 = (TextView) view.findViewById(R.id.userName_tab1);
+
+        userName_tab1.setText(testViewModel.getUserName());
+//        Log.d("NAME","NAME:" + userName_tab1.getText());
+        userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
+
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);
@@ -206,4 +219,5 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
             listView.expandGroup(1);
         }
     }
+
 }

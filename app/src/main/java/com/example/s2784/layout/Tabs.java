@@ -546,6 +546,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     public void onSuccess(IMqttToken asyncActionToken) {
                         // We are connected
                         mqttSub();
+                        GetUserData();
                         Initialize();
                         SubmitFCMToken();
                     }
@@ -631,6 +632,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 } else if (addFriend_info[0].equals("false")) {
                                     Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
                                 }
+                                break;
+                            case "GetUserData":
+                                String name = new String(message.getPayload());
+                                GetUserData_re(name);
+                                break;
+                            case "GetUserIcon":
+                                Bitmap userIcon = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                GetUserIcon_re(userIcon);
                                 break;
                             case "AddGroup":
                                 String[] AG_msg = (new String(message.getPayload())).split("/");
@@ -869,6 +878,37 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.putListHash("群組", testViewModel.getGroup());
                 viewPager.getAdapter().notifyDataSetChanged();
             }
+        }
+
+        private void GetUserData(){
+            String topic = "IDF/GetUserData/" + user;
+            String MSG = "";
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void GetUserData_re(String name){
+            testViewModel.setUserName(name);
+            viewPager.getAdapter().notifyDataSetChanged();
+            GetUserIcon();
+        }
+
+        private void GetUserIcon(){
+            String topic = "IDF/GetUserIcon/" + user;
+            String MSG = "";
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void GetUserIcon_re(Bitmap b){
+            testViewModel.setUserIcon(b);
+            viewPager.getAdapter().notifyDataSetChanged();
         }
 
         private void AddFriend(String friendID) {
