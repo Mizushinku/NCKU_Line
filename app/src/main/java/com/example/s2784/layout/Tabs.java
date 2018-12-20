@@ -22,8 +22,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -43,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import q.rorbin.badgeview.QBadgeView;
 
 
 public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener {
@@ -53,6 +58,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private ViewPager viewPager;
     private NetworkInfo mNetworkInfo;
     private ConnectivityManager mConnectivityManager;
+//    private String tab_string[] = {"個人頁面","聊天","公佈欄","其他"};
+//    private int tab_icon_light[] = {R.drawable.friend,R.drawable.chat,R.drawable.news,R.drawable.setting};
+//    private int tab_icon_dark[] = {R.drawable.friend_inactive,R.drawable.chat_inactive,R.drawable.news_inactive,R.drawable.setting_inactive};
 
     private static final int REQUEST_CODE_AddFriend = 1;
     private static final int REQUEST_CODE_BuildGroup = 2;
@@ -127,6 +135,22 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive), getResources().getColor(R.color.white));
 
+        // tab1 add view
+        View view = getLayoutInflater().inflate(R.layout.layout_tab,null);
+        final TextView textView = view.findViewById(R.id.tab_TextView);
+        ImageView imageView = view.findViewById(R.id.tab_imageView);
+        textView.setText("聊天");
+        textView.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+        imageView.setImageResource(R.drawable.chat_inactive);
+        tabLayout.getTabAt(1).setCustomView(view);
+
+        //badge test
+        QBadgeView qBadgeView = new QBadgeView(getBaseContext());
+        qBadgeView.bindTarget(tabLayout.getTabAt(1).getCustomView());
+        qBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
+        qBadgeView.setGravityOffset(7.0f,-1.0f,true);
+        qBadgeView.setBadgePadding(1.0f,true);
+        qBadgeView.setBadgeNumber(5);
 
         viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -142,31 +166,50 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
             @Override
             public void onPageSelected(int position) {
+                View view_tmp;
+                TextView textView_tmp;
+                ImageView imageView_tmp;
                 switch (position) {
                     case 0:
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
                         tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
                         mainTitle.setText("好友&群組");
                         break;
                     case 1:
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.chat);
+                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+                        textView_tmp.setTextColor(getResources().getColor(R.color.white));
+                        imageView_tmp.setImageResource(R.drawable.chat);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
                         tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
                         mainTitle.setText("聊天室");
                         break;
                     case 2:
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news);
                         tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
                         mainTitle.setText("公佈欄");
                         break;
                     case 3:
                         tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.chat_inactive);
+                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
                         tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
                         tabLayout.getTabAt(3).setIcon(R.drawable.setting);
                         mainTitle.setText("其他");
