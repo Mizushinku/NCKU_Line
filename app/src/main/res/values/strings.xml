@@ -21,7 +21,12 @@
     </string-array>
 
     <!-- Notification id, channel id, channel name -->
+    <string name="CHANNEL_ID_ReceiveMsg">0</string>
+    <string name="CHANNEL_NAME_ReceiveMsg">Receive Message Notification</string>
     <string name="CHANNEL_ID_AddFriend">1</string>
+    <string name="CHANNEL_NAME_AddFriend">Add Friend Notification</string>
+    <string name="CHANNEL_ID_AddGroup">2</string>
+    <string name="CHANNEL_NAME_AddGroup">Add Group Notification</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

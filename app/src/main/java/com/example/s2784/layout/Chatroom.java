@@ -25,32 +25,32 @@ import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
-    String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
-    int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
-    String friend_letters[] = {"群組成員","選擇圖片"};
-    int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
+    protected String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
+    protected int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
+    protected String friend_letters[] = {"群組成員","選擇圖片"};
+    protected int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
 
 
-    private ImageButton btn;
-    private Button slide_btn;
-    private ListView lv;
-    private ArrayList<bubble> Bubble = new ArrayList<>();
-    private bubble_list Bubble_list;
-    private EditText et;
-    private RoomInfo roomInfo;
-    private ArrayList<RoomInfo> friendlist;
-    private android.support.v7.widget.Toolbar toolbar;
-    private SlidingDrawer slidingDrawer;
-    private Button handle_btn;
-    private GridView gridView;
-    private Grid_Adapter gridAdapter;
+    protected ImageButton btn;
+    protected Button slide_btn;
+    protected ListView lv;
+    protected ArrayList<bubble> Bubble = new ArrayList<>();
+    protected bubble_list Bubble_list;
+    protected EditText et;
+    protected RoomInfo roomInfo;
+    protected ArrayList<RoomInfo> friendlist;
+    protected android.support.v7.widget.Toolbar toolbar;
+    protected SlidingDrawer slidingDrawer;
+    protected Button handle_btn;
+    protected GridView gridView;
+    protected Grid_Adapter gridAdapter;
 
-    private String id;
-    private String code;
+    protected String id;
+    protected String code;
 
-    private String memberID;
+    protected String memberID;
 
-    private static final int REQUEST_CODE_CHOOSEPIC = 1;
+    protected static final int REQUEST_CODE_CHOOSEPIC = 1;
 
 
 
@@ -268,14 +268,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         return super.onOptionsItemSelected(item);
     }
 
-    private void inviteFriend() {
+    protected void inviteFriend() {
         Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
         invite_friend.putExtra("code",roomInfo.getCode());
         invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
         startActivity(invite_friend);
     }
 
-    private void toastMembes() {
+    protected void toastMembes() {
         memberID = "";
         for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
             if (i == 0) {
@@ -287,7 +287,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         Toast.makeText(Chatroom.this, memberID, Toast.LENGTH_LONG).show();
     }
 
-    private void choosePic() {
+    protected void choosePic() {
         /*
         Intent intent = new Intent(Chatroom.this, PicImageTest.class);
         startActivity(intent);
@@ -306,7 +306,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
-    private class SendingImg extends AsyncTask<Uri, Void, Void> {
+    protected class SendingImg extends AsyncTask<Uri, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -328,7 +328,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
-    private class FetchRecord extends AsyncTask<String, Void, Void> {
+    protected class FetchRecord extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

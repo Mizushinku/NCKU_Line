@@ -47,7 +47,7 @@ public class FCM_MessageService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, NotiValues.CHANNEL_ID_ReceiveMsg)
+                new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID_ReceiveMsg))
                         .setSmallIcon(R.mipmap.ncku_line2)
                         .setContentTitle(title)
                         .setContentText(text)
@@ -57,13 +57,13 @@ public class FCM_MessageService extends FirebaseMessagingService {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NotiValues.CHANNEL_ID_ReceiveMsg,
-                    NotiValues.CHANNEL_NAME_ReceiveMsg,
+            NotificationChannel channel = new NotificationChannel(getString(R.string.CHANNEL_ID_ReceiveMsg),
+                    getString(R.string.CHANNEL_NAME_ReceiveMsg),
                     NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(channel);
         }
-
-        manager.notify(NotiValues.notificationId_ReceiveMsg, builder.build());
+        int notiID = Integer.parseInt(getString(R.string.CHANNEL_ID_ReceiveMsg));
+        manager.notify(notiID, builder.build());
     }
 
     public static void setVisibleRoomCode(String visibleRoomCode) {
