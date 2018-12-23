@@ -93,6 +93,13 @@ public class Tab2 extends Fragment {
                     }
                 }
 
+                for(int i =0;i<testViewModel.getCourse().size();i++){
+                    if(code.equals(testViewModel.getCourse().get(i).getCode())){
+                        testViewModel.getCourse().get(i).setUnReadNum(0);
+                        break;
+                    }
+                }
+
                 Intent chat = new Intent(getActivity(),Chatroom.class);
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());

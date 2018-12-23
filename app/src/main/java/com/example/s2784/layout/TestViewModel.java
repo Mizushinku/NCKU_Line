@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class TestViewModel extends ViewModel {
     private final ArrayList<RoomInfo> group = new ArrayList<>();
     private final ArrayList<RoomInfo> friend = new ArrayList<>();
+    private final ArrayList<RoomInfo> course = new ArrayList<>();
     private final ArrayList<RoomInfo> roomlist = new ArrayList<>();
     private final HashMap<String,ArrayList<RoomInfo>> listHash = new HashMap<>();
     private String userID;
@@ -58,9 +59,12 @@ public class TestViewModel extends ViewModel {
         return friend;
     }
 
+    public ArrayList<RoomInfo> getCourse() { return course; }
+
     public ArrayList<RoomInfo> getRoomList() {  roomlist.clear();
                                                 roomlist.addAll(friend);
                                                 roomlist.addAll(group);
+                                                roomlist.addAll(course);
                                                 Collections.sort(roomlist);
                                                 return roomlist; }
 
@@ -82,6 +86,12 @@ public class TestViewModel extends ViewModel {
         }
         for (int i=0;i<group.size();i++) {
             roomInfo = group.get(i);
+            if(code.equals(roomInfo.getCode())){
+                return roomInfo;
+            }
+        }
+        for (int i=0;i<course.size();i++) {
+            roomInfo = course.get(i);
             if(code.equals(roomInfo.getCode())){
                 return roomInfo;
             }

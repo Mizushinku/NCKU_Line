@@ -1,27 +1,20 @@
 package com.example.s2784.layout;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -120,10 +113,10 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
                     int childPos = ExpandableListView.getPackedPositionChild(packedPos);
 
 
-                    if (groupPos == 1) {
-                        showFLCM(childPos);
-                    } else if(groupPos == 0) {
+                    if (groupPos == 0) {
                         showGLCM(childPos);
+                    } else if(groupPos == 1) {
+                        showFLCM(childPos);
                     }
                 }
 
@@ -159,12 +152,11 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         listDataHeader = new ArrayList<>();
         listDataHeader.add("群組");
         listDataHeader.add("好友");
-
-//        group = new ArrayList<>();
-//        friend = new ArrayList<>();
+        listDataHeader.add("課程");
 
         testViewModel.putListHash(listDataHeader.get(0),testViewModel.getGroup());
         testViewModel.putListHash(listDataHeader.get(1),testViewModel.getFriend());
+        testViewModel.putListHash(listDataHeader.get(2),testViewModel.getCourse());
     }
 
 
