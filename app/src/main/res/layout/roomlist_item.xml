@@ -39,14 +39,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="10dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="15dp">
 
-        <TextView
-            android:id="@+id/room_recentDate"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Date"
-            android:textColor="@color/darkgray"
-            android:textSize="15dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/room_recentDate"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="Date"
+                android:textColor="@color/darkgray"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/room_badge"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:background="@drawable/list_badge"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:text="4"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

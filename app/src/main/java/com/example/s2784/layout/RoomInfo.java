@@ -25,6 +25,7 @@ public class RoomInfo implements Parcelable, Comparable {
     private String rMsgDate;
     private byte[] icon_data;
     private ArrayList<String> memberID = new ArrayList<>();
+    private int unReadNum;
 
 
     public RoomInfo() {
@@ -41,6 +42,7 @@ public class RoomInfo implements Parcelable, Comparable {
         rMsgDate = in.readString();
         icon_data = in.createByteArray();
         memberID = in.createStringArrayList();
+        unReadNum = in.readInt();
     }
 
     public boolean getChecked() {
@@ -123,6 +125,10 @@ public class RoomInfo implements Parcelable, Comparable {
 
     public void removeMemberID(String id) { this.memberID.remove(id); }
 
+    public int getUnReadNum() { return unReadNum; }
+
+    public void setUnReadNum(int unReadNum) { this.unReadNum = unReadNum; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -140,6 +146,7 @@ public class RoomInfo implements Parcelable, Comparable {
         dest.writeString(rMsgDate);
         dest.writeByteArray(icon_data);
         dest.writeStringList(memberID);
+        dest.writeInt(unReadNum);
     }
 
     public static Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {

@@ -5,10 +5,12 @@ import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -49,7 +51,7 @@ import java.util.StringTokenizer;
 import q.rorbin.badgeview.QBadgeView;
 
 
-public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener {
+public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
 
     private ArrayList<RoomInfo> arrayList= new ArrayList<>(); /*for search view*/
 
@@ -57,6 +59,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private ViewPager viewPager;
     private NetworkInfo mNetworkInfo;
     private ConnectivityManager mConnectivityManager;
+    private QBadgeView qBadgeView;
 //    private String tab_string[] = {"個人頁面","聊天","公佈欄","其他"};
 //    private int tab_icon_light[] = {R.drawable.friend,R.drawable.chat,R.drawable.news,R.drawable.setting};
 //    private int tab_icon_dark[] = {R.drawable.friend_inactive,R.drawable.chat_inactive,R.drawable.news_inactive,R.drawable.setting_inactive};
@@ -140,12 +143,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         tabLayout.getTabAt(1).setCustomView(view);
 
         //badge test
-        QBadgeView qBadgeView = new QBadgeView(getBaseContext());
+        qBadgeView = new QBadgeView(getBaseContext());
         qBadgeView.bindTarget(tabLayout.getTabAt(1).getCustomView());
         qBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
         qBadgeView.setGravityOffset(7.0f,-1.0f,true);
-        qBadgeView.setBadgePadding(1.0f,true);
-        qBadgeView.setBadgeNumber(5);
+        qBadgeView.setBadgePadding(2.0f,true);
+        qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
 
         viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -317,6 +320,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onResume() {
         super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.example.s2784.layout.action.badgeNum");
+        MyBroadcastReceiver receiver = new MyBroadcastReceiver();
+        registerReceiver(receiver,intentFilter);
+
+        qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
+        viewPager.getAdapter().notifyDataSetChanged();
         Log.d("TAG", "Tabs : onResume()");
     }
 
@@ -539,6 +549,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 break;
             case REQUEST_CODE_Search:
                 break;
+        }
+    }
+
+    private class MyBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            String code = extras.getString("code_for_badge");
+            updateBadge(code);
         }
     }
 
@@ -808,6 +827,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bytes = stream.toByteArray();
                                 roomInfo.setIcon_data(bytes);
+                                roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
                                 testViewModel.addInGroup(roomInfo);
                                 testViewModel.putListHash("群組", testViewModel.getGroup());
                                 viewPager.getAdapter().notifyDataSetChanged();
@@ -901,6 +921,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         private void Initialize_re(RoomInfo roomInfo) {
             if (roomInfo.getType().equals("F")) {
+                roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
                 testViewModel.addInFriend(roomInfo);
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("好友", testViewModel.getFriend());
@@ -911,6 +932,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bytes = stream.toByteArray();
                 roomInfo.setIcon_data(bytes);
+                roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
                 testViewModel.addInGroup(roomInfo);
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("群組", testViewModel.getGroup());
@@ -959,6 +981,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         private void AddFriend_re(RoomInfo roomInfo, String tachiba) {
+            roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
             testViewModel.addInFriend(roomInfo);
             testViewModel.putListHash("好友", testViewModel.getFriend());
             viewPager.getAdapter().notifyDataSetChanged();
@@ -1014,6 +1037,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
             roomInfo.setIcon_data(bytes);
+            roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
             testViewModel.addInGroup(roomInfo);
             testViewModel.putListHash("群組", testViewModel.getGroup());
             viewPager.getAdapter().notifyDataSetChanged();
@@ -1250,4 +1274,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     }
 
+    private void updateBadge(String code){
+        for(int i=0;i<testViewModel.getFriend().size();i++){
+            if(code.equals(testViewModel.getFriend().get(i).getCode())){
+                testViewModel.getFriend().get(i).setUnReadNum(SQLiteManager.querySingleRoomBadge(testViewModel.getFriend().get(i).getCode()));
+                break;
+            }
+        }
+        for(int i =0;i<testViewModel.getGroup().size();i++){
+            if(code.equals(testViewModel.getGroup().get(i).getCode())){
+                testViewModel.getGroup().get(i).setUnReadNum(SQLiteManager.querySingleRoomBadge(testViewModel.getGroup().get(i).getCode()));
+                break;
+            }
+        }
+
+        viewPager.getAdapter().notifyDataSetChanged();
+        qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
+    }
 }

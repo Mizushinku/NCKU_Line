@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -37,6 +38,15 @@ public class SQLiteManager {
             insertFirst(code);
         }
         badgePlus(code);
+    }
+
+    static public int querySingleRoomBadge(String code){
+        int num = 0;
+        Cursor c = DB.rawQuery("SELECT " + "Count" + " FROM " + Badge_table_name + " WHERE " + "Room = " + "'" + code + "'", null);
+        if(c.moveToFirst()){
+            num = c.getInt(0);
+        }
+        return num;
     }
 
     static public boolean queryForLogin(){
@@ -92,6 +102,19 @@ public class SQLiteManager {
             }
         }
         ShortcutBadger.applyCount(ctx,num);
+    }
+
+    static public int getTotalUnread(){
+        int num = 0;
+        Cursor c = DB.rawQuery("SELECT " + "Count" + " FROM " + Badge_table_name,null);
+        if(c.moveToFirst()){
+            for(int i=0;i<c.getCount();i++){
+                int cnt = c.getInt(0);
+                num += cnt;
+                c.moveToNext();
+            }
+        }
+        return num;
     }
 
     static public void deleteAllBadge(){

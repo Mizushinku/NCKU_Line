@@ -3,6 +3,7 @@ package com.example.s2784.layout;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -38,6 +39,11 @@ public class FCM_MessageService extends FirebaseMessagingService {
                 SQLiteManager.setContext(getApplicationContext());
                 SQLiteManager.DBinit();
                 SQLiteManager.queryForBadge(code);
+
+                Intent intent = new Intent();
+                intent.putExtra("code_for_badge",code);
+                intent.setAction("com.example.s2784.layout.action.badgeNum");
+                sendBroadcast(intent);
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.s2784.layout;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import q.rorbin.badgeview.QBadgeView;
 
 public class RoomListAdapter extends BaseAdapter {
     private Context context;
@@ -52,6 +55,7 @@ public class RoomListAdapter extends BaseAdapter {
             viewHolder.title = (TextView) convertView.findViewById(R.id.room_Title);
             viewHolder.msg = (TextView) convertView.findViewById(R.id.room_recentMsg);
             viewHolder.date = (TextView) convertView.findViewById(R.id.room_recentDate);
+            viewHolder.badge = (TextView) convertView.findViewById(R.id.room_badge);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -92,6 +96,16 @@ public class RoomListAdapter extends BaseAdapter {
                 viewHolder.date.setText(date);
             }
         }
+
+        if(roomInfo.getUnReadNum() == 0){
+            viewHolder.badge.setVisibility(View.INVISIBLE);
+        }else{
+            viewHolder.badge.setVisibility(View.VISIBLE);
+            viewHolder.badge.setText(String.valueOf(roomInfo.getUnReadNum()));
+        }
+//        Log.d("CODE",roomInfo.getCode() + ": " + String.valueOf(roomInfo.getUnReadRum()));
+
+
         return convertView;
     }
 
@@ -100,6 +114,7 @@ public class RoomListAdapter extends BaseAdapter {
         public TextView title;
         public TextView msg;
         public TextView date;
+        public TextView badge;
     }
 
     public void notifyDataSetChanged(ListView lv, int position) {

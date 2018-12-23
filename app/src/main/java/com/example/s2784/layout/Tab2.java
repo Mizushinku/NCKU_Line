@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import q.rorbin.badgeview.QBadgeView;
 
 
 //        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
@@ -76,6 +79,19 @@ public class Tab2 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RoomInfo roomInfo = (RoomInfo) testViewModel.getRoomList().get(position);
                 String code = roomInfo.getCode();
+
+                for(int i=0;i<testViewModel.getFriend().size();i++){
+                    if(code.equals(testViewModel.getFriend().get(i).getCode())){
+                        testViewModel.getFriend().get(i).setUnReadNum(0);
+                        break;
+                    }
+                }
+                for(int i =0;i<testViewModel.getGroup().size();i++){
+                    if(code.equals(testViewModel.getGroup().get(i).getCode())){
+                        testViewModel.getGroup().get(i).setUnReadNum(0);
+                        break;
+                    }
+                }
 
                 Intent chat = new Intent(getActivity(),Chatroom.class);
                 chat.putExtra("code", code);
