@@ -100,7 +100,12 @@ public class Tab2 extends Fragment {
                     }
                 }
 
-                Intent chat = new Intent(getActivity(),Chatroom.class);
+                Intent chat = null;
+                if(!roomInfo.getType().equals("C")) {
+                    chat = new Intent(getActivity(), Chatroom.class);
+                } else {
+                    chat = new Intent(getActivity(), Classroom.class);
+                }
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());
                 chat.putExtra("roomInfo",testViewModel.getRoomInfo(code));

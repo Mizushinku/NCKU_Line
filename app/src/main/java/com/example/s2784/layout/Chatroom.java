@@ -25,10 +25,10 @@ import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
-    protected String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
-    protected int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
-    protected String friend_letters[] = {"群組成員","選擇圖片"};
-    protected int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
+    private String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
+    private int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
+    private String friend_letters[] = {"群組成員","選擇圖片"};
+    private int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
 
 
     protected ImageButton btn;
@@ -126,12 +126,40 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         slidingDrawer.close();
         gridView = findViewById(R.id.grid_view);
 
+        set_gridAdapter(); //must be override by child class
+        gridView.setAdapter(gridAdapter);
+        set_gridview_onItemClickListener(); //must be override by child class
+
+        btn.setOnClickListener(this);
+        slide_btn.setOnClickListener(this);
+        //設定該class為callback function 實作方
+        LinkModule.getInstance().setListener(this);
+
+        //設定正在執行的chat room
+        Tabs.mqtt.setProcessingCode(code);
+
+        //拿到聊天紀錄
+        Tabs.mqtt.GetRecord(code);
+
+        //已讀
+        SQLiteManager.badgeClear(code);
+
+        Bubble_list = new bubble_list(Chatroom.this,Bubble);
+        lv.setAdapter(Bubble_list);
+
+    }
+
+    //must be override by child class
+    protected void set_gridAdapter() {
         if(roomInfo.getType().equals("F")){
             gridAdapter = new Grid_Adapter(this,friend_icons,friend_letters);
         }else if(roomInfo.getType().equals("G")){
             gridAdapter = new Grid_Adapter(this,group_icons,group_letters);
         }
-        gridView.setAdapter(gridAdapter);
+    }
+
+    //must be override by child class
+    protected void set_gridview_onItemClickListener() {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -165,24 +193,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 }
             }
         });
-
-        btn.setOnClickListener(this);
-        slide_btn.setOnClickListener(this);
-        //設定該class為callback function 實作方
-        LinkModule.getInstance().setListener(this);
-
-        //設定正在執行的chat room
-        Tabs.mqtt.setProcessingCode(code);
-
-        //拿到聊天紀錄
-        Tabs.mqtt.GetRecord(code);
-
-        //已讀
-        SQLiteManager.badgeClear(code);
-
-        Bubble_list = new bubble_list(Chatroom.this,Bubble);
-        lv.setAdapter(Bubble_list);
-
     }
 
     @Override

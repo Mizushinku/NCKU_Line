@@ -51,6 +51,8 @@ public class TestViewModel extends ViewModel {
         friend.add(roomInfo);
     }
 
+    public void addInCourse(RoomInfo roomInfo) { course.add(roomInfo); }
+
     public ArrayList<RoomInfo> getGroup() {
         return group;
     }

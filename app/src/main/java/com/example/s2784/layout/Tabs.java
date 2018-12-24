@@ -668,6 +668,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         GetFriendIcon("Init", roomInfo.getStudentID(), "0");
                                     } else if (init_info[3].equals("G")) {
                                         Initialize_re(roomInfo);
+                                    } else if (init_info[3].equals("C")) {
+                                        Initialize_re(roomInfo);
                                     }
                                 }
                                 break;
@@ -747,6 +749,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         }
                                     }
                                 }
+                                if(!isFound) {
+                                    for (int i = 0; i < testViewModel.getCourse().size(); i++) {
+                                        if (testViewModel.getCourse().get(i).getCode().equals(SM_msg_splitLine[0])) {
+                                            testViewModel.getCourse().get(i).setrMsg(SM_msg_splitLine[2]);
+                                            testViewModel.getCourse().get(i).setrMsgDate(SM_msg_splitLine[3]);
+                                            break;
+                                        }
+                                    }
+                                }
                                 if (processingCode.equals(SM_msg_splitLine[0])) {
                                     LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
                                 }
@@ -770,6 +781,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         if (testViewModel.getFriend().get(i).getCode().equals(tsl[4])) {
                                             testViewModel.getFriend().get(i).setrMsg("a new image");
                                             testViewModel.getFriend().get(i).setrMsgDate(tsl[5]);
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(!isFound) {
+                                    for (int i = 0; i < testViewModel.getCourse().size(); i++) {
+                                        if (testViewModel.getCourse().get(i).getCode().equals(tsl[4])) {
+                                            testViewModel.getCourse().get(i).setrMsg("a new image");
+                                            testViewModel.getCourse().get(i).setrMsgDate(tsl[5]);
                                             break;
                                         }
                                     }
@@ -936,6 +956,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.addInGroup(roomInfo);
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("群組", testViewModel.getGroup());
+                viewPager.getAdapter().notifyDataSetChanged();
+            } else if (roomInfo.getType().equals("C")) {
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.book);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+                roomInfo.setIcon_data(bytes);
+                roomInfo.setUnReadNum(SQLiteManager.querySingleRoomBadge(roomInfo.getCode()));
+                testViewModel.addInCourse(roomInfo);
+                arrayList.add(roomInfo);
+                testViewModel.putListHash("課程", testViewModel.getCourse());
                 viewPager.getAdapter().notifyDataSetChanged();
             }
         }

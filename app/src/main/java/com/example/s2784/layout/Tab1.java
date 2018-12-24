@@ -92,8 +92,12 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 RoomInfo roomInfo = (RoomInfo)listAdapter.getChild(groupPosition,childPosition);
                 String code = roomInfo.getCode();
-
-                Intent chat = new Intent(getActivity(),Chatroom.class);
+                Intent chat = null;
+                if(!roomInfo.getType().equals("C")) {
+                    chat = new Intent(getActivity(), Chatroom.class);
+                } else {
+                    chat = new Intent(getActivity(), Classroom.class);
+                }
                 chat.putExtra("code", code);
                 chat.putExtra("id",testViewModel.getUserID());
                 chat.putExtra("roomInfo",testViewModel.getRoomInfo(code));
