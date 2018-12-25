@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
@@ -88,7 +89,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         SQLiteManager.setContext(this);
         SQLiteManager.DBinit();
 
-
+        initReceiver();
         arrayList.clear();
 
   //Change status color
@@ -352,6 +353,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     protected void onDestroy() {
         super.onDestroy();
         mqtt.disconnect();
+
+        if (netReceiver != null) {
+            unregisterReceiver(netReceiver);
+            netReceiver = null;
+        }
 
         Log.d("TAG", "Tabs : onDestroy()");
     }
@@ -1304,6 +1310,55 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
     }
+
+
+    private void initReceiver() {
+        IntentFilter timeFilter = new IntentFilter();
+        timeFilter.addAction("android.net.ethernet.ETHERNET_STATE_CHANGED");
+        timeFilter.addAction("android.net.ethernet.STATE_CHANGE");
+        timeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        timeFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        timeFilter.addAction("android.net.wifi.STATE_CHANGE");
+        timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        registerReceiver(netReceiver, timeFilter);
+    }
+
+
+    BroadcastReceiver netReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isAvailable()) {
+                    int type2 = networkInfo.getType();
+                    String typeName = networkInfo.getTypeName();
+
+                    switch (type2) {
+                        case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
+                            Log.d("Feeee", "有網路");
+                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1: //wifi网络
+                            Log.d("Feeee", "wifi");
+                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case 9:  //网线连接
+                            Log.d("Feeee", "有網路");
+                            break;
+                    }
+                } else {// 无网络
+                    Log.d("Feeee", "沒有網路");
+                    Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
+
+
 
     private void updateBadge(String code){
         for(int i=0;i<testViewModel.getFriend().size();i++){
