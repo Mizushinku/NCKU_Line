@@ -100,4 +100,12 @@ public class TestViewModel extends ViewModel {
         }
         return roomInfo;
     }
+
+    public void clearAll(){
+        group.clear();
+        friend.clear();
+        course.clear();
+        roomlist.clear();
+        listHash.clear();
+    }
 }

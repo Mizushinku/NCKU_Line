@@ -114,7 +114,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         userID = intentFromUpload.getStringExtra("userID");
         testViewModel.setUserID(userID);
         mqtt = new Mqtt_Client(this.getApplicationContext(), userID);
-        mqtt.Connect();
 
         //For toolbar
 
@@ -1340,10 +1339,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
                             Log.d("Feeee", "有網路");
                             Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+                            testViewModel.clearAll();
+                            mqtt.disconnect();
+                            mqtt.Connect();
                             break;
                         case 1: //wifi网络
                             Log.d("Feeee", "wifi");
                             Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+                            testViewModel.clearAll();
+                            mqtt.disconnect();
+                            mqtt.Connect();
                             break;
 
                         case 9:  //网线连接
