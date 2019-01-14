@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -42,6 +43,8 @@ import java.net.URL;
 public class LogIn extends AppCompatActivity {
     private final static int CAMERA_RESULT = 0;
     private Mqtt_Client mqtt;
+
+    private EditText login_et;
     //SQLite
     //public static boolean LoginOrNot = false;
     @Override
@@ -54,11 +57,17 @@ public class LogIn extends AppCompatActivity {
         SQLiteManager.createTableForBadge();
         SQLiteManager.createTableForLogin();
 
+        login_et = findViewById(R.id.login_et);
+
         Button btn_logIn = findViewById(R.id.btn_logIn);
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        callCamera();
+                        if(login_et.getText().toString().equals("")) {
+                            callCamera();
+                        } else {
+                            mqtt.Login(login_et.getText().toString());
+                        }
                         /*
                         Intent mainintent = new Intent(LogIn.this,Main.class);
                         startActivity(mainintent);

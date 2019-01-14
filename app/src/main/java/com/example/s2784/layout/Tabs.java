@@ -858,6 +858,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 Tab1_CM.getInstance().refreshExplv(0);
                                 break;
+                            case "GetAuth":
+                                String auth = new String(message.getPayload());
+                                LinkModule.getInstance().callSetAuth(Integer.parseInt(auth));
+                                break;
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
@@ -1288,6 +1292,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String topic = "IDF/SubmitFCMToken/" + user;
             try {
                 client.publish(topic, token.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void getAuth(String code) {
+            String topic = "IDF/GetAuth/" + user;
+            String MSG = code;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }

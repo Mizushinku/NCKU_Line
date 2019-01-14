@@ -373,5 +373,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    @Override
+    public void setAuth(int auth) {}
+
 }
 

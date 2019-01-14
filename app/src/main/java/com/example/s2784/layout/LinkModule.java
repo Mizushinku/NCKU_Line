@@ -21,6 +21,7 @@ public class LinkModule {
         void fetchRecord(String record);
         void memberChange(String memberID);
         void refreshListView();
+        void setAuth(int auth);
         //void what_you_want();
     }
 
@@ -81,6 +82,10 @@ public class LinkModule {
             mListener.refreshListView();
         }
     }
-
+    public void callSetAuth(int auth) {
+        if(mListener != null) {
+            mListener.setAuth(auth);
+        }
+    }
 
 }
