@@ -1,6 +1,8 @@
 package com.example.s2784.layout;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -26,9 +28,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -455,25 +461,27 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     }
 
     private void Leave() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("是否要登出?")
-                .setPositiveButton("否", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton("是", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        SQLiteManager.deleteAllUser();
-                        SQLiteManager.deleteAllBadge();
-                        Intent intent_Login = new Intent(Tabs.this, LogIn.class);
-                        startActivity(intent_Login);
-                        finish();
-                    }
-                });
-        AlertDialog about_dialog = builder.create();
-        about_dialog.show();
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(Tabs.this, "確定要登出嗎?");
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        builder.setMessage("是否要登出?")
+//                .setPositiveButton("否", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setNegativeButton("是", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        SQLiteManager.deleteAllUser();
+//                        SQLiteManager.deleteAllBadge();
+//                        Intent intent_Login = new Intent(Tabs.this, LogIn.class);
+//                        startActivity(intent_Login);
+//                        finish();
+//                    }
+//                });
+//        AlertDialog about_dialog = builder.create();
+//        about_dialog.show();
     }
 
     @Override
@@ -1319,7 +1327,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
         else
         {
-            Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+//            LayoutInflater inflater = getLayoutInflater();
+//            View layout = inflater.inflate(R.layout.warning_toast,
+//                    (ViewGroup) findViewById(R.id.toast_layout_root));
+//
+//            ImageView image = (ImageView) layout.findViewById(R.id.image);
+//            image.setImageResource(R.drawable.warning);
+//            TextView text = (TextView) layout.findViewById(R.id.text);
+//            text.setText("Hello! This is a custom toast!");
+//
+//            Toast toast = new Toast(getApplicationContext());
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.setView(layout);
+//            toast.show();
         }
 
     }
@@ -1352,14 +1374,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     switch (type2) {
                         case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
                             Log.d("Feeee", "有網路");
-                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
                             testViewModel.clearAll();
                             mqtt.disconnect();
                             mqtt.Connect();
                             break;
                         case 1: //wifi网络
                             Log.d("Feeee", "wifi");
-                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
                             testViewModel.clearAll();
                             mqtt.disconnect();
                             mqtt.Connect();
@@ -1371,13 +1393,58 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     }
                 } else {// 无网络
                     Log.d("Feeee", "沒有網路");
-                    Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Tabs.this, "網路未連線，請檢查網路狀態", Toast.LENGTH_SHORT).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.warning_toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+                    ImageView image = (ImageView) layout.findViewById(R.id.image);
+                    image.setImageResource(R.drawable.warning);
+                    TextView text = (TextView) layout.findViewById(R.id.text);
+                    text.setText("網路未連線，請檢查網路狀態!");
+
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setView(layout);
+                    toast.show();
                 }
             }
         }
     };
 
+    public class ViewDialog {
 
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.custom_alert_dialog);
+
+            TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
+            text.setText(msg);
+
+            Button NegativeButton = (Button) dialog.findViewById(R.id.btn_dialog);
+            Button PositiveButton = (Button) dialog.findViewById(R.id.btn_dialog2);
+            NegativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+            PositiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                    public void onClick(View v) {
+                        SQLiteManager.deleteAllUser();
+                        SQLiteManager.deleteAllBadge();
+                        Intent intent_Login = new Intent(Tabs.this, LogIn.class);
+                        startActivity(intent_Login);
+                        finish();
+                    }
+                });
+
+            dialog.show();
+
+        }
+    }
 
     private void updateBadge(String code){
         for(int i=0;i<testViewModel.getFriend().size();i++){
@@ -1397,3 +1464,4 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
     }
 }
+
