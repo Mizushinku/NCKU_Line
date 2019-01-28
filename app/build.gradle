@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.3'
     implementation "me.leolin:ShortcutBadger:1.1.18@aar"
     implementation 'q.rorbin:badgeview:1.1.3'
+    implementation 'com.githang:status-bar-compat:latest.integration'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 }
 

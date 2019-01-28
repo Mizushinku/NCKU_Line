@@ -1,5 +1,6 @@
 package com.example.s2784.layout;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +16,7 @@ import android.widget.Toast;
 
 
 public class StartInterface extends AppCompatActivity {
-
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,15 @@ public class StartInterface extends AppCompatActivity {
         SQLiteManager.DBinit();
         SQLiteManager.createTableForBadge();
         SQLiteManager.createTableForLogin();
+        //Change status color
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        else{
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
         if(SQLiteManager.queryForLogin()){//若已LogIn過，則需跳頁至Tabs.java
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override

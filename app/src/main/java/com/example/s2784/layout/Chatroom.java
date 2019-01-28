@@ -1,9 +1,11 @@
 package com.example.s2784.layout;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
+
+import com.githang.statusbar.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -88,16 +92,27 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         super.onStop();
         FCM_MessageService.setVisibleRoomCode("");
     }
-
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
+
         getWindow().setBackgroundDrawableResource(R.drawable.chatroom_background) ;
         Log.d("TAG","Create");
 
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //Change status color
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        else{
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
 
         Intent intent = getIntent();
         code = intent.getStringExtra("code");

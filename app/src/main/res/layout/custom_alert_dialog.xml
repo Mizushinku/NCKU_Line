@@ -41,14 +41,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text=""
+        android:text="否"
         android:layout_marginRight="5dp"
         android:paddingVertical="5dp"
         android:id="@+id/btn_dialog"
         android:gravity="center_vertical|center_horizontal"
         android:background="@drawable/warning_toast_stytle"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="30dp"

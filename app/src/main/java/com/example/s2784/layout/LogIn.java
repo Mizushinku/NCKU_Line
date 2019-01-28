@@ -18,11 +18,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -49,16 +54,24 @@ public class LogIn extends AppCompatActivity {
     private Button scan;
     //SQLite
     //public static boolean LoginOrNot = false;
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
         SQLiteManager.setContext(this);
         SQLiteManager.DBinit();
         SQLiteManager.createTableForBadge();
         SQLiteManager.createTableForLogin();
+        //Change status color
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red_thick));
+        }
+        else{
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red_thick));
+        }
+        //Change status color
         login_et = findViewById(R.id.login_et);
         pw_et = findViewById(R.id.password);
         scan = findViewById(R.id.btn_login_scan);
@@ -74,7 +87,8 @@ public class LogIn extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                             mqtt.Login(login_et.getText().toString());
-                            login_et.setText("");
+                        login_et.setText("");
+                        pw_et.setText("");
                         /*
                         Intent mainintent = new Intent(LogIn.this,Main.class);
                         startActivity(mainintent);
@@ -251,14 +265,38 @@ public class LogIn extends AppCompatActivity {
                             String msg[] = new String(message.getPayload()).split(",");
                             if(msg[0].equals("True")){
                                 // Go Main page
-                                Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.success_toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+                                ImageView image = (ImageView) layout.findViewById(R.id.image);
+                                image.setImageResource(R.drawable.success);
+                                TextView text = (TextView) layout.findViewById(R.id.text);
+                                text.setText("登入成功");
+
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setView(layout);
+                                toast.show();
+//                                Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
                                 SQLiteManager.addUser(msg[1]);
                                 Intent mainIntent = new Intent(LogIn.this,Tabs.class);
                                 mainIntent.putExtra("userID",msg[1]);
                                 startActivity(mainIntent);
                                 finish();
                             }else if(msg[0].equals("False")){
-                                Toast.makeText(LogIn.this,"登入失敗", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LogIn.this,"登入失敗", Toast.LENGTH_SHORT).show();
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.warning_toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+                                ImageView image = (ImageView) layout.findViewById(R.id.image);
+                                image.setImageResource(R.drawable.warning);
+                                TextView text = (TextView) layout.findViewById(R.id.text);
+                                text.setText("登入失敗!");
+
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setView(layout);
+                                toast.show();
                             }
                             break;
                     }

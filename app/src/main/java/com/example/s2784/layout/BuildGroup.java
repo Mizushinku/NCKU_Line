@@ -1,7 +1,9 @@
 package com.example.s2784.layout;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.githang.statusbar.StatusBarCompat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,15 +36,24 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private TextView groupName;
 
     private ListViewAdapter listViewAdapter;
-
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_build_group);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        //Change status color
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        else{
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
         ListView listView;
         ArrayList<RoomInfo> friendlist;
 

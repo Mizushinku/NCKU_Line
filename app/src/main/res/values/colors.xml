@@ -156,6 +156,8 @@
     <color name="ncku_red_thick">#7f1b1f</color>
     <color name="ncku_red_pressed">#F18185</color><!--成大紅(按壓)-->
     <color name="tabs_pic_inactive">#a76c6e</color><!--成大紅(按壓)-->
+    <color name="login_hint">#ffded3</color>
+    <color name="success">#46c84c</color>
 
 =======
 >>>>>>> c68e5ee7afe4c262bdc315204f85a3b1287bc471

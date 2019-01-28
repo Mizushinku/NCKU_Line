@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="10dp"
-    android:background="@drawable/warning_toast_stytle" >
+    android:background="@drawable/success_toast_stytle" >
 
     <ImageView android:id="@+id/image"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        />
+        android:layout_marginRight="10dp" />
 
     <TextView android:id="@+id/text"
         android:layout_width="wrap_content"

@@ -6,21 +6,31 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        
+
     </style>
-<style name="CustomToolbar" parent="Theme.AppCompat.Light.NoActionBar">
 
-    <item name="colorControlNormal">@color/white</item>
-</style>
-<style name="CustomPopupStytle" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="overlapAnchor">false</item>
-    <item name="android:dropDownWidth">wrap_content</item>
+    <style name="CustomToolbar" parent="Theme.AppCompat.Light.NoActionBar">
 
-    >
-</style>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="CustomPopupStytle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+
+        >
+    </style>
+
     <style name="MyTextInputLayout" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/ncku_red</item>
         >
+    </style>
+    <style name="LoginTextInputLayout" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">20dp</item>
+        <item name="colorAccent">@color/white</item>
+            >
+
+
     </style>
 </resources>
