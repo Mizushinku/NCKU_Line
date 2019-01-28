@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Tab1">
 
     <LinearLayout
@@ -12,39 +12,76 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/profile_stytle"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userIcon_tab1"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/ncku_red"/>
-
-            <TextView
-                android:id="@+id/userName_tab1"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="USER"
-                android:textSize="18dp"
-                android:paddingLeft="10dp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"/>
+                android:id="@+id/icon_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                >
 
-        </LinearLayout>>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userIcon_tab1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginHorizontal="5dp"
+                    />
+            </LinearLayout>
 
-        <ExpandableListView
-            android:id="@+id/lvExp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/userName_tab1"
+                    android:layout_width="100dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.5"
+                    android:gravity="bottom"
+                    android:text="USER"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:text="brief introduction of myself"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="5">
 
-        </ExpandableListView>
+            <ExpandableListView
+                android:id="@+id/lvExp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+            </ExpandableListView>
+
+        </LinearLayout>
 
     </LinearLayout>
 

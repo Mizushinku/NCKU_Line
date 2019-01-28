@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         userName_tab1.setText(testViewModel.getUserName());
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
-
+        userIcon_tab1.getLayoutParams().width = userIcon_tab1.getLayoutParams().height;
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);

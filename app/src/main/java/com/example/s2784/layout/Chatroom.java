@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 import android.annotation.TargetApi;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
     private String friend_letters[] = {"群組成員","選擇圖片"};
     private int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
-
+    private TestViewModel testViewModel;
 
     protected ImageButton btn;
     protected Button slide_btn;
@@ -119,10 +120,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
         friendlist = getIntent().getParcelableArrayListExtra("friendlist");
-
+        testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
         toolbar = findViewById(R.id.chat_toolbar);
         if(roomInfo.getType().equals("F")){
             toolbar.setTitle(roomInfo.getRoomName());
+            toolbar.
         }else{
             toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
         }

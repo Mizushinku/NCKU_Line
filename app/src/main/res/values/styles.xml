@@ -29,6 +29,7 @@
     <style name="LoginTextInputLayout" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textSize">20dp</item>
         <item name="colorAccent">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
             >
 
 
