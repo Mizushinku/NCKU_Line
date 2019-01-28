@@ -45,6 +45,8 @@ public class LogIn extends AppCompatActivity {
     private Mqtt_Client mqtt;
 
     private EditText login_et;
+    private EditText pw_et;
+    private Button scan;
     //SQLite
     //public static boolean LoginOrNot = false;
     @Override
@@ -58,16 +60,21 @@ public class LogIn extends AppCompatActivity {
         SQLiteManager.createTableForLogin();
 
         login_et = findViewById(R.id.login_et);
+        pw_et = findViewById(R.id.password);
+        scan = findViewById(R.id.btn_login_scan);
 
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    callCamera();
+            }
+        });
         Button btn_logIn = findViewById(R.id.btn_logIn);
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(login_et.getText().toString().equals("")) {
-                            callCamera();
-                        } else {
                             mqtt.Login(login_et.getText().toString());
-                        }
+                            login_et.setText("");
                         /*
                         Intent mainintent = new Intent(LogIn.this,Main.class);
                         startActivity(mainintent);

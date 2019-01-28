@@ -46,7 +46,6 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 
         friendlist = getIntent().getParcelableArrayListExtra("friendlist");
         etGroupName = findViewById(R.id.etGroupName);
-        groupName = findViewById(R.id.group_name_size);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
         listView = findViewById(R.id.buildGroup_friendList);
         listViewAdapter = new ListViewAdapter(this, friendlist);
@@ -56,30 +55,29 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
 //        btn_selectFriend.setOnClickListener(this);
         btn_CreateGroup.setOnClickListener(this);
 
-        etGroupName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String currentText = editable.toString();
-                int currentLength = currentText.length();
-                groupName.setText(String.valueOf(currentLength));
-                if(currentLength == 0){
-                    etGroupName.setHint("群組名稱");
-                }
-                else{
-                    etGroupName.setHint(null);
-                }
-            }
-        });
+//        etGroupName.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                String currentText = editable.toString();
+//                int currentLength = currentText.length();
+//                if(currentLength == 0){
+//                    etGroupName.setHint("群組名稱");
+//                }
+//                else{
+//                    etGroupName.setHint(null);
+//                }
+//            }
+//        });
 
     }
 

@@ -36,6 +36,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/bubble_out"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:paddingBottom="10dp">
 
                 <TextView

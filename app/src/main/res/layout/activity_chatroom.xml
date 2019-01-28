@@ -47,7 +47,8 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="8.5">
+        android:layout_weight="8.5"
+        >
 
         <ProgressBar
             android:id="@+id/progressBar_img"
@@ -110,7 +111,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/stroke">
+            android:background="@drawable/stroke"
+            android:alpha="0.7"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -126,6 +129,7 @@
                     android:background="@drawable/edtext_stytle"
                     android:maxLines="4"
                     android:text=""
+                    android:hint="請輸入訊息"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -140,12 +144,14 @@
                     android:layout_height="match_parent"
                     android:gravity="bottom|right"
                     android:paddingRight="5dp"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="5dp"
+                    >
 
                     <ImageButton
                         android:id="@+id/btn_send"
                         android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
+
                         android:background="@drawable/send"
                         />
                 </LinearLayout>

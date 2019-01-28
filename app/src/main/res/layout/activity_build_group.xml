@@ -57,6 +57,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:weightSum="8">
 
             <LinearLayout
@@ -65,40 +67,44 @@
                 android:orientation="vertical"
                 android:padding="15dp">
 
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/bgTextInputLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/MyTextInputLayout"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="15"
+                    app:errorEnabled="true">
 
                     <EditText
                         android:id="@+id/etGroupName"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:layout_weight="1"
-                        android:background="@drawable/build_group_edtext_stytle"
                         android:hint="群組名稱"
                         android:maxLength="15"
                         android:maxLines="1"
                         android:textSize="20dp" />
-                </LinearLayout>
+                </android.support.design.widget.TextInputLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right">
-                    <TextView
-                        android:id="@+id/group_name_size"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20dp"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="/15"
-                        android:textSize="20dp"/>
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="right">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/group_name_size"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="0"-->
+                        <!--android:textSize="20dp"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="/15"-->
+                        <!--android:textSize="20dp"/>-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
             </LinearLayout>
             <!--<Button-->
             <!--android:id="@+id/btn_selectFriend"-->
@@ -111,7 +117,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="15dp">
+                android:paddingHorizontal="15dp"
+                android:paddingBottom="15dp">
 
                 <ListView
                     android:id="@+id/buildGroup_friendList"

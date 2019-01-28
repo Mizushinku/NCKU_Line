@@ -18,5 +18,9 @@
 
     >
 </style>
-
+    <style name="MyTextInputLayout" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/ncku_red</item>
+        >
+    </style>
 </resources>
