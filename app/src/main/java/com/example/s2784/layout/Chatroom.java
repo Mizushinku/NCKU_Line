@@ -124,7 +124,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         toolbar = findViewById(R.id.chat_toolbar);
         if(roomInfo.getType().equals("F")){
             toolbar.setTitle(roomInfo.getRoomName());
-            toolbar.
         }else{
             toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
         }
