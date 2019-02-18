@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/bubble_right_top">
+        android:id="@+id/bubble_right_top"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/date_right"
@@ -31,10 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/bubble_right_top"
         android:layout_alignParentRight="true"
-        android:background="@drawable/bubble_in"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bubble_send"
         android:orientation="vertical"
-        android:paddingBottom="10dp">
+        >
 
         <TextView
             android:id="@+id/txt_msg"
@@ -56,6 +57,7 @@
         android:textSize="12dp"
         android:text="time"
         android:textColor="@color/ivory"
+        android:layout_marginRight="3dp"
         />
 
 </RelativeLayout>

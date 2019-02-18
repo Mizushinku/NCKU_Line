@@ -3,37 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:orientation="horizontal"
-    android:weightSum="5">
+    android:padding="5dp"
+    >
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/room_Pic"
-        android:layout_width="65dp"
-        android:layout_height="65dp" />
+        <ImageView
+            android:id="@+id/room_Pic"
+            android:layout_width="match_parent"
+            android:layout_height= "wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="65dp"
-        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:padding="4dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/room_Title"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:paddingTop="2dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:text="Title"
             android:textColorHighlight="@color/dimgray"
+            android:textStyle="bold"
             android:textSize="20dp" />
 
         <TextView
             android:id="@+id/room_recentMsg"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="MSG"
+            android:lines="2"
+            android:ellipsize="end"
             android:textColor="@color/darkgray"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,25 +55,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/room_recentDate"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:gravity="center"
                 android:text="Date"
                 android:textColor="@color/darkgray"
                 android:textSize="15dp" />
+
             <TextView
                 android:id="@+id/room_badge"
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:background="@drawable/list_badge"
-                android:textColor="@color/white"
-                android:textAlignment="center"
                 android:text="4"
+                android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="15dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

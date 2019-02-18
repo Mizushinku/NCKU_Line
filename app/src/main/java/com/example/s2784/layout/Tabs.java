@@ -855,7 +855,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 roomInfo.setrMsg(SNC_msg_splitLine[4]);
                                 roomInfo.setrMsgDate(SNC_msg_splitLine[5]);
 
-                                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
+                                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_group);
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] bytes = stream.toByteArray();
@@ -964,7 +964,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.putListHash("好友", testViewModel.getFriend());
                 viewPager.getAdapter().notifyDataSetChanged();
             } else if (roomInfo.getType().equals("G")) {
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_group);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bytes = stream.toByteArray();
@@ -1080,7 +1080,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
             roomInfo.setrMsg("No History");
             roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
-            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.bubble_out);
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_group);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();

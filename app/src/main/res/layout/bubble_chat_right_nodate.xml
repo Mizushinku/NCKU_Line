@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:background="@drawable/bubble_in"
+        android:background="@drawable/bubble_send"
         android:orientation="vertical"
-        android:gravity="center"
-        android:paddingBottom="10dp">
+        android:gravity="center_horizontal"
+        >
 
         <TextView
             android:id="@+id/txt_msg"
@@ -37,6 +37,8 @@
         android:textSize="12dp"
         android:text="time"
         android:textColor="@color/ivory"
+        android:layout_marginRight="3dp"
+
         />
 
 </RelativeLayout>

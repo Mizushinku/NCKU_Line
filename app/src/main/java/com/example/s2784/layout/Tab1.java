@@ -81,10 +81,15 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         userName_tab1.setText(testViewModel.getUserName());
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
-        userIcon_tab1.getLayoutParams().width = userIcon_tab1.getLayoutParams().height;
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);
+
+        listView.setAdapter(listAdapter);
+        for (int i = 0; i < 3; i++) {
+            listView.expandGroup(i);
+        }
+
 //        listView.expandGroup(0);
 //        listView.expandGroup(1);
 //        //listAdapter.refresh(listView,1);

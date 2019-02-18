@@ -20,6 +20,7 @@
             android:background="@drawable/date_oval"
             android:gravity="center_horizontal"
             android:paddingHorizontal="10dp"
+
             />
     </LinearLayout>
 
@@ -35,7 +36,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="6dp"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,13 +57,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/bubble_out"
+                android:background="@drawable/bubble_receive"
                 android:orientation="vertical"
                 android:paddingBottom="10dp">
 
                 <ImageView
                     android:id="@+id/img_msg"
-                    android:layout_width="240dp"
+                    android:layout_width="230dp"
                     android:layout_height="135dp"
                     android:maxWidth="250dp"
                     android:padding="5dp" />

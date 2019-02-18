@@ -20,6 +20,7 @@
             android:background="@drawable/date_oval"
             android:gravity="center_horizontal"
             android:paddingHorizontal="10dp"
+
             />
     </LinearLayout>
 
@@ -35,7 +36,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="6dp"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,7 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/bubble_out"
+                android:background="@drawable/bubble_receive"
+                android:paddingLeft="3dp"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:paddingBottom="10dp">

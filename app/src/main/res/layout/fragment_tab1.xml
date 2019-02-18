@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/antiquewhite"
         android:orientation="vertical">
 
         <LinearLayout
@@ -20,30 +21,30 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:id="@+id/icon_layout"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                >
+                    >
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userIcon_tab1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
+                    app:civ_border_color="@color/darkgoldenrod"
+                    app:civ_border_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:padding="5dp"
                     />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="left"
-                android:layout_weight="1"
-                android:layout_marginLeft="20dp">
+                android:layout_weight="3"
+                android:layout_marginLeft="5dp">
 
                 <TextView
                     android:id="@+id/userName_tab1"
@@ -52,7 +53,6 @@
                     android:layout_weight="1.5"
                     android:gravity="bottom"
                     android:text="USER"
-                    android:textColor="@color/white"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 
@@ -62,6 +62,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="top"
+                    android:textColor="@color/common_google_signin_btn_text_light_focused"
                     android:text="brief introduction of myself"
                     android:textSize="14dp"
                     android:textStyle="bold" />
