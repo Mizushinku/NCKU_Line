@@ -39,9 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MSG"
+            android:textColor="@color/darkred"
             android:lines="2"
             android:ellipsize="end"
-            android:textColor="@color/darkgray"
             android:textSize="16dp" />
     </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="20dp"
                 android:gravity="center"
                 android:text="Date"
-                android:textColor="@color/darkgray"
+                android:textColor="@color/darkred"
                 android:textSize="15dp" />
 
             <TextView

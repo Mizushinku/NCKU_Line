@@ -9,14 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/antiquewhite"
+        android:background="@drawable/bg5"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/profile_stytle"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -62,7 +61,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="top"
-                    android:textColor="@color/common_google_signin_btn_text_light_focused"
+                    android:textColor="@color/darkgrey"
                     android:text="brief introduction of myself"
                     android:textSize="14dp"
                     android:textStyle="bold" />

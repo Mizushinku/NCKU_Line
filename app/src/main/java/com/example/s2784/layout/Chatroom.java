@@ -99,7 +99,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
 
-        getWindow().setBackgroundDrawableResource(R.drawable.chatroom_background) ;
+        getWindow().setBackgroundDrawableResource(R.drawable.bg5) ;
         Log.d("TAG","Create");
 
 
