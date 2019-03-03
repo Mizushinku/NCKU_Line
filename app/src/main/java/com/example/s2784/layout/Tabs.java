@@ -76,6 +76,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private static final int REQUEST_CODE_MsgBulletin = 3;
     private static final int REQUEST_CODE_JoinGroup = 4;
     private static final int REQUEST_CODE_Search = 5;
+    private static final int REQUEST_CODE_BuildClass = 6;
 
 
     public static TestViewModel testViewModel;
@@ -422,6 +423,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
                     networkCheck(mNetworkInfo);
                     break;
+                case R.id.build_class:
+                    msg += "新增課程";
+                    Intent intent_buildClass = new Intent(Tabs.this, BuildClass.class);
+                    intent_buildClass.putParcelableArrayListExtra("friendlist", testViewModel.getListHash().get("好友"));
+                    startActivityForResult(intent_buildClass, REQUEST_CODE_BuildClass);
+                    break;
             }
 
 //            if (!msg.equals("")) {
@@ -549,6 +556,20 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     }
                 }
                 mqtt.AddGroup(groupName, sb.toString());
+                break;
+            case REQUEST_CODE_BuildClass:
+                String className = data.getStringExtra("className");
+                ArrayList<String> Student = data.getStringArrayListExtra("memberList");
+
+                StringBuilder sb2 = new StringBuilder(userID);
+                if (Student != null) {
+                    for (int i = 0; i < Student.size(); ++i) {
+                        //member_str += ("\t" + groupMember.get(i));
+                        sb2.append("\t");
+                        sb2.append(Student.get(i));
+                    }
+                }
+                mqtt.AddGroup(className, sb2.toString());
                 break;
             case REQUEST_CODE_JoinGroup:
 //                RoomInfo newGroup = new RoomInfo();

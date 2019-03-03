@@ -45,6 +45,12 @@
         android:title="檢查網路"
         android:icon="@drawable/build_group"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/build_class"
+        android:orderInCategory="100"
+        android:title="新增課程"
+        android:icon="@drawable/build_group"
+        app:showAsAction="never" />
 
 
 </menu>

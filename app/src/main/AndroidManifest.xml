@@ -52,6 +52,7 @@
         <activity android:name=".Upload" />
         <activity android:name=".LogIn" />
         <activity android:name=".SearchView" />
+        <activity android:name=".BuildClass" />
         <activity
             android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="portrait"
