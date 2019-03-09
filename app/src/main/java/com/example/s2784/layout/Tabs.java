@@ -67,6 +67,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private NetworkInfo mNetworkInfo;
     private ConnectivityManager mConnectivityManager;
     private QBadgeView qBadgeView;
+    private MyBroadcastReceiver receiver;
+
 //    private String tab_string[] = {"個人頁面","聊天","公佈欄","其他"};
 //    private int tab_icon_light[] = {R.drawable.friend,R.drawable.chat,R.drawable.news,R.drawable.setting};
 //    private int tab_icon_dark[] = {R.drawable.friend_inactive,R.drawable.chat_inactive,R.drawable.news_inactive,R.drawable.setting_inactive};
@@ -329,7 +331,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onResume();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.example.s2784.layout.action.badgeNum");
-        MyBroadcastReceiver receiver = new MyBroadcastReceiver();
+        receiver = new MyBroadcastReceiver();
         registerReceiver(receiver,intentFilter);
 
         qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
@@ -347,6 +349,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     protected void onStop() {
         super.onStop();
         Log.d("TAG", "Tabs : onStop()");
+        unregisterReceiver(receiver);
     }
 
     @Override
