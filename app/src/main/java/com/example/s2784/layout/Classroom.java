@@ -1,6 +1,7 @@
 package com.example.s2784.layout;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 public class Classroom extends Chatroom{
-    private String course_letters[] = {"選擇圖片"};
-    private int course_icons[] = {R.drawable.pic};
+    private String course_letters[] = {"選擇圖片","討論區"};
+    private int course_icons[] = {R.drawable.pic,R.drawable.news_inactive};
 
     private int auth;
 
@@ -45,6 +46,10 @@ public class Classroom extends Chatroom{
                     switch (position) {
                         case 0:
                             choosePic();
+                            break;
+                        case 1:
+                            Intent discuss = new Intent(getApplicationContext(),DiscussActivity.class);
+                            startActivity(discuss);
                             break;
                         default:
                             Toast.makeText(Classroom.this, "Wrong", Toast.LENGTH_LONG).show();
