@@ -79,7 +79,11 @@ public class bubble_list extends BaseAdapter {
                 }
             }
             name = (TextView) rowView.findViewById(R.id.userName);
-            name.setText(Bubble.getName());
+            if(Tabs.mqtt.MapAlias(Bubble.getName()) != null) {
+                name.setText(Tabs.mqtt.MapAlias(Bubble.getName()));
+            }else{
+                name.setText(Bubble.getName());
+            }
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
             if (Bubble.getPic() == null) {
                 Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.friend);

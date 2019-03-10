@@ -10,7 +10,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -23,7 +22,6 @@ import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -616,12 +614,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private String processingCode = "";
         private ArrayList<RoomInfo> roomInfoList; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
         private HashMap<String, Bitmap> friendInfoMap;
+        private HashMap<String, String> aliasMap;
 
         private Mqtt_Client(Context context, String user) {
             this.context = context;
             this.user = user;
             roomInfoList = new ArrayList<>();
             friendInfoMap = new HashMap<>();
+            aliasMap = new HashMap<>();
         }
 
 
@@ -691,6 +691,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
                                             if (!roomInfo.getMemberID().get(i).equals(userID)) {
                                                 roomInfo.setStudentID(roomInfo.getMemberID().get(i));
+                                                aliasMap.put(roomInfo.getStudentID(),roomInfo.getRoomName());
                                                 break;
                                             }
                                         }
@@ -724,6 +725,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     roomInfo.setrMsgDate("XXXX-XX-XX XX:XX");
                                     roomInfo.setType("F");
                                     roomInfoList.add(roomInfo);
+                                    aliasMap.put(roomInfo.getStudentID(),roomInfo.getRoomName());
                                     GetFriendIcon("Add", addFriend_info[2], addFriend_info[4]);
                                 } else if (addFriend_info[0].equals("false")) {
                                     Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
@@ -864,7 +866,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     }
                                 }
                                 break;
-                            case "SendNewChatroom":
+                            case "SendNewChatroom": //invite
                                 String SNC_msg = new String(message.getPayload());
                                 String[] SNC_msg_splitLine = SNC_msg.split("\t");
                                 RoomInfo roomInfo = new RoomInfo();
@@ -1025,6 +1027,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private void GetUserData_re(String name){
             testViewModel.setUserName(name);
             viewPager.getAdapter().notifyDataSetChanged();
+            aliasMap.put(user,name);
             GetUserIcon();
         }
 
@@ -1314,6 +1317,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public Bitmap MapBitmap(String id) {
             return friendInfoMap.get(id);
         }
+
+        public String MapAlias(String id){ return aliasMap.get(id); }
 
         private void SubmitFCMToken() {
             String token = getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token", "empty");

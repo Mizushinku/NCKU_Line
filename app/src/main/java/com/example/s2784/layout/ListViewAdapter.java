@@ -56,7 +56,12 @@ public class ListViewAdapter extends BaseAdapter {
         }
         final RoomInfo roomInfo = (RoomInfo)getItem(position);
         viewHolder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
-        viewHolder.checkedTextView.setText(roomInfo.getStudentID());
+
+        if(Tabs.mqtt.MapAlias(roomInfo.getStudentID()) != null){
+            viewHolder.checkedTextView.setText(Tabs.mqtt.MapAlias(roomInfo.getStudentID()));
+        }else {
+            viewHolder.checkedTextView.setText(roomInfo.getStudentID());
+        }
         viewHolder.checkedTextView.setChecked(roomInfo.getChecked());
         viewHolder.checkedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
