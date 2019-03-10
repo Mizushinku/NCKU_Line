@@ -49,6 +49,7 @@ public class Classroom extends Chatroom{
                             break;
                         case 1:
                             Intent discuss = new Intent(getApplicationContext(),DiscussActivity.class);
+                            discuss.putExtra("roomInfo",roomInfo);
                             startActivity(discuss);
                             break;
                         default:

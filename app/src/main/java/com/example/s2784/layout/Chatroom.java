@@ -365,7 +365,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         @Override
         protected Void doInBackground(String...params) {
             String record = params[0];
-            StringTokenizer stringTokenizer = new StringTokenizer(record,",");
+            StringTokenizer stringTokenizer = new StringTokenizer(record,"\r");
             int i = 0;
             while(stringTokenizer.hasMoreElements()){
                 String token = stringTokenizer.nextToken();

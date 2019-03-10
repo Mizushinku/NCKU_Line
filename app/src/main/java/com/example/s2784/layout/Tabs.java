@@ -674,7 +674,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         boolean isFound;
                         switch (idf[1]) {
                             case "Initialize":
-                                StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), ",");
+                                StringTokenizer stringTokenizer = new StringTokenizer(new String(message.getPayload()), "\r");
                                 while (stringTokenizer.hasMoreElements()) {
                                     String token = stringTokenizer.nextToken();
                                     init_info = token.split("\t");
@@ -1337,6 +1337,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public void getAuth(String code) {
             String topic = "IDF/GetAuth/" + user;
             String MSG = code;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void postTheme(String code, String theme, String content, String type_t){
+            String topic = "IDF/Poster/" + user;
+            String MSG = code + "\t" + theme + "\t" + content + "\t" + type_t;
             try {
                 client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {

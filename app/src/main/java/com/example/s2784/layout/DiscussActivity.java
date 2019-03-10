@@ -1,5 +1,6 @@
 package com.example.s2784.layout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +21,15 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 
     private FloatingActionButton floatingActionButton;
 
+    private RoomInfo roomInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discuss);
+
+        Intent intent = getIntent();
+        roomInfo = intent.getParcelableExtra("roomInfo");
 
         floatingActionButton = findViewById(R.id.fab_plus);
         floatingActionButton.setOnClickListener(this);
@@ -54,27 +60,30 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void applyTexts(String title, String content) {
 
-        Calendar calendar = Calendar.getInstance();
-        String dateFormat = "yyyy年MM月dd日";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-        String today = simpleDateFormat.format(calendar.getTime());
-        String date = today.substring(0,5);
-        if(today.substring(5,6).equals("0")){
-            date = date.concat(today.substring(6,7));
-        }else{
-            date = date.concat(today.substring(5,7));
-        }
-        date = date.concat("月");
-        if(today.substring(8,9).equals("0")){
-            date = date.concat(today.substring(9,10));
-        }else{
-            date = date.concat(today.substring(8,10));
-        }
-        date = date.concat("日");
-
-        CardData cardData = new CardData(title,content, date,"NAME");
-        dataList.add(cardData);
-        cardDataAdapter.notifyDataSetChanged();
+//        Calendar calendar = Calendar.getInstance();
+//        String dateFormat = "yyyy年MM月dd日";
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+//        String today = simpleDateFormat.format(calendar.getTime());
+//        String date = today.substring(0,5);
+//        if(today.substring(5,6).equals("0")){
+//            date = date.concat(today.substring(6,7));
+//        }else{
+//            date = date.concat(today.substring(5,7));
+//        }
+//        date = date.concat("月");
+//        if(today.substring(8,9).equals("0")){
+//            date = date.concat(today.substring(9,10));
+//        }else{
+//            date = date.concat(today.substring(8,10));
+//        }
+//        date = date.concat("日");
+//
+//        CardData cardData = new CardData(title,content, date,"NAME");
+//        dataList.add(cardData);
+//        cardDataAdapter.notifyDataSetChanged();
 //        Toast.makeText(this,"SIZE:" + dataList.size(), Toast.LENGTH_LONG).show();
+
+
+        Tabs.mqtt.postTheme(roomInfo.getCode(),title,content,"post");
     }
 }
