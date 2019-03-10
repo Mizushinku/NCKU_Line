@@ -215,7 +215,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_send :
-                if (!et.getText().toString().equals("")) {
+                if (!et.getText().toString().trim().equals("")) {
                     //發送聊天紀錄
                     String text = et.getText().toString().replace("\t","    ");
                     String msg = code + "\t" + id + "\t" + text;
