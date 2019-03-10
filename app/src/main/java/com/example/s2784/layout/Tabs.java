@@ -900,6 +900,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 String record = new String(message.getPayload());
                                 LinkModule.getInstance().callFetchPoster(record);
                                 break;
+                            case "AddPoster":
+                                String new_record = new String(message.getPayload());
+                                String[] splitLine = new_record.split("\t");
+                                LinkModule.getInstance().callUpdatePoster(splitLine[0],splitLine[1],splitLine[2],splitLine[3],splitLine[4],splitLine[5]);
+                                break;
+
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
