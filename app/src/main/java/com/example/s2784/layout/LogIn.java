@@ -86,7 +86,7 @@ public class LogIn extends AppCompatActivity {
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            mqtt.Login(login_et.getText().toString());
+                            mqtt.Login(login_et.getText().toString().trim().toUpperCase());
                         login_et.setText("");
                         pw_et.setText("");
                         /*
