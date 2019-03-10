@@ -48,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="8.5"
-        android:padding="4dp"
         >
 
         <ProgressBar
@@ -79,7 +78,6 @@
             android:content="@id/grid_view"
             android:handle="@id/handle_btn"
             android:rotation="180"
-            android:padding="10dp"
             >
 
             <Button
@@ -151,7 +149,7 @@
                     <ImageButton
                         android:id="@+id/btn_send"
                         android:layout_width="50dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
 
                         android:background="@drawable/send"
                         />
