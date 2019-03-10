@@ -1,19 +1,22 @@
 package com.example.s2784.layout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
-public class DiscussActivity extends AppCompatActivity implements View.OnClickListener, PlusDialog.PlusDialogListener {
+public class DiscussActivity extends AppCompatActivity implements View.OnClickListener, PlusDialog.PlusDialogListener ,LinkModule.PListener{
 
     private List<CardData> dataList = new ArrayList<>();
     private CardDataAdapter cardDataAdapter;
@@ -39,6 +42,9 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(cardDataAdapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(space));
+
+        LinkModule.getInstance().setPListener(this);
+        Tabs.mqtt.getPoster(roomInfo.getCode());
     }
 
     @Override
@@ -59,7 +65,6 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void applyTexts(String title, String content) {
-
 //        Calendar calendar = Calendar.getInstance();
 //        String dateFormat = "yyyy年MM月dd日";
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
@@ -82,8 +87,22 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 //        dataList.add(cardData);
 //        cardDataAdapter.notifyDataSetChanged();
 //        Toast.makeText(this,"SIZE:" + dataList.size(), Toast.LENGTH_LONG).show();
+        Tabs.mqtt.addPoster(roomInfo.getCode(),title,content,"post");
+    }
 
+    @Override
+    public void fetchPoster(String record) {
+        StringTokenizer stringTokenizer = new StringTokenizer(record,"\r");
+        while (stringTokenizer.hasMoreElements()){
+            String token = stringTokenizer.nextToken();
+            String token_splitLine[] = token.split("\t");
+            updatePost(token_splitLine[1],token_splitLine[2],token_splitLine[3],token_splitLine[0],token_splitLine[4]);
+        }
+    }
 
-        Tabs.mqtt.postTheme(roomInfo.getCode(),title,content,"post");
+    private void updatePost(String title, String content, String time, String name, String type){
+        CardData cardData = new CardData(title,content,time,name,type);
+        dataList.add(cardData);
+        cardDataAdapter.notifyDataSetChanged();
     }
 }

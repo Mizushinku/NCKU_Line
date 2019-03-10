@@ -25,8 +25,13 @@ public class LinkModule {
         //void what_you_want();
     }
 
+    public interface PListener {
+        void fetchPoster(String record);
+    }
+
     private static LinkModule mInstance;
     private MListener mListener;
+    private PListener pListener;
 
     private LinkModule() {}
 
@@ -40,6 +45,8 @@ public class LinkModule {
     public void setListener(MListener testLis) {
         mListener = testLis;
     }
+
+    public void setPListener(PListener testLis) { pListener = testLis; }
 
 //////////////////////////////////////////////////////
 
@@ -88,4 +95,9 @@ public class LinkModule {
         }
     }
 
+    public void callFetchPoster(String record){
+        if(pListener != null){
+            pListener.fetchPoster(record);
+        }
+    }
 }

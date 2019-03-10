@@ -896,6 +896,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 String auth = new String(message.getPayload());
                                 LinkModule.getInstance().callSetAuth(Integer.parseInt(auth));
                                 break;
+                            case "GetPoster":
+                                String record = new String(message.getPayload());
+                                LinkModule.getInstance().callFetchPoster(record);
+                                break;
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
@@ -1344,9 +1348,19 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void postTheme(String code, String theme, String content, String type_t){
-            String topic = "IDF/Poster/" + user;
+        public void addPoster(String code, String theme, String content, String type_t){
+            String topic = "IDF/AddPoster/" + user;
             String MSG = code + "\t" + theme + "\t" + content + "\t" + type_t;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void getPoster(String code){
+            String topic = "IDF/GetPoster/" + user;
+            String MSG = code;
             try {
                 client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {

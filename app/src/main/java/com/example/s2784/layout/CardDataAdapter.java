@@ -35,10 +35,31 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final CardData cardData = dataList.get(position);
-        viewHolder.name.setText(cardData.getName());
+        if(Tabs.mqtt.MapAlias(cardData.getName()) != null){
+            viewHolder.name.setText(Tabs.mqtt.MapAlias(cardData.getName()));
+        }else {
+            viewHolder.name.setText(cardData.getName());
+        }
         viewHolder.title.setText(cardData.getTitle());
         viewHolder.content.setText(cardData.getContent());
-        viewHolder.time.setText(cardData.getTime());
+
+        String time = cardData.getTime();
+        String date = time.substring(0,4);
+        date = date.concat("年");
+        if(time.substring(5,6).equals("0")){
+            date = date.concat(time.substring(6,7));
+        }else{
+            date = date.concat(time.substring(5,7));
+        }
+        date = date.concat("月");
+        if(time.substring(8,9).equals("0")){
+            date = date.concat(time.substring(9,10));
+        }else{
+            date = date.concat(time.substring(8,10));
+        }
+        date = date.concat("日");
+        viewHolder.time.setText(date);
+
         viewHolder.reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

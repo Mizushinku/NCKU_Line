@@ -9,6 +9,7 @@ public class CardData implements Parcelable {
     private String content;
     private String time;
     private String name;
+    private String type;
 
     public CardData(){}
 
@@ -17,13 +18,15 @@ public class CardData implements Parcelable {
         content = in.readString();
         time = in.readString();
         name = in.readString();
+        type = in.readString();
     }
 
-    public CardData(String title,String content,String time,String name){
+    public CardData(String title,String content,String time,String name, String type){
         this.title = title;
         this.content = content;
         this.time = time;
         this.name = name;
+        this.type = type;
     }
 
     public String getTitle() { return title; }
@@ -42,6 +45,10 @@ public class CardData implements Parcelable {
 
     public void setName(String name ) { this.name = name; }
 
+    public String getType() { return type; }
+
+    public void setType(String type) { this.type = type; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -53,6 +60,7 @@ public class CardData implements Parcelable {
         dest.writeString(content);
         dest.writeString(time);
         dest.writeString(name);
+        dest.writeString(type);
     }
 
     public static Creator<CardData> CREATOR = new Creator<CardData>() {
