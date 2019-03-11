@@ -26,6 +26,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/chat_toolbar"
+            android:theme="@style/CustomToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gradient_ncku_red"
@@ -61,7 +62,8 @@
             android:id="@+id/lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:paddingVertical="5dp"
+            android:paddingLeft="5dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="5dp"
             android:scrollbars="vertical"
@@ -89,11 +91,12 @@
             <GridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/lightpink"
+                android:background="@color/sliding_drawer"
                 android:horizontalSpacing="5dp"
                 android:verticalSpacing="5dp"
                 android:id="@+id/grid_view"
                 android:numColumns="4"
+                android:stackFromBottom="true"
                 android:stretchMode="columnWidth">
 
             </GridView>

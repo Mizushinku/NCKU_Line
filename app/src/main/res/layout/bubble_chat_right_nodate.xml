@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:maxWidth="250dp"
             android:padding="5dp"
-            android:textColor= "@color/navy"/>
+            android:textColor= "@color/bubble_send_text"/>
 
     </LinearLayout>
 

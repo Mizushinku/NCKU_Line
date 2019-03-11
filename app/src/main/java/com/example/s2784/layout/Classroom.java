@@ -25,9 +25,9 @@ public class Classroom extends Chatroom{
     private String A0_course_letters[] = {"選擇圖片","討論區","修改權限0","修改權限1","修改權限2","成員名單","課程文件","相簿","行事曆","公告","指派助教"};
     private String A1_course_letters[] = {"選擇圖片","討論區","修改權限0","修改權限1","修改權限2","成員名單","課程文件","相簿","行事曆","公告"};
     private String A2_course_letters[] = {"選擇圖片","討論區","修改權限0","修改權限1","修改權限2","成員名單","課程文件","相簿","行事曆",};
-    private int A0_course_icons[] = {R.drawable.pic,R.drawable.pic,R.drawable.news_inactive,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar,R.drawable.announcement,R.drawable.assign_ta};
-    private int A1_course_icons[] = {R.drawable.pic,R.drawable.pic,R.drawable.news_inactive,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar,R.drawable.announcement,};
-    private int A2_course_icons[] = {R.drawable.pic,R.drawable.pic,R.drawable.news_inactive,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar};
+    private int A0_course_icons[] = {R.drawable.pic,R.drawable.discuss,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar,R.drawable.announcement,R.drawable.assign_ta};
+    private int A1_course_icons[] = {R.drawable.pic,R.drawable.discuss,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar,R.drawable.announcement,};
+    private int A2_course_icons[] = {R.drawable.pic,R.drawable.discuss,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar};
 
     private int auth;
 

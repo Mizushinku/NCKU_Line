@@ -5,18 +5,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg5"
     tools:context=".Tab2">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <ListView
             android:id="@+id/room_lv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:dividerHeight="0.2dp"
+            android:divider="@drawable/custom_listview_divider"
+            >
 
         </ListView>
-
 
 
     </LinearLayout>

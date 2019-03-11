@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +21,8 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 
     private List<CardData> dataList = new ArrayList<>();
     private CardDataAdapter cardDataAdapter;
+    protected android.support.v7.widget.Toolbar toolbar;
+
     private final int space = 20;
 
     private FloatingActionButton floatingActionButton;
@@ -38,6 +41,14 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
         floatingActionButton.setOnClickListener(this);
 
         cardDataAdapter = new CardDataAdapter(this,dataList);
+        toolbar = findViewById(R.id.discuss_toolbar);
+        toolbar.setTitle("討論區");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         RecyclerView recyclerView = findViewById(R.id.discuss_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(cardDataAdapter);
@@ -88,6 +99,13 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 //        cardDataAdapter.notifyDataSetChanged();
 //        Toast.makeText(this,"SIZE:" + dataList.size(), Toast.LENGTH_LONG).show();
         Tabs.mqtt.addPoster(roomInfo.getCode(),title,content,"post");
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

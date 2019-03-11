@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:id="@+id/bubble_right_top"
-        android:paddingBottom="10dp">
+        >
 
         <TextView
             android:id="@+id/date_right"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:maxWidth="250dp"
             android:padding="5dp"
-            android:textColor= "@color/navy"/>
+            android:textColor= "@color/bubble_send_text"/>
 
     </LinearLayout>
 

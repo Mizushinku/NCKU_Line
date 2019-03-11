@@ -151,13 +151,29 @@
     <color name="blue">#0000FF</color><!--藍色 -->
     <color name="mediumblue">#0000CD</color><!--中藍色 -->
     <color name="darkblue">#00008B</color><!--暗藍色 -->
-    <color name="ncku_red">#AE282D</color><!--成大紅-->
+    <color name="ncku_red">#AA3939</color><!--成大紅-->
     <color name="ncku_red_light">#b73439</color>
     <color name="ncku_red_thick">#7f1b1f</color>
     <color name="ncku_red_pressed">#F18185</color><!--成大紅(按壓)-->
     <color name="tabs_pic_inactive">#a76c6e</color><!--成大紅(按壓)-->
     <color name="login_hint">#ffded3</color>
     <color name="success">#46c84c</color>
+    <color name="appcolor1">#AA3939</color>
+    <color name="appcolor2">#D46A6A</color>
+    <color name="appcolor3">#FFAAAA</color>
+    <color name="appcolor4">#801515</color>
+    <color name="appcolor5">#550000</color>
+    <color name="list_section">#8D0111</color>
+    <color name="bg">#C1E575</color>
+    <color name="bubble_receive">#f27c7f</color>
+    <color name="bubble_send">#AA3939</color>
+    <color name="bubble_send_text">#ffffff</color>
+    <color name="sliding_drawer">#fcbaba</color
+
+        >
+
+
+
     <color name="black">#000000</color><!--黑色 -->
 
 
