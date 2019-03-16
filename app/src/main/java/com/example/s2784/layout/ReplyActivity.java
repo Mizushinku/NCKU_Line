@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class ReplyActivity extends AppCompatActivity implements View.OnClickListener ,PenDialog.PenDialogListener, LinkModule.PListener{
+public class ReplyActivity extends AppCompatActivity implements View.OnClickListener ,PenDialog.PenDialogListener, LinkModule.RListener{
 
     private TextView reply_title, reply_name, reply_time, reply_content;
     private FloatingActionButton floatingActionButton;
@@ -70,13 +70,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         floatingActionButton = findViewById(R.id.fab_pen);
         floatingActionButton.setOnClickListener(this);
 
-        replyDataAdapter = new ReplyDataAdapter(this,dataList);
+        replyDataAdapter = new ReplyDataAdapter(this, dataList, roomInfo);
         RecyclerView recyclerView = findViewById(R.id.reply_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(replyDataAdapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(space));
 
-        LinkModule.getInstance().setPListener(this);
+        LinkModule.getInstance().setRListener(this);
         Tabs.mqtt.getPosterReply(roomInfo.getCode(),cardData.getTitle());
     }
 
@@ -100,16 +100,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if(!content.equals("")) {
             Tabs.mqtt.addPoster(roomInfo.getCode(), cardData.getTitle(), content, "reply");
         }
-    }
-
-    @Override
-    public void fetchPoster(String record) {
-
-    }
-
-    @Override
-    public void updatePoster(String code, String theme, String content, String type, String sender, String time) {
-
     }
 
     @Override

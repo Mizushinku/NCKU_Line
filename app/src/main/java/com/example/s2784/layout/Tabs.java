@@ -1392,6 +1392,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public void deletePost(String code, String theme){
+            String topic = "IDF/DeletePoster/" + user;
+            String MSG = code + "\t" + theme;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void deletePostReply(String code, String theme, String content){
+            String topic = "IDF/DeletePosterReply/" + user;
+            String MSG = code + "\t" + theme + "\t" + content;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     ////////////////////////////////////////////////////////////////////////
     private void networkCheck(NetworkInfo mNetworkInfo){

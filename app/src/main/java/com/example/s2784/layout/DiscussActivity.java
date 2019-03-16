@@ -101,16 +101,7 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void updatePoster(String code, String theme, String content, String type, String sender, String time) {
         updatePost(theme,content,time,sender,type);
-    }
-
-    @Override
-    public void fetchPosterReply(String record) {
-
-    }
-
-    @Override
-    public void updatePosterReply(String code, String theme, String content, String type, String sender, String time) {
-
+        Log.d("POST",theme + content + time + sender + type);
     }
 
     private void updatePost(String title, String content, String time, String name, String type){

@@ -21,10 +21,12 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
 
     private Context context;
     private List<CardData> dataList;
+    private RoomInfo roomInfo;
 
-    public ReplyDataAdapter(Context context, List<CardData> dataList){
+    public ReplyDataAdapter(Context context, List<CardData> dataList, RoomInfo roomInfo){
         this.context = context;
         this.dataList = dataList;
+        this.roomInfo = roomInfo;
     }
 
     @NonNull
@@ -39,30 +41,32 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
         final CardData replyData = dataList.get(position);
 
         int height = viewHolder.status.getLineHeight();
-        Bitmap bitmap_user = BitmapFactory.decodeResource(context.getResources(),R.drawable.user);
-        bitmap_user = Bitmap.createScaledBitmap(bitmap_user,height,height,false);
-        Bitmap bitmap_clock = BitmapFactory.decodeResource(context.getResources(),R.drawable.clock);
-        bitmap_clock = Bitmap.createScaledBitmap(bitmap_clock,height,height,false);
+        Bitmap bitmap_user = BitmapFactory.decodeResource(context.getResources(), R.drawable.user);
+        bitmap_user = Bitmap.createScaledBitmap(bitmap_user, height, height, false);
+        Bitmap bitmap_clock = BitmapFactory.decodeResource(context.getResources(), R.drawable.clock);
+        bitmap_clock = Bitmap.createScaledBitmap(bitmap_clock, height, height, false);
 
-        ImageSpan imageSpan_user = new ImageSpan(context,bitmap_user);
-        ImageSpan imageSpan_clock = new ImageSpan(context,bitmap_clock);
+        ImageSpan imageSpan_user = new ImageSpan(context, bitmap_user);
+        ImageSpan imageSpan_clock = new ImageSpan(context, bitmap_clock);
 
         String name;
-        String time;
 
-        if(Tabs.mqtt.MapAlias(replyData.getName()) != null){
+        if (Tabs.mqtt.MapAlias(replyData.getName()) != null) {
             name = Tabs.mqtt.MapAlias(replyData.getName());
-        }else {
+        } else {
             name = replyData.getName();
         }
 
-        String status = "--" + "@" + name + " @" + replyData.getTime().substring(0,10);
+        String status = "--" + "@" + name + " @" + replyData.getTime().substring(0, 10);
         SpannableString spannableString = new SpannableString(status);
-        spannableString.setSpan(imageSpan_user,2,3,0);
-        spannableString.setSpan(imageSpan_clock,4+name.length(),5+name.length(),0);
+        spannableString.setSpan(imageSpan_user, 2, 3, 0);
+        spannableString.setSpan(imageSpan_clock, 4 + name.length(), 5 + name.length(), 0);
         viewHolder.status.setText(spannableString);
         viewHolder.content.setText(replyData.getContent());
 
+        if (replyData.getName().equals(Tabs.userID)) {
+            viewHolder.itemView.setOnCreateContextMenuListener(viewHolder);
+        }
     }
 
     @Override
@@ -78,12 +82,15 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
             content = itemView.findViewById(R.id.reply_card_content);
             status = itemView.findViewById(R.id.reply_card_status);
 
-            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
+//            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
 
         private void removeItem(int position) {
+            CardData data = dataList.get(position);
+            Tabs.mqtt.deletePostReply(roomInfo.getCode(), data.getTitle(), data.getContent());
             dataList.remove(position);
-            notifyItemRemoved(position);
+//            notifyItemRemoved(position);
+            notifyDataSetChanged();
         }
 
         @Override

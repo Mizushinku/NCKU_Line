@@ -72,6 +72,10 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
                 context.startActivity(reply_activity);
             }
         });
+
+        if(cardData.getName().equals(Tabs.userID)){
+            viewHolder.itemView.setOnCreateContextMenuListener(viewHolder);
+        }
     }
 
     @Override
@@ -91,12 +95,15 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
             time = itemView.findViewById(R.id.card_time);
             reply = itemView.findViewById(R.id.card_reply);
 
-            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
+//            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
 
         private void removeItem(int position) {
+            CardData data = dataList.get(position);
+            Tabs.mqtt.deletePost(roomInfo.getCode(), data.getTitle());
             dataList.remove(position);
-            notifyItemRemoved(position);
+//            notifyItemRemoved(position);
+            notifyDataSetChanged();
         }
 
         @Override

@@ -28,6 +28,9 @@ public class LinkModule {
     public interface PListener {
         void fetchPoster(String record);
         void updatePoster(String code, String theme, String content, String type, String sender, String time);
+    }
+
+    public interface RListener {
         void fetchPosterReply(String record);
         void updatePosterReply(String code, String theme, String content, String type, String sender, String time);
     }
@@ -35,6 +38,7 @@ public class LinkModule {
     private static LinkModule mInstance;
     private MListener mListener;
     private PListener pListener;
+    private RListener rListener;
 
     private LinkModule() {}
 
@@ -51,6 +55,7 @@ public class LinkModule {
 
     public void setPListener(PListener testLis) { pListener = testLis; }
 
+    public void setRListener(RListener testLis) { rListener = testLis; }
 //////////////////////////////////////////////////////
 
 //    public void call_what_you_want() {
@@ -111,14 +116,14 @@ public class LinkModule {
     }
 
     public void callFetchPosterReply(String record){
-        if(pListener != null){
-            pListener.fetchPosterReply(record);
+        if(rListener != null){
+            rListener.fetchPosterReply(record);
         }
     }
 
     public void callUpdatePosterReply(String code, String theme, String content, String type, String sender, String time){
-        if(pListener != null){
-            pListener.updatePosterReply(code, theme, content, type, sender, time);
+        if(rListener != null){
+            rListener.updatePosterReply(code, theme, content, type, sender, time);
         }
     }
 }
