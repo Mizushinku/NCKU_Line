@@ -97,29 +97,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void applyTexts(String content) {
-//        Toast.makeText(this,content,Toast.LENGTH_SHORT).show();
-//        Calendar calendar = Calendar.getInstance();
-//        String dateFormat = "yyyy年MM月dd日";
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-//        String today = simpleDateFormat.format(calendar.getTime());
-//        String date = today.substring(0,5);
-//        if(today.substring(5,6).equals("0")){
-//            date = date.concat(today.substring(6,7));
-//        }else{
-//            date = date.concat(today.substring(5,7));
-//        }
-//        date = date.concat("月");
-//        if(today.substring(8,9).equals("0")){
-//            date = date.concat(today.substring(9,10));
-//        }else{
-//            date = date.concat(today.substring(8,10));
-//        }
-//        date = date.concat("日");
-//
-//        ReplyData replyData = new ReplyData("SAM",date,content);
-//        dataList.add(replyData);
-//        replyDataAdapter.notifyDataSetChanged();
-        Tabs.mqtt.addPoster(roomInfo.getCode(),cardData.getTitle(),content,"reply");
+        if(!content.equals("")) {
+            Tabs.mqtt.addPoster(roomInfo.getCode(), cardData.getTitle(), content, "reply");
+        }
     }
 
     @Override

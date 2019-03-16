@@ -76,29 +76,9 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void applyTexts(String title, String content) {
-//        Calendar calendar = Calendar.getInstance();
-//        String dateFormat = "yyyy年MM月dd日";
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-//        String today = simpleDateFormat.format(calendar.getTime());
-//        String date = today.substring(0,5);
-//        if(today.substring(5,6).equals("0")){
-//            date = date.concat(today.substring(6,7));
-//        }else{
-//            date = date.concat(today.substring(5,7));
-//        }
-//        date = date.concat("月");
-//        if(today.substring(8,9).equals("0")){
-//            date = date.concat(today.substring(9,10));
-//        }else{
-//            date = date.concat(today.substring(8,10));
-//        }
-//        date = date.concat("日");
-//
-//        CardData cardData = new CardData(title,content, date,"NAME");
-//        dataList.add(cardData);
-//        cardDataAdapter.notifyDataSetChanged();
-//        Toast.makeText(this,"SIZE:" + dataList.size(), Toast.LENGTH_LONG).show();
-        Tabs.mqtt.addPoster(roomInfo.getCode(),title,content,"post");
+        if(!title.equals("") && !content.equals("")) {
+            Tabs.mqtt.addPoster(roomInfo.getCode(), title, content, "post");
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
