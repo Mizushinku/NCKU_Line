@@ -40,7 +40,7 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
         floatingActionButton = findViewById(R.id.fab_plus);
         floatingActionButton.setOnClickListener(this);
 
-        cardDataAdapter = new CardDataAdapter(this,dataList);
+        cardDataAdapter = new CardDataAdapter(this,dataList,roomInfo);
         toolbar = findViewById(R.id.discuss_toolbar);
         toolbar.setTitle("討論區");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -121,6 +121,16 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void updatePoster(String code, String theme, String content, String type, String sender, String time) {
         updatePost(theme,content,time,sender,type);
+    }
+
+    @Override
+    public void fetchPosterReply(String record) {
+
+    }
+
+    @Override
+    public void updatePosterReply(String code, String theme, String content, String type, String sender, String time) {
+
     }
 
     private void updatePost(String title, String content, String time, String name, String type){

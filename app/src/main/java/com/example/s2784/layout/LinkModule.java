@@ -28,6 +28,8 @@ public class LinkModule {
     public interface PListener {
         void fetchPoster(String record);
         void updatePoster(String code, String theme, String content, String type, String sender, String time);
+        void fetchPosterReply(String record);
+        void updatePosterReply(String code, String theme, String content, String type, String sender, String time);
     }
 
     private static LinkModule mInstance;
@@ -105,6 +107,18 @@ public class LinkModule {
     public void callUpdatePoster(String code, String theme, String content, String type, String sender, String time){
         if(pListener != null){
             pListener.updatePoster(code, theme, content, type, sender, time);
+        }
+    }
+
+    public void callFetchPosterReply(String record){
+        if(pListener != null){
+            pListener.fetchPosterReply(record);
+        }
+    }
+
+    public void callUpdatePosterReply(String code, String theme, String content, String type, String sender, String time){
+        if(pListener != null){
+            pListener.updatePosterReply(code, theme, content, type, sender, time);
         }
     }
 }

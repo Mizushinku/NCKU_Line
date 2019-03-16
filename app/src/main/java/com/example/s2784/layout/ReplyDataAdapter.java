@@ -20,9 +20,9 @@ import java.util.List;
 public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.ViewHolder> {
 
     private Context context;
-    private List<ReplyData> dataList;
+    private List<CardData> dataList;
 
-    public ReplyDataAdapter(Context context, List<ReplyData> dataList){
+    public ReplyDataAdapter(Context context, List<CardData> dataList){
         this.context = context;
         this.dataList = dataList;
     }
@@ -36,7 +36,7 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        final ReplyData replyData = dataList.get(position);
+        final CardData replyData = dataList.get(position);
 
         int height = viewHolder.status.getLineHeight();
         Bitmap bitmap_user = BitmapFactory.decodeResource(context.getResources(),R.drawable.user);
@@ -47,10 +47,19 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
         ImageSpan imageSpan_user = new ImageSpan(context,bitmap_user);
         ImageSpan imageSpan_clock = new ImageSpan(context,bitmap_clock);
 
-        String status = "--" + "@" + replyData.getName() + " @" + replyData.getTime();
+        String name;
+        String time;
+
+        if(Tabs.mqtt.MapAlias(replyData.getName()) != null){
+            name = Tabs.mqtt.MapAlias(replyData.getName());
+        }else {
+            name = replyData.getName();
+        }
+
+        String status = "--" + "@" + name + " @" + replyData.getTime().substring(0,10);
         SpannableString spannableString = new SpannableString(status);
         spannableString.setSpan(imageSpan_user,2,3,0);
-        spannableString.setSpan(imageSpan_clock,4+replyData.getName().length(),5+replyData.getName().length(),0);
+        spannableString.setSpan(imageSpan_clock,4+name.length(),5+name.length(),0);
         viewHolder.status.setText(spannableString);
         viewHolder.content.setText(replyData.getContent());
 

@@ -897,13 +897,21 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 LinkModule.getInstance().callSetAuth(Integer.parseInt(auth));
                                 break;
                             case "GetPoster":
-                                String record = new String(message.getPayload());
-                                LinkModule.getInstance().callFetchPoster(record);
+                                String record_poster = new String(message.getPayload());
+                                LinkModule.getInstance().callFetchPoster(record_poster);
+                                break;
+                            case "GetPosterReply":
+                                String record_reply = new String(message.getPayload());
+                                LinkModule.getInstance().callFetchPosterReply(record_reply);
                                 break;
                             case "AddPoster":
                                 String new_record = new String(message.getPayload());
                                 String[] splitLine = new_record.split("\t");
-                                LinkModule.getInstance().callUpdatePoster(splitLine[0],splitLine[1],splitLine[2],splitLine[3],splitLine[4],splitLine[5]);
+                                if(splitLine[3].equals("post")) {
+                                    LinkModule.getInstance().callUpdatePoster(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5]);
+                                }else if(splitLine[3].equals("reply")){
+                                    LinkModule.getInstance().callUpdatePosterReply(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5]);
+                                }
                                 break;
 
                             default:
@@ -1373,6 +1381,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 e.printStackTrace();
             }
         }
+
+        public void getPosterReply(String code, String theme) {
+            String topic = "IDF/GetPosterReply/" + user;
+            String MSG = code + "\t" + theme;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     ////////////////////////////////////////////////////////////////////////
     private void networkCheck(NetworkInfo mNetworkInfo){

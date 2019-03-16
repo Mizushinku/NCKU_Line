@@ -6,23 +6,28 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
-public class ReplyActivity extends AppCompatActivity implements View.OnClickListener ,PenDialog.PenDialogListener{
+public class ReplyActivity extends AppCompatActivity implements View.OnClickListener ,PenDialog.PenDialogListener, LinkModule.PListener{
 
     private TextView reply_title, reply_name, reply_time, reply_content;
     private FloatingActionButton floatingActionButton;
     private CardData cardData;
 
-    private List<ReplyData> dataList = new ArrayList<>();
+    private List<CardData> dataList = new ArrayList<>();
     private ReplyDataAdapter replyDataAdapter;
     private final int space = 20;
+
+    private RoomInfo roomInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         reply_content = findViewById(R.id.reply_content);
 
         cardData = getIntent().getParcelableExtra("CardData");
+        roomInfo = getIntent().getParcelableExtra("RoomInfo");
         reply_title.setText(cardData.getTitle());
 
         if(Tabs.mqtt.MapAlias(cardData.getName()) != null){
@@ -69,13 +75,16 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(replyDataAdapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(space));
+
+        LinkModule.getInstance().setPListener(this);
+        Tabs.mqtt.getPosterReply(roomInfo.getCode(),cardData.getTitle());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_pen:
-//                Toast.makeText(this,"Click",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this,roomInfo.getCode(),Toast.LENGTH_SHORT).show();
                 openDialog();
                 break;
         }
@@ -110,5 +119,39 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
 //        ReplyData replyData = new ReplyData("SAM",date,content);
 //        dataList.add(replyData);
 //        replyDataAdapter.notifyDataSetChanged();
+        Tabs.mqtt.addPoster(roomInfo.getCode(),cardData.getTitle(),content,"reply");
+    }
+
+    @Override
+    public void fetchPoster(String record) {
+
+    }
+
+    @Override
+    public void updatePoster(String code, String theme, String content, String type, String sender, String time) {
+
+    }
+
+    @Override
+    public void fetchPosterReply(String record) {
+        StringTokenizer stringTokenizer = new StringTokenizer(record,"\r");
+        while (stringTokenizer.hasMoreElements()){
+            String token = stringTokenizer.nextToken();
+            String token_splitLine[] = token.split("\t");
+            updatePost(token_splitLine[1],token_splitLine[2],token_splitLine[3],token_splitLine[0],token_splitLine[4]);
+        }
+    }
+
+    @Override
+    public void updatePosterReply(String code, String theme, String content, String type, String sender, String time) {
+        if(cardData.getTitle().equals(theme)) {
+            updatePost(theme, content, time, sender, type);
+        }
+    }
+
+    private void updatePost(String title, String content, String time, String name, String type){
+        CardData cardData = new CardData(title,content,time,name,type);
+        dataList.add(cardData);
+        replyDataAdapter.notifyDataSetChanged();
     }
 }

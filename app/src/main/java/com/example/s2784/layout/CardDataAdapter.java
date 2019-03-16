@@ -19,10 +19,12 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
 
     private Context context;
     private List<CardData> dataList;
+    private RoomInfo roomInfo;
 
-    public CardDataAdapter(Context context, List<CardData> data) {
+    public CardDataAdapter(Context context, List<CardData> data, RoomInfo roomInfo) {
         this.context = context;
         this.dataList = data;
+        this.roomInfo = roomInfo;
     }
 
     @NonNull
@@ -66,6 +68,7 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
 //                Toast.makeText(context,"Click",Toast.LENGTH_LONG).show();
                 Intent reply_activity = new Intent(context, ReplyActivity.class);
                 reply_activity.putExtra("CardData", cardData);
+                reply_activity.putExtra("RoomInfo", roomInfo);
                 context.startActivity(reply_activity);
             }
         });
