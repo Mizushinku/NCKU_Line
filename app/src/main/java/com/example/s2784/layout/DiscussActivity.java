@@ -1,19 +1,14 @@
 package com.example.s2784.layout;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -101,7 +96,7 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void updatePoster(String code, String theme, String content, String type, String sender, String time) {
         updatePost(theme,content,time,sender,type);
-        Log.d("POST",theme + content + time + sender + type);
+//        Log.d("POST",theme + content + time + sender + type);
     }
 
     private void updatePost(String title, String content, String time, String name, String type){
