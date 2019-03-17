@@ -9,7 +9,6 @@
     tools:ignore="NestedWeights">
 
 
-
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
@@ -19,6 +18,7 @@
         android:textAlignment="center"
         android:textSize="16dp"
         android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,28 +26,28 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/chat_toolbar"
-            android:theme="@style/CustomToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gradient_ncku_red"
             android:gravity="center"
+            android:theme="@style/CustomToolbar"
             app:contentInsetStartWithNavigation="0dp">
 
             <Button
+                android:id="@+id/slide_btn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:id="@+id/slide_btn"
-                android:background="@drawable/arrow_down"
-                />
+                android:background="@drawable/arrow_down" />
         </android.support.v7.widget.Toolbar>
 
 
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="8.5"
         >
 
@@ -56,72 +56,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
-            android:paddingLeft="5dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="5dp"
-            android:scrollbars="vertical"
             android:listSelector="@android:color/transparent"
-            />
+            android:paddingVertical="5dp"
+            android:paddingLeft="5dp"
+            android:scrollbars="vertical" />
+
         <com.example.s2784.layout.WrappingSlidingDrawer
+            android:id="@+id/slide_drawer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/slide_drawer"
-            android:minHeight="400dp"
-            android:orientation="vertical"
-            android:animateOnClick="true"
             android:allowSingleTap="true"
+            android:animateOnClick="true"
             android:content="@id/grid_view"
             android:handle="@id/handle_btn"
-            android:rotation="180"
-            >
+            android:minHeight="400dp"
+            android:orientation="vertical"
+            android:rotation="180">
 
             <Button
                 android:id="@+id/handle_btn"
-                android:layout_height="0dp"
                 android:layout_width="0dp"
-                android:text="">
-            </Button>
+                android:layout_height="0dp"
+                android:text=""></Button>
+
             <GridView
+                android:id="@+id/grid_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/sliding_drawer"
                 android:horizontalSpacing="5dp"
-                android:verticalSpacing="5dp"
-                android:id="@+id/grid_view"
                 android:numColumns="4"
                 android:stackFromBottom="true"
-                android:stretchMode="columnWidth">
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="5dp">
 
             </GridView>
         </com.example.s2784.layout.WrappingSlidingDrawer>
     </FrameLayout>
 
 
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/stroke"
+            android:layout_gravity="center"
             android:alpha="0.7"
-            >
+            android:background="@drawable/stroke">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="20"
-                >
+                android:layout_weight="5">
 
                 <EditText
                     android:id="@+id/et"
@@ -129,33 +126,30 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@drawable/edtext_stytle"
+                    android:hint="請輸入訊息"
                     android:maxLines="4"
                     android:text=""
-                    android:hint="請輸入訊息"
                     android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                >
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="bottom|right"
                     android:paddingRight="5dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <ImageButton
                         android:id="@+id/btn_send"
                         android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
 
-                        android:background="@drawable/send"
-                        />
+                        android:background="@drawable/send" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

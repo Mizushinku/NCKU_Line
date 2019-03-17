@@ -2,8 +2,6 @@ package com.example.s2784.layout;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import q.rorbin.badgeview.QBadgeView;
 
 public class RoomListAdapter extends BaseAdapter {
     private Context context;
@@ -50,7 +46,7 @@ public class RoomListAdapter extends BaseAdapter {
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.roomlist_item, null);
+            convertView = inflater.inflate(R.layout.tab2_list_item, null);
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.room_Pic);
             viewHolder.title = (TextView) convertView.findViewById(R.id.room_Title);
             viewHolder.msg = (TextView) convertView.findViewById(R.id.room_recentMsg);

@@ -1019,7 +1019,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 testViewModel.putListHash("群組", testViewModel.getGroup());
                 viewPager.getAdapter().notifyDataSetChanged();
             } else if (roomInfo.getType().equals("C")) {
-                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.book);
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.course);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bytes = stream.toByteArray();

@@ -3,13 +3,10 @@ package com.example.s2784.layout;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -91,7 +88,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item, null);
+            view = inflater.inflate(R.layout.tab1_list_item, null);
         }
         TextView txtlistChild = (TextView) view.findViewById(R.id.listItem);
         txtlistChild.setText(roomInfo.getRoomName());

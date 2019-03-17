@@ -30,6 +30,7 @@
         android:id="@+id/right_side"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/bubble_right_top"
         android:layout_alignParentRight="true"
         android:gravity="center_horizontal"
