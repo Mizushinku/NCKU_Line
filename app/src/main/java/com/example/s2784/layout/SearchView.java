@@ -95,9 +95,6 @@ public class SearchView extends Activity {
             }
 
         });
-
-
-        /*for search view*/
     }
 
 }

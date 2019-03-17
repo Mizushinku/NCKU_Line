@@ -47,6 +47,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Object getItem(int position) {
+        // TODO Auto-generated method stub
         return mData.get(position);
     }
 
@@ -58,27 +59,14 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
 
-        if (inflater == null) {
-            inflater = (LayoutInflater) parent.getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (inflater == null)
+        {
+            inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         RowItemBinding rowItemBinding = DataBindingUtil.inflate(inflater, R.layout.row_item, parent, false);
         rowItemBinding.stringName.setText(mData.get(position).getRoomName());
-
-        //for room image
-//        final ViewHolder viewHolder;
-//        if (convertView == null) {
-//            viewHolder = new ViewHolder();
-//            convertView = inflater.inflate(R.layout.row_item, null);
-//            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.room_Pic);
-//            convertView.setTag(viewHolder);
-//        } else {
-//            viewHolder = (ViewHolder) convertView.getTag();
-//        }
-//        final RoomInfo roomInfo = (RoomInfo) getItem(position);
-//        viewHolder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(), 0, roomInfo.getIcon_data().length));
-
-
+        final RoomInfo roomInfo = (RoomInfo)getItem(position);
+        rowItemBinding.imageView2.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         return rowItemBinding.getRoot();
     }
 
