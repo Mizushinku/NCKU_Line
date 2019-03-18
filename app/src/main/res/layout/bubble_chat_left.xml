@@ -54,10 +54,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/bubble_chat_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/bubble_receive"
+                android:longClickable="true"
+                android:clickable="true"
                 android:paddingLeft="3dp"
                 android:orientation="vertical"
                 android:gravity="center"

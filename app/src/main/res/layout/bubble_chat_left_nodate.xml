@@ -33,10 +33,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/bubble_chat_left_nodate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/bubble_receive"
+                android:longClickable="true"
+                android:clickable="true"
                 android:alpha="0.8"
                 android:layout_marginLeft="3dp"
                 android:orientation="vertical"

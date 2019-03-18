@@ -19,21 +19,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
-
-import com.githang.statusbar.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
-    private String group_letters[] = {"群組成員","邀請好友","選擇圖片"};
-    private int group_icons[] = { R.drawable.group_member,R.drawable.invite_friend, R.drawable.pic};
-    private String friend_letters[] = {"群組成員","選擇圖片"};
-    private int friend_icons[] = { R.drawable.group_member, R.drawable.pic};
+    private String group_letters[] = {"群組成員", "邀請好友", "選擇圖片"};
+    private int group_icons[] = {R.drawable.group_member, R.drawable.invite_friend, R.drawable.pic};
+    private String friend_letters[] = {"群組成員", "選擇圖片"};
+    private int friend_icons[] = {R.drawable.group_member, R.drawable.pic};
     private TestViewModel testViewModel;
 
     protected ImageButton btn;
@@ -50,6 +49,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected GridView gridView;
     protected Grid_Adapter gridAdapter;
 
+
+
     protected String id;
     protected String code;
 
@@ -58,17 +59,16 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("TAG","Pause");
+        Log.d("TAG", "Pause");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("TAG","Restart");
+        Log.d("TAG", "Restart");
     }
 
     @Override
@@ -93,14 +93,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         super.onStop();
         FCM_MessageService.setVisibleRoomCode("");
     }
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
 
-        getWindow().setBackgroundDrawableResource(R.drawable.bg5) ;
-        Log.d("TAG","Create");
+        getWindow().setBackgroundDrawableResource(R.drawable.bg5);
+        Log.d("TAG", "Create");
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -109,8 +110,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getColor(R.color.ncku_red));
-        }
-        else{
+        } else {
             getWindow().setStatusBarColor(getColor(R.color.ncku_red));
         }
         //Change status color
@@ -122,14 +122,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         friendlist = getIntent().getParcelableArrayListExtra("friendlist");
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
         toolbar = findViewById(R.id.chat_toolbar);
-        if(roomInfo.getType().equals("F")){
+        if (roomInfo.getType().equals("F")) {
             toolbar.setTitle(roomInfo.getRoomName());
-        }else{
+        } else {
             toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
         }
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -141,6 +141,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         slidingDrawer = findViewById(R.id.slide_drawer);
         slidingDrawer.close();
         gridView = findViewById(R.id.grid_view);
+
+        // bubble manipulation
+
+
+
+
 
         set_gridAdapter(); //must be override by child class
         gridView.setAdapter(gridAdapter);
@@ -160,17 +166,20 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //已讀
         SQLiteManager.badgeClear(code);
 
-        Bubble_list = new bubble_list(Chatroom.this,Bubble);
+        Bubble_list = new bubble_list(Chatroom.this, Bubble);
         lv.setAdapter(Bubble_list);
-
+//        bubble_left.setOnLongClickListener(this);
+//        bubble_left_nodate.setOnLongClickListener(this);
+//        bubble_right.setOnLongClickListener(this);
+//        bubble_right_nodate.setOnLongClickListener(this);
     }
 
     //must be override by child class
     protected void set_gridAdapter() {
-        if(roomInfo.getType().equals("F")){
-            gridAdapter = new Grid_Adapter(this,friend_icons,friend_letters);
-        }else if(roomInfo.getType().equals("G")){
-            gridAdapter = new Grid_Adapter(this,group_icons,group_letters);
+        if (roomInfo.getType().equals("F")) {
+            gridAdapter = new Grid_Adapter(this, friend_icons, friend_letters);
+        } else if (roomInfo.getType().equals("G")) {
+            gridAdapter = new Grid_Adapter(this, group_icons, group_letters);
         }
     }
 
@@ -179,7 +188,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(roomInfo.getType().equals("G")) {
+                if (roomInfo.getType().equals("G")) {
                     switch (position) {
                         case 0:
                             toastMembes();
@@ -194,7 +203,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                             Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
                             break;
                     }
-                } else if(roomInfo.getType().equals("F")) {
+                } else if (roomInfo.getType().equals("F")) {
                     switch (position) {
                         case 0:
                             toastMembes();
@@ -213,11 +222,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_send :
+        switch (v.getId()) {
+            case R.id.btn_send:
                 if (!et.getText().toString().trim().equals("")) {
                     //發送聊天紀錄
-                    String text = et.getText().toString().replace("\t","    ");
+                    String text = et.getText().toString().replace("\t", "    ");
                     String msg = code + "\t" + id + "\t" + text;
                     Tabs.mqtt.SendMessage(msg);
                 }
@@ -231,29 +240,32 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
 
     }
+
+
+
     //callback function 實作
     @Override
     public void updateMsg(String sender, String text, String time) {
-        if(sender.equals(id)) {
-            Bubble.add(new bubble(1,0,text,sender,time));
-        }else {
-            Bubble.add(new bubble(0,0,text,sender,time,Tabs.mqtt.MapBitmap(sender)));
+        if (sender.equals(id)) {
+            Bubble.add(new bubble(1, 0, text, sender, time));
+        } else {
+            Bubble.add(new bubble(0, 0, text, sender, time, Tabs.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
-        Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
+        Bubble_list.notifyDataSetChanged(lv, Bubble_list.getCount());
         lv.setSelection(Bubble_list.getCount());
     }
 
     @Override
     public void updateImg(String sender, Bitmap image, String time) {
-        if(sender.equals(id)) {
-            Bubble.add(new bubble(1, 1, image, sender,time));
-        }else {
+        if (sender.equals(id)) {
+            Bubble.add(new bubble(1, 1, image, sender, time));
+        } else {
             Bubble.add(new bubble(0, 1, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
         }
-        Bubble_list.notifyDataSetChanged(lv,Bubble_list.getCount());
+        Bubble_list.notifyDataSetChanged(lv, Bubble_list.getCount());
         lv.setSelection(Bubble_list.getCount());
-        if(image != null) {
+        if (image != null) {
             findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
     }
@@ -272,8 +284,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void memberChange(String memberID) {
         roomInfo.getMemberID().clear();
-        StringTokenizer split_member = new StringTokenizer(memberID,"-");
-        while (split_member.hasMoreElements()){
+        StringTokenizer split_member = new StringTokenizer(memberID, "-");
+        while (split_member.hasMoreElements()) {
             String member = split_member.nextToken();
             roomInfo.addMemberID(member);
         }
@@ -288,7 +300,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -296,7 +308,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     protected void inviteFriend() {
         Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
-        invite_friend.putExtra("code",roomInfo.getCode());
+        invite_friend.putExtra("code", roomInfo.getCode());
         invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
         startActivity(invite_friend);
     }
@@ -326,11 +338,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
             new SendingImg().execute(uri);
         }
     }
+
 
     protected class SendingImg extends AsyncTask<Uri, Void, Void> {
         @Override
@@ -341,7 +354,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
 
         @Override
-        protected Void doInBackground(Uri...params) {
+        protected Void doInBackground(Uri... params) {
             Uri uri = params[0];
             Tabs.mqtt.SendImg(uri, code);
             return null;
@@ -363,17 +376,17 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         }
 
         @Override
-        protected Void doInBackground(String...params) {
+        protected Void doInBackground(String... params) {
             String record = params[0];
-            StringTokenizer stringTokenizer = new StringTokenizer(record,"\r");
+            StringTokenizer stringTokenizer = new StringTokenizer(record, "\r");
             int i = 0;
-            while(stringTokenizer.hasMoreElements()){
+            while (stringTokenizer.hasMoreElements()) {
                 String token = stringTokenizer.nextToken();
                 String[] token_splitLine = token.split("\t");
                 //if type == 'text'
-                if(token_splitLine[3].equals("text")) {
+                if (token_splitLine[3].equals("text")) {
                     updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
-                } else if(token_splitLine[3].equals("img")) {
+                } else if (token_splitLine[3].equals("img")) {
                     updateImg(token_splitLine[0], null, token_splitLine[2]);
                     Tabs.mqtt.RecordImgBack(token_splitLine[1], i);
                 }
@@ -390,7 +403,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    public void setAuth(int auth) {}
+    public void setAuth(int auth) {
+    }
 
 }
 

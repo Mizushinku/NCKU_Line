@@ -165,8 +165,10 @@
     <color name="appcolor5">#550000</color>
     <color name="list_section">#8D0111</color>
     <color name="bg">#C1E575</color>
-    <color name="bubble_receive">#f27c7f</color>
+    <color name="bubble_receive">#ffffff</color>
+    <color name="bubble_receive_press">#cfcfcf</color>
     <color name="bubble_send">#AA3939</color>
+    <color name="bubble_send_press">#7e2626</color>
     <color name="bubble_send_text">#ffffff</color>
     <color name="sliding_drawer">#fcbaba</color
 

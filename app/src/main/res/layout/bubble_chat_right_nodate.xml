@@ -8,12 +8,13 @@
     >
 
     <LinearLayout
-        android:id="@+id/right_side"
+        android:id="@+id/bubble_chat_right_nodate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@drawable/bubble_send"
         android:alpha="0.8"
+        android:longClickable="true"
 
         android:orientation="vertical"
         android:gravity="center_horizontal"
@@ -31,8 +32,10 @@
 
     <TextView
         android:id="@+id/msg_time"
-        android:layout_toLeftOf="@+id/right_side"
-        android:layout_alignBottom="@+id/right_side"
+        android:layout_toLeftOf="@+id/bubble_chat_right_nodate"
+        android:layout_alignBottom="@+id/bubble_chat_right_nodate"
+        android:clickable="true"
+        android:longClickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

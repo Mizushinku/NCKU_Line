@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,10 @@ public class bubble_list extends BaseAdapter {
     private Context context;
     private ArrayList<bubble> msgList;
     private static LayoutInflater inflater = null;
+    protected LinearLayout bubble_left;
+    protected LinearLayout bubble_left_nodate;
+    protected LinearLayout bubble_right;
+    protected LinearLayout bubble_right_nodate;
 
     public bubble_list(Context context, ArrayList<bubble> msgList) {
         this.context = context;
@@ -61,48 +67,100 @@ public class bubble_list extends BaseAdapter {
         int type = Bubble.getType();
         int data_t = Bubble.getData_t();
         if (type == 0) {
-            if(data_t == 0) {
+            if (data_t == 0) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
+                    bubble_left_nodate = rowView.findViewById(R.id.bubble_chat_left_nodate);
+//                    bubble_right = rowView.findViewById(R.id.bubble_chat_right);
+                    bubble_left_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                            switch (v.getId()) {
+//                                case R.id.bubble_chat_left:
+//                                    Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
+//                                    return true;
+//                                case R.id.bubble_chat_left_nodate:
+//                                    Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                                    return true;
+//                                case R.id.bubble_chat_right:
+//                                    Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                                    return true;
+//                                case R.id.bubble_chat_right_nodate:
+//                                    Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                                    return true;
+//                            }
+                            return true;
+                        }
+                    });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_left, null);
+                    bubble_left = rowView.findViewById(R.id.bubble_chat_left);
+                    bubble_left.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
                     date = (TextView) rowView.findViewById(R.id.date_left);
                     date.setText(Bubble.getDate());
                 }
-            }else if(data_t == 1) {
+            } else if (data_t == 1) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_left_nodate, null);
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_left, null);
                     date = (TextView) rowView.findViewById(R.id.date_left);
                     date.setText(Bubble.getDate());
+//                    bubble_left = lv.findViewById(R.id.bubble_chat_left);
+//                    bubble_left_nodate = lv.findViewById(R.id.bubble_chat_left_nodate);
+//                    bubble_right = lv.findViewById(R.id.bubble_chat_right);
+//                    bubble_right_nodate = lv.findViewById(R.id.bubble_chat_right_nodate);
                 }
             }
             name = (TextView) rowView.findViewById(R.id.userName);
-            if(Tabs.mqtt.MapAlias(Bubble.getName()) != null) {
+            if (Tabs.mqtt.MapAlias(Bubble.getName()) != null) {
                 name.setText(Tabs.mqtt.MapAlias(Bubble.getName()));
-            }else{
+            } else {
                 name.setText(Bubble.getName());
             }
             pic = (ImageView) rowView.findViewById(R.id.bubblePic);
             if (Bubble.getPic() == null) {
-                Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.friend);
+                Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.friend);
                 pic.setImageBitmap(bitmap);
             } else {
                 pic.setImageBitmap(Bubble.getPic());
             }
         } else {
-            if(data_t == 0) {
+            if (data_t == 0) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
+                    bubble_right_nodate = rowView.findViewById(R.id.bubble_chat_right_nodate);
+                    bubble_right_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Toast.makeText(v.getContext(), "bubble_chat_right_nodate", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_right, null);
+                    bubble_right = rowView.findViewById(R.id.bubble_chat_right);
+                    bubble_right.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Toast.makeText(v.getContext(), "bubble_chat_right", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
                     date = (TextView) rowView.findViewById(R.id.date_right);
                     date.setText(Bubble.getDate());
                 }
-            } else if(data_t == 1) {
+            } else if (data_t == 1) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_right_nodate, null);
+
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_right, null);
                     date = (TextView) rowView.findViewById(R.id.date_right);
@@ -113,10 +171,10 @@ public class bubble_list extends BaseAdapter {
 
         time = (TextView) rowView.findViewById(R.id.msg_time);
         time.setText(Bubble.getTime());
-        if(data_t == 0) {
+        if (data_t == 0) {
             TextView txt_msg = rowView.findViewById(R.id.txt_msg);
             txt_msg.setText(Bubble.getTxtMsg());
-        } else if(data_t == 1) {
+        } else if (data_t == 1) {
             ImageView imageView = rowView.findViewById(R.id.img_msg);
             imageView.setImageBitmap(Bubble.getImage());
         }
@@ -143,4 +201,22 @@ public class bubble_list extends BaseAdapter {
     }
 
 
+//    @Override
+//    public boolean onLongClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.bubble_chat_left:
+//                Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.bubble_chat_left_nodate:
+//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.bubble_chat_right:
+//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.bubble_chat_right_nodate:
+//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
+//                return true;
+//        }
+//        return true;
+//    }
 }
