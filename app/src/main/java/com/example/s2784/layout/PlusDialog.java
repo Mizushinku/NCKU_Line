@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -41,6 +42,14 @@ public class PlusDialog extends AppCompatDialogFragment {
                         String title = et_title.getText().toString();
                         String content = et_content.getText().toString();
                         plusDialogListener.applyTexts(title,content);
+                    }
+                })
+                .setNeutralButton("選擇檔案", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
+                        picker.setType("*/*");
+                        startActivity(picker);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
