@@ -31,6 +31,9 @@ import java.util.ArrayList;
 
 public class bubble_list extends BaseAdapter {
 
+    private static final int MSG_MYSELF = 0;
+    private static final int MSG_OTHERSELF = 1;
+
     private Context context;
     private ArrayList<bubble> msgList;
     private static LayoutInflater inflater = null;
@@ -85,7 +88,7 @@ public class bubble_list extends BaseAdapter {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position);
+                            initPopWindow(v,position,MSG_OTHERSELF);
                             return true;
                         }
                     });
@@ -96,7 +99,7 @@ public class bubble_list extends BaseAdapter {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position);
+                            initPopWindow(v,position,MSG_OTHERSELF);
                             return true;
                         }
                     });
@@ -138,7 +141,7 @@ public class bubble_list extends BaseAdapter {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_right_nodate", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position);
+                            initPopWindow(v,position,MSG_MYSELF);
                             return true;
                         }
                     });
@@ -149,7 +152,7 @@ public class bubble_list extends BaseAdapter {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_right", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position);
+                            initPopWindow(v,position,MSG_MYSELF);
                             return true;
                         }
                     });
@@ -199,7 +202,7 @@ public class bubble_list extends BaseAdapter {
         }
     }
 
-    private void initPopWindow(View v, final int position) {
+    private void initPopWindow(View v, final int position, int type) {
         View view = LayoutInflater.from(v.getContext()).inflate(R.layout.simple_popup, null, false);
         Button btn_copy = (Button) view.findViewById(R.id.copy);
         Button btn_foward = (Button) view.findViewById(R.id.foward);
@@ -254,6 +257,10 @@ public class bubble_list extends BaseAdapter {
                 popWindow.dismiss();
             }
         });
+
+        if(type == MSG_OTHERSELF){
+            btn_delete.setVisibility(View.INVISIBLE);
+        }
     }
 //    @Override
 //    public boolean onLongClick(View v) {
