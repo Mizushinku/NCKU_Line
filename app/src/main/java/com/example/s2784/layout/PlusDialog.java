@@ -10,12 +10,14 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class PlusDialog extends AppCompatDialogFragment {
 
     private EditText et_title;
     private EditText et_content;
     private PlusDialogListener plusDialogListener;
+    private static Toast toast;
 
     @Override
     public void onAttach(Context context) {
@@ -41,7 +43,16 @@ public class PlusDialog extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String title = et_title.getText().toString();
                         String content = et_content.getText().toString();
-                        plusDialogListener.applyTexts(title,content);
+
+                        if (title != null && !title.equals("") && content != null && !content.equals(""))
+                        {
+                            plusDialogListener.applyTexts(title, content);
+                        }
+                        else
+                        {
+                            Context context = getActivity().getApplicationContext();
+                            makeTextAndShow(context, "沒有主題或內容，請重新輸入", Toast.LENGTH_SHORT);
+                        }
                     }
                 })
                 .setNeutralButton("選擇檔案", new DialogInterface.OnClickListener() {
@@ -67,5 +78,20 @@ public class PlusDialog extends AppCompatDialogFragment {
 
     public interface PlusDialogListener{
         void applyTexts(String title, String content);
+    }
+
+    private static void makeTextAndShow(final Context context, final String text, final int duration)
+    {
+        if (toast == null)
+        {
+            //如果還沒有用過makeText方法，才使用
+            toast = android.widget.Toast.makeText(context, text, duration);
+        }
+        else
+        {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        toast.show();
     }
 }
