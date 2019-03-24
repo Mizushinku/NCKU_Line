@@ -34,4 +34,9 @@
 
 
     </style>
+    <style name="pop_anim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+    </style>
+
+
 </resources>

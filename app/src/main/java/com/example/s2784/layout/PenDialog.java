@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class PenDialog extends AppCompatDialogFragment {
 
     private EditText et_content;
     private PenDialogListener penDialogListener;
-    private static Toast toast;
 
     @Override
     public void onAttach(Context context) {
@@ -41,16 +39,7 @@ public class PenDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String content = et_content.getText().toString();
-
-                        if (content != null && !content.equals(""))
-                        {
-                            penDialogListener.applyTexts(content);
-                        }
-                        else
-                        {
-                            Context context = getActivity().getApplicationContext();
-                            makeTextAndShow(context, "沒有回覆訊息，請重新輸入", Toast.LENGTH_SHORT);
-                        }
+                        penDialogListener.applyTexts(content);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -66,20 +55,5 @@ public class PenDialog extends AppCompatDialogFragment {
 
     public interface PenDialogListener{
         void applyTexts(String content);
-    }
-
-    private static void makeTextAndShow(final Context context, final String text, final int duration)
-    {
-        if (toast == null)
-        {
-            //如果還沒有用過makeText方法，才使用
-            toast = android.widget.Toast.makeText(context, text, duration);
-        }
-        else
-        {
-            toast.setText(text);
-            toast.setDuration(duration);
-        }
-        toast.show();
     }
 }
