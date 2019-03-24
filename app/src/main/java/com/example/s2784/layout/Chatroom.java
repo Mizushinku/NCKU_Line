@@ -361,7 +361,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         @Override
         protected Void doInBackground(Uri... params) {
             Uri uri = params[0];
-            Tabs.mqtt.SendImg(uri, code);
+            Tabs.mqtt.SendImg(uri, code, R.integer.SEND_IMG_M1);
             return null;
         }
 

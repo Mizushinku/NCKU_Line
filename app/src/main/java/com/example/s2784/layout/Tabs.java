@@ -539,6 +539,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case REQUEST_CODE_AddFriend:
                 String addFriendID = data.getStringExtra("StudentID");
@@ -913,6 +914,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     LinkModule.getInstance().callUpdatePosterReply(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5]);
                                 }
                                 break;
+                            case "ChangeUserIcon":
+                                break;
 
                             default:
                                 if (idf[1].contains("FriendIcon")) {
@@ -1211,7 +1214,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void SendImg(Uri uri, String code) {
+        public void SendImg(Uri uri, String code, int whichTopic) {
             ContentResolver cr = context.getContentResolver();
             try {
                 final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -1230,7 +1233,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                String topic = "IDF/SendImg/" + user + "/" + code;
+
+                String topic = "";
+                if(whichTopic == R.integer.SEND_IMG_M1) {
+                    topic = "IDF/SendImg/" + user + "/" + code;
+                }else if(whichTopic == R.integer.SEND_IMG_M2) {
+                    topic = "IDF/ChangeUserIcon/" + user;
+                }
                 client.publish(topic, baos.toByteArray(), 2, false);
             } catch (FileNotFoundException e) {
                 Log.d("imgt", e.getMessage(), e);
@@ -1410,6 +1419,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             } catch (MqttException e) {
                 e.printStackTrace();
             }
+        }
+
+        public void changeUserIcon(Uri uri){
+            SendImg(uri, "", R.integer.SEND_IMG_M2);
         }
 
     }

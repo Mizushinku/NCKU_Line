@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tab4">
+    tools:context=".Tab4"
+    android:background="@drawable/bg5">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -12,4 +13,10 @@
         android:gravity="center"
         android:text=""
         android:textSize="30dp"/>
+
+    <ImageButton
+        android:id="@+id/btn_changeIcon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/personal_photo" />
 </FrameLayout>
