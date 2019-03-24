@@ -29,13 +29,13 @@ import java.util.ArrayList;
  * ... 2018/6/30
  */
 
-public class bubble_list extends BaseAdapter {
+public class BubbleAdapter extends BaseAdapter {
 
     private static final int MSG_MYSELF = 0;
     private static final int MSG_OTHERSELF = 1;
 
     private Context context;
-    private ArrayList<bubble> msgList;
+    private ArrayList<Bubble> msgList;
     private static LayoutInflater inflater = null;
     private  String copyText;
     protected LinearLayout bubble_left;
@@ -44,7 +44,8 @@ public class bubble_list extends BaseAdapter {
     protected LinearLayout bubble_right_nodate;
 
 
-    public bubble_list(Context context, ArrayList<bubble> msgList) {
+
+    public BubbleAdapter(Context context, ArrayList<Bubble> msgList) {
         this.context = context;
         this.msgList = msgList;
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,7 +71,7 @@ public class bubble_list extends BaseAdapter {
 
     @Override
     public View getView(final int position, View rowView, ViewGroup parent) {
-        final bubble Bubble = (bubble) getItem(position);
+        final Bubble Bubble = (com.example.s2784.layout.Bubble) getItem(position);
         final RoomInfo roomInfo;
         TextView name = null;
         TextView time = null;
@@ -253,8 +254,10 @@ public class bubble_list extends BaseAdapter {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "刪除", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "刪除 " + msgList.get(position).getFull_time() , Toast.LENGTH_SHORT).show();
                 popWindow.dismiss();
+                msgList.remove(position);
+                notifyDataSetChanged();
             }
         });
 

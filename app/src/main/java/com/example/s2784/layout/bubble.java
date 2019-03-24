@@ -10,13 +10,14 @@ import android.widget.ImageView;
  * sender 待補 ... 2018/6/30
  */
 
-public class bubble {
+public class Bubble {
     private String txtmsg;
     private String name;
-    private Bitmap pic;
-    private String time;
-    private String date;
-    private Bitmap image;
+    private Bitmap pic;         // sender icon
+    private String time;        // hour,min "XX:XX"
+    private String date;        // date "XXXX-XX-XX"
+    private Bitmap image;       // msg
+    private String full_time;   // full time information from DB
 
     //message from others or self, 0 = others, 1 = self
     private int type;
@@ -25,45 +26,49 @@ public class bubble {
     private int data_t;
 
 
-    public bubble() {}
+    public Bubble() {}
 
     //constructor for text message
-    public bubble(int type, int data_t, String txtmsg, String name, String time, Bitmap bitmap) {
+    public Bubble(int type, int data_t, String txtmsg, String name, String time, Bitmap bitmap) {
         this.txtmsg = txtmsg;
         this.data_t = data_t;
         this.type = type;
         this.name = name;
+        this.full_time = time;
         String[] tokens = time.split(" ");
         this.date = tokens[0];
         this.time = tokens[1].substring(0,5);
         this.pic = bitmap;
     }
-    public bubble(int type, int data_t, String txtmsg, String name, String time) {
+    public Bubble(int type, int data_t, String txtmsg, String name, String time) {
         this.txtmsg = txtmsg;
         this.data_t = data_t;
         this.type = type;
         this.name = name;
+        this.full_time = time;
         String[] tokens = time.split(" ");
         this.date = tokens[0];
         this.time = tokens[1].substring(0,5);
     }
 
     //constructor foe image message
-    public bubble(int type, int data_t, Bitmap image, String name, String time, Bitmap bitmap) {
+    public Bubble(int type, int data_t, Bitmap image, String name, String time, Bitmap bitmap) {
         this.image = image;
         this.data_t = data_t;
         this.type = type;
         this.name = name;
+        this.full_time = time;
         String[] tokens = time.split(" ");
         this.date = tokens[0];
         this.time = tokens[1].substring(0,5);
         this.pic = bitmap;
     }
-    public bubble(int type, int data_t, Bitmap image, String name, String time) {
+    public Bubble(int type, int data_t, Bitmap image, String name, String time) {
         this.image = image;
         this.data_t = data_t;
         this.type = type;
         this.name = name;
+        this.full_time = time;
         String[] tokens = time.split(" ");
         this.date = tokens[0];
         this.time = tokens[1].substring(0,5);
@@ -123,4 +128,9 @@ public class bubble {
     public int getData_t() {
         return data_t;
     }
+
+    public void setFull_time(String full_time) { this.full_time = full_time; }
+
+    public String getFull_time() { return full_time; }
+
 }

@@ -4,18 +4,14 @@ import android.annotation.TargetApi;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
@@ -23,9 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
 
@@ -43,8 +37,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected ImageButton btn;
     protected Button slide_btn;
     protected ListView lv;
-    protected ArrayList<bubble> Bubble = new ArrayList<>();
-    protected bubble_list Bubble_list;
+    protected ArrayList<Bubble> msgList = new ArrayList<>();
+    protected BubbleAdapter bubbleAdapter;
     protected EditText et;
     protected RoomInfo roomInfo;
     protected ArrayList<RoomInfo> friendlist;
@@ -147,7 +141,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         slidingDrawer.close();
         gridView = findViewById(R.id.grid_view);
 
-        // bubble manipulation
+        // Bubble manipulation
 
 
 
@@ -171,8 +165,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //已讀
         SQLiteManager.badgeClear(code);
 
-        Bubble_list = new bubble_list(Chatroom.this, Bubble);
-        lv.setAdapter(Bubble_list);
+        bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList);
+        lv.setAdapter(bubbleAdapter);
 //        bubble_left.setOnLongClickListener(this);
 //        bubble_left_nodate.setOnLongClickListener(this);
 //        bubble_right.setOnLongClickListener(this);
@@ -252,24 +246,24 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void updateMsg(String sender, String text, String time) {
         if (sender.equals(id)) {
-            Bubble.add(new bubble(1, 0, text, sender, time));
+            msgList.add(new Bubble(1, 0, text, sender, time));
         } else {
-            Bubble.add(new bubble(0, 0, text, sender, time, Tabs.mqtt.MapBitmap(sender)));
+            msgList.add(new Bubble(0, 0, text, sender, time, Tabs.mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
-        Bubble_list.notifyDataSetChanged(lv, Bubble_list.getCount());
-        lv.setSelection(Bubble_list.getCount());
+        bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        lv.setSelection(bubbleAdapter.getCount());
     }
 
     @Override
     public void updateImg(String sender, Bitmap image, String time) {
         if (sender.equals(id)) {
-            Bubble.add(new bubble(1, 1, image, sender, time));
+            msgList.add(new Bubble(1, 1, image, sender, time));
         } else {
-            Bubble.add(new bubble(0, 1, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
+            msgList.add(new Bubble(0, 1, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
         }
-        Bubble_list.notifyDataSetChanged(lv, Bubble_list.getCount());
-        lv.setSelection(Bubble_list.getCount());
+        bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        lv.setSelection(bubbleAdapter.getCount());
         if (image != null) {
             findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
@@ -277,8 +271,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void updateImg(Bitmap image, int pos) {
-        Bubble.get(pos).setImage(image);
-        //Bubble_list.notifyDataSetChanged(lv, pos);
+        msgList.get(pos).setImage(image);
+        //bubbleAdapter.notifyDataSetChanged(lv, pos);
     }
 
     @Override
@@ -299,8 +293,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void refreshListView() {
-        Bubble_list.notifyDataSetChanged();
-        lv.setSelection(Bubble_list.getCount());
+        bubbleAdapter.notifyDataSetChanged();
+        lv.setSelection(bubbleAdapter.getCount());
     }
 
     @Override
