@@ -35,10 +35,15 @@ public class LinkModule {
         void updatePosterReply(String code, String theme, String content, String type, String sender, String time);
     }
 
+    public interface RMSGListener{
+        void updateRMSG(String code, String rMSG, String rMSGDate);
+    }
+
     private static LinkModule mInstance;
     private MListener mListener;
     private PListener pListener;
     private RListener rListener;
+    private RMSGListener rmsgListener;
 
     private LinkModule() {}
 
@@ -56,6 +61,8 @@ public class LinkModule {
     public void setPListener(PListener testLis) { pListener = testLis; }
 
     public void setRListener(RListener testLis) { rListener = testLis; }
+
+    public void setRmsgListener(RMSGListener testLis) {rmsgListener = testLis; }
 //////////////////////////////////////////////////////
 
 //    public void call_what_you_want() {
@@ -124,6 +131,12 @@ public class LinkModule {
     public void callUpdatePosterReply(String code, String theme, String content, String type, String sender, String time){
         if(rListener != null){
             rListener.updatePosterReply(code, theme, content, type, sender, time);
+        }
+    }
+
+    public void callUpdateRMSG(String code, String rMSG, String rMSGDate){
+        if(rmsgListener != null){
+            rmsgListener.updateRMSG(code,rMSG,rMSGDate);
         }
     }
 }

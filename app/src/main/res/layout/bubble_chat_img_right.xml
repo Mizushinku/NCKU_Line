@@ -28,7 +28,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/right_side"
+        android:id="@+id/bubble_chat_img_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bubble_right_top"
@@ -49,8 +49,8 @@
 
     <TextView
         android:id="@+id/msg_time"
-        android:layout_toLeftOf="@+id/right_side"
-        android:layout_alignBottom="@+id/right_side"
+        android:layout_toLeftOf="@+id/bubble_chat_img_right"
+        android:layout_alignBottom="@+id/bubble_chat_img_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

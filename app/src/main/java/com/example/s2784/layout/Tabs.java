@@ -56,7 +56,7 @@ import java.util.StringTokenizer;
 import q.rorbin.badgeview.QBadgeView;
 
 
-public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener{
+public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener, FriendLongClickDialogFragment.FLCMListener, GroupLongClickDialogFragment.GLCMListener, LinkModule.RMSGListener{
 
     private ArrayList<RoomInfo> arrayList= new ArrayList<>(); /*for search view*/
 
@@ -315,7 +315,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
 
         Log.d("TAG", "Tabs : onCtrate()");
-
+        LinkModule.getInstance().setRmsgListener(this);
     }
 
     @Override
@@ -586,6 +586,38 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             case REQUEST_CODE_Search:
                 break;
         }
+    }
+
+    @Override
+    public void updateRMSG(String code, String rMSG, String rMSGDate) {
+        boolean flag = false;
+        for (int i = 0; i < testViewModel.getGroup().size(); i++) {
+            if (testViewModel.getGroup().get(i).getCode().equals(code)) {
+                testViewModel.getGroup().get(i).setrMsg(rMSG);
+                testViewModel.getGroup().get(i).setrMsgDate(rMSGDate);
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) {
+            for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                if (testViewModel.getFriend().get(i).getCode().equals(code)){
+                    testViewModel.getFriend().get(i).setrMsg(rMSG);
+                    testViewModel.getFriend().get(i).setrMsgDate(rMSGDate);
+                    break;
+                }
+            }
+        }
+        if(!flag) {
+            for (int i = 0; i < testViewModel.getCourse().size(); i++) {
+                if (testViewModel.getCourse().get(i).getCode().equals(code)) {
+                    testViewModel.getCourse().get(i).setrMsg(rMSG);
+                    testViewModel.getCourse().get(i).setrMsgDate(rMSGDate);
+                    break;
+                }
+            }
+        }
+        viewPager.getAdapter().notifyDataSetChanged();
     }
 
     private class MyBroadcastReceiver extends BroadcastReceiver{
@@ -1214,6 +1246,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public void DeleteMessage(String code, String time) {
+            String topic = "IDF/DeleteMessage/" + user;
+            String MSG = code + "\t" + time;
+            try {
+                client.publish(topic, MSG.getBytes(), 0, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
         public void SendImg(Uri uri, String code, int whichTopic) {
             ContentResolver cr = context.getContentResolver();
             try {
@@ -1574,5 +1616,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         viewPager.getAdapter().notifyDataSetChanged();
         qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
     }
+
 }
 

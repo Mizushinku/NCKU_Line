@@ -31,25 +31,31 @@ import java.util.ArrayList;
 
 public class BubbleAdapter extends BaseAdapter {
 
-    private static final int MSG_MYSELF = 0;
-    private static final int MSG_OTHERSELF = 1;
+    private static final int MSG_OTHERSELF = 0;
+    private static final int MSG_MYSELF = 1;
+    private static final int TYPE_TXT = 0;
+    private static final int TYPE_IMG = 1;
 
     private Context context;
     private ArrayList<Bubble> msgList;
+    private RoomInfo roomInfo;
     private static LayoutInflater inflater = null;
     private  String copyText;
-    protected LinearLayout bubble_left;
-    protected LinearLayout bubble_left_nodate;
-    protected LinearLayout bubble_right;
-    protected LinearLayout bubble_right_nodate;
+    protected LinearLayout bubble_txt_left;
+    protected LinearLayout bubble_txt_left_nodate;
+    protected LinearLayout bubble_txt_right;
+    protected LinearLayout bubble_txt_right_nodate;
+    protected LinearLayout bubble_img_left;
+    protected LinearLayout bubble_img_left_nodate;
+    protected LinearLayout bubble_img_right;
+    protected LinearLayout bubble_img_right_nodate;
 
 
-
-    public BubbleAdapter(Context context, ArrayList<Bubble> msgList) {
+    public BubbleAdapter(Context context, ArrayList<Bubble> msgList, RoomInfo roomInfo) {
         this.context = context;
         this.msgList = msgList;
+        this.roomInfo = roomInfo;
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -79,39 +85,55 @@ public class BubbleAdapter extends BaseAdapter {
         ImageView pic = null;
         int type = Bubble.getType();
         int data_t = Bubble.getData_t();
-        if (type == 0) {
-            if (data_t == 0) {
+        if (type == MSG_OTHERSELF) {
+            if (data_t == TYPE_TXT) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
-                    bubble_left_nodate = rowView.findViewById(R.id.bubble_chat_left_nodate);
+                    bubble_txt_left_nodate = rowView.findViewById(R.id.bubble_chat_left_nodate);
 //                    bubble_right = rowView.findViewById(R.id.bubble_chat_right);
-                    bubble_left_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                    bubble_txt_left_nodate.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position,MSG_OTHERSELF);
+                            initPopWindow(v,position);
                             return true;
                         }
                     });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_left, null);
-                    bubble_left = rowView.findViewById(R.id.bubble_chat_left);
-                    bubble_left.setOnLongClickListener(new View.OnLongClickListener() {
+                    bubble_txt_left = rowView.findViewById(R.id.bubble_chat_left);
+                    bubble_txt_left.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position,MSG_OTHERSELF);
+                            initPopWindow(v,position);
                             return true;
                         }
                     });
                     date = (TextView) rowView.findViewById(R.id.date_left);
                     date.setText(Bubble.getDate());
                 }
-            } else if (data_t == 1) {
+            } else if (data_t == TYPE_IMG) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_left_nodate, null);
+                    bubble_img_left_nodate = rowView.findViewById(R.id.bubble_chat_img_left_nodate);
+                    bubble_img_left_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            initPopWindow(v, position);
+                            return true;
+                        }
+                    });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_left, null);
+                    bubble_img_left = rowView.findViewById(R.id.bubble_chat_img_left);
+                    bubble_img_left.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            initPopWindow(v, position);
+                            return true;
+                        }
+                    });
                     date = (TextView) rowView.findViewById(R.id.date_left);
                     date.setText(Bubble.getDate());
 //                    bubble_left = lv.findViewById(R.id.bubble_chat_left);
@@ -134,38 +156,53 @@ public class BubbleAdapter extends BaseAdapter {
                 pic.setImageBitmap(Bubble.getPic());
             }
         } else {
-            if (data_t == 0) {
+            if (data_t == TYPE_TXT) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_right_nodate, null);
-                    bubble_right_nodate = rowView.findViewById(R.id.bubble_chat_right_nodate);
-                    bubble_right_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                    bubble_txt_right_nodate = rowView.findViewById(R.id.bubble_chat_right_nodate);
+                    bubble_txt_right_nodate.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_right_nodate", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position,MSG_MYSELF);
+                            initPopWindow(v,position);
                             return true;
                         }
                     });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_right, null);
-                    bubble_right = rowView.findViewById(R.id.bubble_chat_right);
-                    bubble_right.setOnLongClickListener(new View.OnLongClickListener() {
+                    bubble_txt_right = rowView.findViewById(R.id.bubble_chat_right);
+                    bubble_txt_right.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
 //                            Toast.makeText(v.getContext(), "bubble_chat_right", Toast.LENGTH_SHORT).show();
-                            initPopWindow(v,position,MSG_MYSELF);
+                            initPopWindow(v,position);
                             return true;
                         }
                     });
                     date = (TextView) rowView.findViewById(R.id.date_right);
                     date.setText(Bubble.getDate());
                 }
-            } else if (data_t == 1) {
+            } else if (data_t == TYPE_IMG) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_right_nodate, null);
-
+                    bubble_img_right_nodate = rowView.findViewById(R.id.bubble_chat_img_right_nodate);
+                    bubble_img_right_nodate.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            initPopWindow(v, position);
+                            return true;
+                        }
+                    });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_right, null);
+                    bubble_img_right = rowView.findViewById(R.id.bubble_chat_img_right);
+                    bubble_img_right.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            initPopWindow(v, position);
+                            return true;
+                        }
+                    });
                     date = (TextView) rowView.findViewById(R.id.date_right);
                     date.setText(Bubble.getDate());
                 }
@@ -174,10 +211,10 @@ public class BubbleAdapter extends BaseAdapter {
 
         time = (TextView) rowView.findViewById(R.id.msg_time);
         time.setText(Bubble.getTime());
-        if (data_t == 0) {
+        if (data_t == TYPE_TXT) {
             TextView txt_msg = rowView.findViewById(R.id.txt_msg);
             txt_msg.setText(Bubble.getTxtMsg());
-        } else if (data_t == 1) {
+        } else if (data_t == TYPE_IMG) {
             ImageView imageView = rowView.findViewById(R.id.img_msg);
             imageView.setImageBitmap(Bubble.getImage());
         }
@@ -203,7 +240,7 @@ public class BubbleAdapter extends BaseAdapter {
         }
     }
 
-    private void initPopWindow(View v, final int position, int type) {
+    private void initPopWindow(View v, final int position) {
         View view = LayoutInflater.from(v.getContext()).inflate(R.layout.simple_popup, null, false);
         Button btn_copy = (Button) view.findViewById(R.id.copy);
         Button btn_foward = (Button) view.findViewById(R.id.foward);
@@ -254,15 +291,30 @@ public class BubbleAdapter extends BaseAdapter {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "刪除 " + msgList.get(position).getFull_time() , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), "刪除 " + msgList.get(position).getFull_time() , Toast.LENGTH_SHORT).show();
                 popWindow.dismiss();
+                Tabs.mqtt.DeleteMessage(roomInfo.getCode(),msgList.get(position).getFull_time());
+                if(position == msgList.size() - 1){
+                    if(position - 1 >= 0){
+                        if(msgList.get(position-1).getData_t() == TYPE_IMG){
+                            LinkModule.getInstance().callUpdateRMSG(roomInfo.getCode(),"a new image",msgList.get(position-1).getFull_time());
+                        }else if(msgList.get(position-1).getData_t() == TYPE_TXT){
+                            LinkModule.getInstance().callUpdateRMSG(roomInfo.getCode(),msgList.get(position-1).getTxtMsg(),msgList.get(position-1).getFull_time());
+                        }
+                    }else if (position - 1 < 0){
+                        LinkModule.getInstance().callUpdateRMSG(roomInfo.getCode(),"No History","XXXX-XX-XX XX:XX");
+                    }
+                }
                 msgList.remove(position);
                 notifyDataSetChanged();
             }
         });
 
-        if(type == MSG_OTHERSELF){
+        if(msgList.get(position).getType() == MSG_OTHERSELF){
             btn_delete.setVisibility(View.INVISIBLE);
+        }
+        if(msgList.get(position).getData_t() == TYPE_IMG){
+            btn_copy.setVisibility(View.INVISIBLE);
         }
     }
 //    @Override

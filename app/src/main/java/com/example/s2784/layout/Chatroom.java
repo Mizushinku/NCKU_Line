@@ -165,7 +165,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //已讀
         SQLiteManager.badgeClear(code);
 
-        bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList);
+        bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
         lv.setAdapter(bubbleAdapter);
 //        bubble_left.setOnLongClickListener(this);
 //        bubble_left_nodate.setOnLongClickListener(this);
