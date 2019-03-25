@@ -78,7 +78,6 @@ public class BubbleAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View rowView, ViewGroup parent) {
         final Bubble Bubble = (com.example.s2784.layout.Bubble) getItem(position);
-        final RoomInfo roomInfo;
         TextView name = null;
         TextView time = null;
         TextView date = null;
