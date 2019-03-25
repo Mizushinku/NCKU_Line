@@ -139,6 +139,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         handle_btn = findViewById(R.id.handle_btn);
         slidingDrawer = findViewById(R.id.slide_drawer);
         slidingDrawer.close();
+
         gridView = findViewById(R.id.grid_view);
 
         // Bubble manipulation

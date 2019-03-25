@@ -22,7 +22,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/chat_toolbar"
@@ -65,8 +66,8 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="5dp"
             android:listSelector="@android:color/transparent"
-            android:paddingVertical="5dp"
             android:paddingLeft="5dp"
+            android:layout_marginBottom="5dp"
             android:scrollbars="vertical" />
 
         <com.example.s2784.layout.WrappingSlidingDrawer
@@ -148,7 +149,7 @@
                         android:id="@+id/btn_send"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-
+                        android:scaleType="fitCenter"
                         android:background="@drawable/send" />
                 </LinearLayout>
             </LinearLayout>

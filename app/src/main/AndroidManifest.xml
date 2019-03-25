@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.s2784.layout">
-    <!--//add permission-->
+    <!-- //add permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -18,8 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysHidden">
-
-
+        <activity android:name=".Calendar"></activity>
         <!-- Set custom default icon and color for FCM notification -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -75,9 +74,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".PicImageTest"></activity>
-        <activity android:name=".DiscussActivity"></activity>
-        <activity android:name=".ReplyActivity"></activity>
+        <activity android:name=".PicImageTest" />
+        <activity android:name=".DiscussActivity" />
+        <activity android:name=".ReplyActivity" />
     </application>
 
 </manifest>

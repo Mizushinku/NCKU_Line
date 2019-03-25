@@ -2,11 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:background="@drawable/popup_window_stytle"
+    android:padding="5dp"
+    >
     <Button
         android:id="@+id/copy"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:background="@drawable/popup_button_stytle"
         android:layout_weight="1"
         android:text="複製"
         android:textSize="25dp"
@@ -15,6 +19,8 @@
         android:id="@+id/foward"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:background="@drawable/popup_button_stytle"
+
         android:layout_weight="1"
         android:text="轉寄"
         android:textSize="25dp"
@@ -23,6 +29,7 @@
         android:id="@+id/delete"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:background="@drawable/popup_button_stytle"
         android:layout_weight="1"
         android:text="刪除"
         android:textSize="25dp"

@@ -86,6 +86,14 @@ public class Classroom extends Chatroom{
                         case 7:
                             break;
                         case 8:
+                            Intent calendar = new Intent(getApplicationContext(),Calendar.class);
+//                            discuss.putExtra("roomInfo", roomInfo);
+                            startActivity(calendar);
+
+//                            DatePickerFragment fragment = new DatePickerFragment();
+//                            fragment.show(getSupportFragmentManager(), "DatePickerFragment");
+//                            TimePickerFragment timePickerFragment = new TimePickerFragment();
+//                            timePickerFragment.show(getSupportFragmentManager(),"TimePickerFragment");
                             break;
                         case 9:
                             break;
