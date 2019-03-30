@@ -30,9 +30,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+u
     <!-- Some Strings -->
     <string name="change_icon_succeed">更改頭像成功</string>
+    <string name="change_user_name">更改暱稱</string>
+    
 
 
 </resources>

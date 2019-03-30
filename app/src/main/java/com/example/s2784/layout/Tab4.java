@@ -1,5 +1,7 @@
 package com.example.s2784.layout;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,6 +36,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
 
     private ImageButton btn_changeIcon;
+    private ImageButton btn_changeName;
 
     public Tab4() {
         // Required empty public constructor
@@ -63,6 +66,8 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
         btn_changeIcon = view.findViewById(R.id.btn_changeIcon);
         btn_changeIcon.setOnClickListener(this);
+        btn_changeName = view.findViewById(R.id.btn_changeName);
+        btn_changeName.setOnClickListener(this);
 
         return view;
     }
@@ -93,12 +98,10 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_changeIcon:
-                choosePic();
-                break;
-            default:
-                break;
+        if(v == btn_changeIcon) {
+            choosePic();
+        } else if(v == btn_changeName) {
+            changeName();
         }
     }
 
@@ -159,5 +162,12 @@ public class Tab4 extends Fragment implements View.OnClickListener {
             super.onPostExecute(v);
             //findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
+    }
+
+    @TargetApi(21)
+    private void changeName() {
+        new AlertDialog.Builder(getContext())
+                .setView(R.layout.dialog_change_name)
+                .show();
     }
 }
