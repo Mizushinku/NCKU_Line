@@ -947,6 +947,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 }
                                 break;
                             case "ChangeUserIcon":
+                                Bitmap CUI_img = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
+                                testViewModel.setUserIcon(CUI_img);
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                Toast.makeText(context, R.string.change_icon_succeed, Toast.LENGTH_SHORT).show();
                                 break;
 
                             default:
