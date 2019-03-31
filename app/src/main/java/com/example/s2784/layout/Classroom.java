@@ -2,11 +2,15 @@ package com.example.s2784.layout;
 
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 public class Classroom extends Chatroom{
 
@@ -108,4 +112,5 @@ public class Classroom extends Chatroom{
     private void changeAuth(int auth){
         this.auth  = auth;
     }
+
 }

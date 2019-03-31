@@ -3,6 +3,7 @@ package com.example.s2784.layout;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -146,7 +150,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
         private WeakReference<Tab4> tab4WeakReference;
 
-        public SendingImg(Tab4 tab4) {
+        private SendingImg(Tab4 tab4) {
             tab4WeakReference = new WeakReference<>(tab4);
         }
 
@@ -178,8 +182,29 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
     @TargetApi(21)
     private void changeName() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        final View view = inflater.inflate(R.layout.dialog_change_name, null);
+
         new AlertDialog.Builder(getContext())
-                .setView(R.layout.dialog_change_name)
+                .setView(view)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText et_newName = view.findViewById(R.id.et_newName);
+                        String newName = et_newName.getText().toString();
+                        if(newName.length() > 16 || newName.isEmpty()) {
+                            Toast.makeText(getContext(), R.string.confirm_name_format, Toast.LENGTH_LONG).show();
+                        } else {
+                            Tabs.mqtt.changeUserName(newName);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
                 .show();
     }
 }

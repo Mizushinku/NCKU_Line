@@ -20,9 +20,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -278,7 +280,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void fetchRecord(String record) {
-        new FetchRecord().execute(record);
+        new FetchRecord(this).execute(record);
     }
 
     @Override
@@ -340,39 +342,55 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            new SendingImg().execute(uri);
+            new SendingImg(this).execute(uri);
         }
     }
 
+    protected static class SendingImg extends AsyncTask<Uri, Void, Void> {
 
-    protected class SendingImg extends AsyncTask<Uri, Void, Void> {
+        private WeakReference<Chatroom> roomWeakReference;
+
+        private SendingImg(Chatroom chatroom) {
+            roomWeakReference = new WeakReference<>(chatroom);
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
-            findViewById(R.id.progressBar_img).bringToFront();
+            roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+            roomWeakReference.get().findViewById(R.id.progressBar_img).bringToFront();
         }
 
         @Override
         protected Void doInBackground(Uri... params) {
             Uri uri = params[0];
-            Tabs.mqtt.SendImg(uri, code, R.integer.SEND_IMG_M1);
+            Tabs.mqtt.SendImg(uri, roomWeakReference.get().code, R.integer.SEND_IMG_M1);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
+            if(roomWeakReference.get() == null) {
+                return;
+            }
             //findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
     }
 
-    protected class FetchRecord extends AsyncTask<String, Void, Void> {
+    protected static class FetchRecord extends AsyncTask<String, Void, Void> {
+
+        private WeakReference<Chatroom> roomWeakReference;
+
+        private FetchRecord(Chatroom chatroom) {
+            roomWeakReference = new WeakReference<>(chatroom);
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
-            findViewById(R.id.progressBar_img).bringToFront();
+            roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+            roomWeakReference.get().findViewById(R.id.progressBar_img).bringToFront();
         }
 
         @Override
@@ -385,9 +403,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 String[] token_splitLine = token.split("\t");
                 //if type == 'text'
                 if (token_splitLine[3].equals("text")) {
-                    updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
+                    roomWeakReference.get().updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
                 } else if (token_splitLine[3].equals("img")) {
-                    updateImg(token_splitLine[0], null, token_splitLine[2]);
+                    roomWeakReference.get().updateImg(token_splitLine[0], null, token_splitLine[2]);
                     Tabs.mqtt.RecordImgBack(token_splitLine[1], i);
                 }
                 ++i;
@@ -398,7 +416,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+            if(roomWeakReference.get() == null) {
+                return;
+            }
+            roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
     }
 

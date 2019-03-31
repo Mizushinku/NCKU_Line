@@ -953,6 +953,18 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 Toast.makeText(context, R.string.change_icon_succeed, Toast.LENGTH_SHORT).show();
                                 break;
 
+                            case "ChangeUserName":
+                                String CUN_MSG = new String(message.getPayload());
+                                if(CUN_MSG.split("\t")[0].equals("OK")) {
+                                    String newName = CUN_MSG.split("\t")[1];
+                                    testViewModel.setUserName(newName);
+                                    viewPager.getAdapter().notifyDataSetChanged();
+                                    Toast.makeText(context, R.string.change_name_succeed, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, R.string.change_name_fail, Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
@@ -1469,6 +1481,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public void changeUserIcon(Uri uri){
             SendImg(uri, "", R.integer.SEND_IMG_M2);
+        }
+
+        public void changeUserName(String newName) {
+            String topic = "IDF/ChangeUserName/" + user;
+            String MSG = newName;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
 
     }
