@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import java.lang.ref.WeakReference;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -135,12 +137,19 @@ public class Tab4 extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            new Tab4.SendingImg().execute(uri);
+            new Tab4.SendingImg(this).execute(uri);
         }
     }
 
 
-    protected class SendingImg extends AsyncTask<Uri, Void, Void> {
+    private static class SendingImg extends AsyncTask<Uri, Void, Void> {
+
+        private WeakReference<Tab4> tab4WeakReference;
+
+        public SendingImg(Tab4 tab4) {
+            tab4WeakReference = new WeakReference<>(tab4);
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -160,6 +169,9 @@ public class Tab4 extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
+            if(tab4WeakReference.get() == null) {
+                return;
+            }
             //findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
     }
