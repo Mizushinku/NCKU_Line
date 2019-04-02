@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +45,25 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
     private ImageButton btn_changeIcon;
     private ImageButton btn_changeName;
+    protected GridView gridView;
+    protected Tab4_Grid_Adapter gridAdapter;
+    private String tab4_letters[] = {
+            "頭貼更換", "更改名字","尚無功能","尚無功能",
+            "尚無功能","尚無功能","尚無功能","尚無功能",
+            "尚無功能","尚無功能","尚無功能","尚無功能",
+            "尚無功能","尚無功能","尚無功能","尚無功能",
+            "尚無功能","尚無功能","尚無功能","尚無功能",
+            "尚無功能","尚無功能","尚無功能","尚無功能",
+                                    };
+    private int tab4_icons[] = {
+            R.drawable.personal_photo, R.drawable.change_name,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
+
+    };
 
     public Tab4() {
         // Required empty public constructor
@@ -68,13 +89,38 @@ public class Tab4 extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_tab4, container, false);
+        View view = inflater.inflate(R.layout.fragment_tab4, container, false);
 
-        btn_changeIcon = view.findViewById(R.id.btn_changeIcon);
-        btn_changeIcon.setOnClickListener(this);
-        btn_changeName = view.findViewById(R.id.btn_changeName);
-        btn_changeName.setOnClickListener(this);
+//        btn_changeIcon = view.findViewById(R.id.btn_changeIcon);
+//        btn_changeIcon.setOnClickListener(this);
+//        btn_changeName = view.findViewById(R.id.btn_changeName);
+//        btn_changeName.setOnClickListener(this);
 
+        gridView = view.findViewById(R.id.tab4_grid_view);
+
+        // Bubble manipulation
+
+
+        gridAdapter = new Tab4_Grid_Adapter(view.getContext(), tab4_icons, tab4_letters);
+        gridView.setAdapter(gridAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        choosePic();
+                        break;
+                    case 1:
+                        changeName();
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        Toast.makeText(view.getContext(), "尚無功能", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
         return view;
     }
 
@@ -104,9 +150,9 @@ public class Tab4 extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v == btn_changeIcon) {
+        if (v == btn_changeIcon) {
             choosePic();
-        } else if(v == btn_changeName) {
+        } else if (v == btn_changeName) {
             changeName();
         }
     }
@@ -173,7 +219,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            if(tab4WeakReference.get() == null) {
+            if (tab4WeakReference.get() == null) {
                 return;
             }
             //findViewById(R.id.progressBar_img).setVisibility(View.GONE);
@@ -192,7 +238,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText et_newName = view.findViewById(R.id.et_newName);
                         String newName = et_newName.getText().toString();
-                        if(newName.length() > 16 || newName.isEmpty()) {
+                        if (newName.length() > 16 || newName.isEmpty()) {
                             Toast.makeText(getContext(), R.string.confirm_name_format, Toast.LENGTH_LONG).show();
                         } else {
                             Tabs.mqtt.changeUserName(newName);

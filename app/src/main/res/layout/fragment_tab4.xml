@@ -8,29 +8,13 @@
     tools:context=".Tab4">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageButton
-        android:id="@+id/btn_changeIcon"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/personal_photo" />
-
-    <ImageButton
-        android:id="@+id/btn_changeName"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/change_name" />
-
-    <TextView
+    <GridView
+        android:id="@+id/tab4_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text=""
-        android:textSize="30dp" />
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        >
 
+    </GridView>
 </LinearLayout>

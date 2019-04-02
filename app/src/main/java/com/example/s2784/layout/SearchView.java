@@ -8,11 +8,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.s2784.layout.databinding.ActivityMainBinding;
 import com.example.s2784.layout.databinding.ActivityTabsBinding;
@@ -21,11 +23,12 @@ import com.example.s2784.layout.databinding.SearchViewBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchView extends Activity {
+public class SearchView extends AppCompatActivity {
 
     private SearchViewBinding searchViewBinding;
     private ListAdapter adapter_ForSearch;
     private ListView listView_search;
+    protected android.support.v7.widget.Toolbar toolbar;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,12 @@ public class SearchView extends Activity {
         searchViewBinding.search.setIconified(false);
         searchViewBinding.search.clearFocus();
 
+        toolbar = findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         //click to chatroom
         listView_search = (ListView)findViewById(R.id.list_view);
         //listView_search.setAdapter(adapter);
