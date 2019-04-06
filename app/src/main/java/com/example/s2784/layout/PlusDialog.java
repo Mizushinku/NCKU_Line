@@ -84,6 +84,7 @@ public class PlusDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_plus,null);
+        dialogBuild.setCancelable(false);
         dialogBuild.setTitle("發佈新主題");
         dialogBuild.setView(view);
         dialogBuild.setPositiveButton("確定", new DialogInterface.OnClickListener() {

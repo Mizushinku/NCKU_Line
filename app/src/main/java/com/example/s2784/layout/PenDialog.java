@@ -71,6 +71,7 @@ public class PenDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_pen,null);
+        dialogBuild.setCancelable(false);
         dialogBuild.setTitle("回覆");
         dialogBuild.setView(view);
         dialogBuild.setPositiveButton("確定", new DialogInterface.OnClickListener() {

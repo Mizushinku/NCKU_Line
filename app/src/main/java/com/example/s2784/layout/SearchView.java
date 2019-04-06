@@ -58,11 +58,18 @@ public class SearchView extends AppCompatActivity {
         searchViewBinding.search.clearFocus();
 
         toolbar = findViewById(R.id.search_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+//        setSupportActionBar(toolbar);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        }
+        toolbar.setNavigationIcon(R.drawable.password);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                finish();
+            }
+        });
         //click to chatroom
         listView_search = (ListView)findViewById(R.id.list_view);
         //listView_search.setAdapter(adapter);
