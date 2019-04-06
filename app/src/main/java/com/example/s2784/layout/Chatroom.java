@@ -34,7 +34,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     private int group_icons[] = {R.drawable.group_member, R.drawable.invite_friend, R.drawable.pic};
     private String friend_letters[] = {"群組成員", "選擇圖片"};
     private int friend_icons[] = {R.drawable.group_member, R.drawable.pic};
-    private TestViewModel testViewModel;
 
     protected ImageButton btn;
     protected Button slide_btn;
@@ -44,6 +43,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected EditText et;
     protected RoomInfo roomInfo;
     protected ArrayList<RoomInfo> friendlist;
+    protected ArrayList<RoomInfo> roomlist;
     protected android.support.v7.widget.Toolbar toolbar;
     protected SlidingDrawer slidingDrawer;
     protected Button handle_btn;
@@ -58,7 +58,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected String memberID;
 
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
-
+    protected static final int REQUEST_CODE_FORWARD = 2;
 
     @Override
     protected void onPause() {
@@ -121,7 +121,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
         friendlist = getIntent().getParcelableArrayListExtra("friendlist");
-        testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
+        roomlist = getIntent().getParcelableArrayListExtra("roomlist");
         toolbar = findViewById(R.id.chat_toolbar);
         if (roomInfo.getType().equals("F")) {
             toolbar.setTitle(roomInfo.getRoomName());
@@ -340,9 +340,23 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            new SendingImg(this).execute(uri);
+        switch (resultCode){
+            case RESULT_OK:
+                Uri uri = data.getData();
+                new SendingImg(this).execute(uri);
+//                Toast.makeText(this,"BACK 1",Toast.LENGTH_LONG).show();
+                break;
+            case REQUEST_CODE_FORWARD:
+//                Toast.makeText(this,"BACK 2",Toast.LENGTH_LONG).show();
+                int index = data.getIntExtra("index",-1);
+                String code_member = data.getStringExtra("member");
+//                Toast.makeText(this,String.valueOf(index),Toast.LENGTH_LONG).show();
+                StringTokenizer stringTokenizer = new StringTokenizer(code_member,",");
+                while (stringTokenizer.hasMoreElements()){
+                    String code = stringTokenizer.nextToken();
+                    Toast.makeText(this,code,Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -425,6 +439,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void setAuth(int auth) {
+    }
+
+    public void forwardMSG(int index){
+         Intent forward = new Intent(Chatroom.this, ForwardActivity.class);
+         forward.putParcelableArrayListExtra("roomlist", roomlist);
+         forward.putExtra("index",index);
+         startActivityForResult(forward,REQUEST_CODE_FORWARD);
     }
 
 }

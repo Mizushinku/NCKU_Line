@@ -108,6 +108,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
                 chat.putExtra("id",testViewModel.getUserID());
                 chat.putExtra("roomInfo",testViewModel.getRoomInfo(code));
                 chat.putParcelableArrayListExtra("friendlist", testViewModel.getFriend());
+                chat.putParcelableArrayListExtra("roomlist", testViewModel.getRoomList());
 
                 startActivity(chat);
 

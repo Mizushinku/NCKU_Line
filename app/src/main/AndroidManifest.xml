@@ -77,6 +77,7 @@
         <activity android:name=".PicImageTest" />
         <activity android:name=".DiscussActivity" />
         <activity android:name=".ReplyActivity" />
+        <activity android:name=".ForwardActivity" />
     </application>
 
 </manifest>

@@ -18,6 +18,7 @@ public class ListViewAdapter extends BaseAdapter {
     private ArrayList<RoomInfo> friendList;
     private static LayoutInflater inflater = null;
     private ArrayList<String> groupMember = new ArrayList<String>();
+    private ArrayList<String> codeMember = new ArrayList<>();
 
     public ListViewAdapter(Context context, ArrayList<RoomInfo> friendList) {
         this.context = context;
@@ -59,8 +60,10 @@ public class ListViewAdapter extends BaseAdapter {
 
         if(Tabs.mqtt.MapAlias(roomInfo.getStudentID()) != null){
             viewHolder.checkedTextView.setText(Tabs.mqtt.MapAlias(roomInfo.getStudentID()));
-        }else {
+        }else if(!roomInfo.getStudentID().equals("")){
             viewHolder.checkedTextView.setText(roomInfo.getStudentID());
+        }else{
+            viewHolder.checkedTextView.setText(roomInfo.getRoomName());
         }
         viewHolder.checkedTextView.setChecked(roomInfo.getChecked());
         viewHolder.checkedTextView.setOnClickListener(new View.OnClickListener() {
@@ -69,10 +72,12 @@ public class ListViewAdapter extends BaseAdapter {
                 if(viewHolder.checkedTextView.isChecked()){
                     roomInfo.setChecked(false);
                     groupMember.remove(roomInfo.getStudentID());
+                    codeMember.remove(roomInfo.getCode());
                     notifyDataSetChanged();
                 }else {
                     roomInfo.setChecked(true);
                     groupMember.add(roomInfo.getStudentID());
+                    codeMember.add(roomInfo.getCode());
                     notifyDataSetChanged();
                 }
             }
@@ -83,6 +88,7 @@ public class ListViewAdapter extends BaseAdapter {
     public ArrayList<String> getGroupMember() {
         return groupMember;
     }
+    public ArrayList<String> getCodeMember() { return codeMember; }
 
     class ViewHolder{
         public ImageView imageView ;

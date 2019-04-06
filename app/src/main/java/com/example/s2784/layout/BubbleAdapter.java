@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,8 +45,9 @@ public class BubbleAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Bubble> msgList;
     private RoomInfo roomInfo;
+    private String copyText;
+
     private static LayoutInflater inflater = null;
-    private  String copyText;
     protected LinearLayout bubble_txt_left;
     protected LinearLayout bubble_txt_left_nodate;
     protected LinearLayout bubble_txt_right;
@@ -94,11 +96,9 @@ public class BubbleAdapter extends BaseAdapter {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {
                     rowView = inflater.inflate(R.layout.bubble_chat_left_nodate, null);
                     bubble_txt_left_nodate = rowView.findViewById(R.id.bubble_chat_left_nodate);
-//                    bubble_right = rowView.findViewById(R.id.bubble_chat_right);
                     bubble_txt_left_nodate.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-//                            Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
                             initPopWindow(v,position);
                             return true;
                         }
@@ -109,7 +109,6 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_txt_left.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-//                            Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
                             initPopWindow(v,position);
                             return true;
                         }
@@ -140,10 +139,6 @@ public class BubbleAdapter extends BaseAdapter {
                     });
                     date = (TextView) rowView.findViewById(R.id.date_left);
                     date.setText(Bubble.getDate());
-//                    bubble_left = lv.findViewById(R.id.bubble_chat_left);
-//                    bubble_left_nodate = lv.findViewById(R.id.bubble_chat_left_nodate);
-//                    bubble_right = lv.findViewById(R.id.bubble_chat_right);
-//                    bubble_right_nodate = lv.findViewById(R.id.bubble_chat_right_nodate);
                 }
             }
             name = (TextView) rowView.findViewById(R.id.userName);
@@ -167,7 +162,6 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_txt_right_nodate.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-//                            Toast.makeText(v.getContext(), "bubble_chat_right_nodate", Toast.LENGTH_SHORT).show();
                             initPopWindow(v,position);
                             return true;
                         }
@@ -178,7 +172,6 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_txt_right.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-//                            Toast.makeText(v.getContext(), "bubble_chat_right", Toast.LENGTH_SHORT).show();
                             initPopWindow(v,position);
                             return true;
                         }
@@ -277,7 +270,10 @@ public class BubbleAdapter extends BaseAdapter {
         btn_foward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "轉寄", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), "轉寄", Toast.LENGTH_SHORT).show();
+                if(context instanceof Chatroom){
+                    ((Chatroom) context).forwardMSG(position);
+                }
                 popWindow.dismiss();
             }
         });
