@@ -1,11 +1,16 @@
 package com.example.s2784.layout;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -269,17 +274,6 @@ public class BubbleAdapter extends BaseAdapter {
         popWindow.showAsDropDown(v, 50, 0);
 
         //设置popupWindow里的按钮的事件
-        btn_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "複製~", Toast.LENGTH_SHORT).show();
-                ClipboardManager cbm =(ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                copyText = msgList.get(position).getTxtMsg();
-                ClipData mClipData = ClipData.newPlainText("Label",copyText);
-                cbm.setPrimaryClip(mClipData);
-                popWindow.dismiss();
-            }
-        });
         btn_foward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,29 +303,45 @@ public class BubbleAdapter extends BaseAdapter {
             }
         });
 
+        if(msgList.get(position).getData_t() == TYPE_IMG){
+            btn_copy.setText("儲存");
+            btn_copy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                    saveImage(msgList.get(position).getImage());
+                }
+            });
+        }else if(msgList.get(position).getData_t() == TYPE_TXT){
+            btn_copy.setText("複製");
+            btn_copy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "複製~", Toast.LENGTH_SHORT).show();
+                    ClipboardManager cbm =(ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    copyText = msgList.get(position).getTxtMsg();
+                    ClipData mClipData = ClipData.newPlainText("Label",copyText);
+                    cbm.setPrimaryClip(mClipData);
+                    popWindow.dismiss();
+                }
+            });
+        }
+
         if(msgList.get(position).getType() == MSG_OTHERSELF){
             btn_delete.setVisibility(View.INVISIBLE);
         }
-        if(msgList.get(position).getData_t() == TYPE_IMG){
-            btn_copy.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void saveImage(Bitmap bitmap){
+        // check external storage permission
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(context,"需要存取儲存空間權限",Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions((Activity)context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+        }else {
+            SaveImageTask saveImageTask = new SaveImageTask(context);
+            saveImageTask.execute(bitmap);
         }
     }
-//    @Override
-//    public boolean onLongClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.bubble_chat_left:
-//                Toast.makeText(v.getContext(), "bubble_chat_left", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.bubble_chat_left_nodate:
-//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.bubble_chat_right:
-//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.bubble_chat_right_nodate:
-//                Toast.makeText(v.getContext(), "bubble_chat_left_nodate", Toast.LENGTH_SHORT).show();
-//                return true;
-//        }
-//        return true;
-//    }
+
 }
