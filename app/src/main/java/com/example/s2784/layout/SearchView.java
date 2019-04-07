@@ -63,7 +63,7 @@ public class SearchView extends AppCompatActivity {
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        }
-        toolbar.setNavigationIcon(R.drawable.password);
+        toolbar.setNavigationIcon(R.drawable.back_icon);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -122,8 +122,6 @@ public class SearchView extends AppCompatActivity {
                     //user scrolled down, first element is hidden
                 }
             }
-
         });
     }
-
 }
