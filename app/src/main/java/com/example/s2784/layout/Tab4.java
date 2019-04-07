@@ -266,12 +266,15 @@ public class Tab4 extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText et_newIntro = view.findViewById(R.id.et_newIntro);
                         String newIntro = et_newIntro.getText().toString();
+                        Tabs.mqtt.changeUserIntro(newIntro);
+                        /*
                         boolean result = SQLiteManager.setIntro(newIntro);
                         if(result) {
                             Toast.makeText(getContext(), R.string.change_intro_succeed, Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), R.string.change_intro_fail, Toast.LENGTH_SHORT).show();
                         }
+                        */
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

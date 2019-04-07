@@ -144,6 +144,11 @@ public class SQLiteManager {
         DB.execSQL(instruction);
     }
 
+    static public void deleteAllIntro() {
+        String sql = "DELETE FROM " + Intro_table_name;
+        DB.execSQL(sql);
+    }
+
     static public String getIntro() {
         String intro;
         Cursor c = DB.rawQuery("SELECT intro FROM " + Intro_table_name + " LIMIT 1", null);

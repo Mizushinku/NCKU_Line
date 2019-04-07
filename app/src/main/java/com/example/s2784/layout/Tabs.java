@@ -965,6 +965,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 }
                                 break;
 
+                            case "ChangeUserIntro":
+                                String CUI_MSG = new String(message.getPayload());
+                                if(CUI_MSG.split("\t")[0].equals("OK")) {
+                                    SQLiteManager.setIntro(CUI_MSG.split("\t")[1]);
+                                    Toast.makeText(context, R.string.change_intro_succeed, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, R.string.change_intro_fail, Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+
                             default:
                                 if (idf[1].contains("FriendIcon")) {
                                     if (idf[1].contains("Init")) {
@@ -1493,6 +1503,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public void changeUserIntro(String newIntro) {
+            String topic = "IDF/ChangeUserIntro/" + user;
+            String MSG = newIntro;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     ////////////////////////////////////////////////////////////////////////
     private void networkCheck(NetworkInfo mNetworkInfo){
@@ -1614,6 +1634,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     public void onClick(View v) {
                         SQLiteManager.deleteAllUser();
                         SQLiteManager.deleteAllBadge();
+                        SQLiteManager.deleteAllIntro();
                         Intent intent_Login = new Intent(Tabs.this, LogIn.class);
                         startActivity(intent_Login);
                         finish();
