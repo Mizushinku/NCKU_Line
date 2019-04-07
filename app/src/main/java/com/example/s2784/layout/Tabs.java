@@ -407,7 +407,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.build_group:
                     msg += "創建群組";
                     Intent intent_buildGroup = new Intent(Tabs.this, BuildGroup.class);
-                    intent_buildGroup.putParcelableArrayListExtra("friendlist", testViewModel.getListHash().get("好友"));
                     startActivityForResult(intent_buildGroup, REQUEST_CODE_BuildGroup);
                     break;
                 case R.id.add_friend:

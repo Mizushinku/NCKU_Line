@@ -42,8 +42,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected BubbleAdapter bubbleAdapter;
     protected EditText et;
     protected RoomInfo roomInfo;
-    protected ArrayList<RoomInfo> friendlist;
-    protected ArrayList<RoomInfo> roomlist;
     protected android.support.v7.widget.Toolbar toolbar;
     protected SlidingDrawer slidingDrawer;
     protected Button handle_btn;
@@ -120,8 +118,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         code = intent.getStringExtra("code");
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
-        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
-        roomlist = getIntent().getParcelableArrayListExtra("roomlist");
+
         toolbar = findViewById(R.id.chat_toolbar);
         if (roomInfo.getType().equals("F")) {
             toolbar.setTitle(roomInfo.getRoomName());
@@ -311,7 +308,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected void inviteFriend() {
         Intent invite_friend = new Intent(Chatroom.this, InviteFriend.class);
         invite_friend.putExtra("code", roomInfo.getCode());
-        invite_friend.putParcelableArrayListExtra("friendlist", friendlist);
         startActivity(invite_friend);
     }
 
@@ -443,7 +439,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     public void forwardMSG(int index){
          Intent forward = new Intent(Chatroom.this, ForwardActivity.class);
-         forward.putParcelableArrayListExtra("roomlist", roomlist);
          forward.putExtra("index",index);
          startActivityForResult(forward,REQUEST_CODE_FORWARD);
     }

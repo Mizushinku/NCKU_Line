@@ -53,17 +53,14 @@ public class TestViewModel extends ViewModel {
 
     public void addInCourse(RoomInfo roomInfo) { course.add(roomInfo); }
 
-    public ArrayList<RoomInfo> getGroup() {
-        return group;
-    }
+    public ArrayList<RoomInfo> getGroup() { uncheck(); return group; }
 
-    public ArrayList<RoomInfo> getFriend() {
-        return friend;
-    }
+    public ArrayList<RoomInfo> getFriend() { uncheck(); return friend; }
 
-    public ArrayList<RoomInfo> getCourse() { return course; }
+    public ArrayList<RoomInfo> getCourse() { uncheck(); return course; }
 
-    public ArrayList<RoomInfo> getRoomList() {  roomlist.clear();
+    public ArrayList<RoomInfo> getRoomList() {  uncheck();
+                                                roomlist.clear();
                                                 roomlist.addAll(friend);
                                                 roomlist.addAll(group);
                                                 roomlist.addAll(course);
@@ -107,5 +104,20 @@ public class TestViewModel extends ViewModel {
         course.clear();
         roomlist.clear();
         listHash.clear();
+    }
+
+    private void uncheck(){
+        for(int i=0;i<friend.size();i++){
+            RoomInfo roomInfo = friend.get(i);
+            roomInfo.setChecked(false);
+        }
+        for(int i=0;i<group.size();i++){
+            RoomInfo roomInfo = group.get(i);
+            roomInfo.setChecked(false);
+        }
+        for(int i=0;i<course.size();i++){
+            RoomInfo roomInfo = course.get(i);
+            roomInfo.setChecked(false);
+        }
     }
 }

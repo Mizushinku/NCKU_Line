@@ -23,7 +23,7 @@ public class InviteFriend extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friend);
         code = getIntent().getStringExtra("code");
-        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
+        friendlist = Tabs.testViewModel.getFriend();
         btn_invite_friend = findViewById(R.id.btn_InviteFriend);
         listView = findViewById(R.id.inviteFriend_friendList);
         listViewAdapter = new ListViewAdapter(this,friendlist);

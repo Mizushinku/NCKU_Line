@@ -25,7 +25,7 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forward);
-        roomlist = getIntent().getParcelableArrayListExtra("roomlist");
+        roomlist = Tabs.testViewModel.getRoomList();
         index = getIntent().getIntExtra("index",-1);
         forward_button = findViewById(R.id.forward_btn);
         listView = findViewById(R.id.forward_roomlist);

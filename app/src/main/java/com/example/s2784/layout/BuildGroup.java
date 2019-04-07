@@ -34,6 +34,8 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
     private Button btn_CreateGroup;
 
     private TextView groupName;
+    private ListView listView;
+    private ArrayList<RoomInfo> friendlist;
 
     private ListViewAdapter listViewAdapter;
     @TargetApi(Build.VERSION_CODES.M)
@@ -54,10 +56,8 @@ public class BuildGroup extends AppCompatActivity implements View.OnClickListene
             getWindow().setStatusBarColor(getColor(R.color.ncku_red));
         }
         //Change status color
-        ListView listView;
-        ArrayList<RoomInfo> friendlist;
+        friendlist = Tabs.testViewModel.getFriend();
 
-        friendlist = getIntent().getParcelableArrayListExtra("friendlist");
         etGroupName = findViewById(R.id.etGroupName);
         btn_CreateGroup = findViewById(R.id.btn_CreateGroup);
         listView = findViewById(R.id.buildGroup_friendList);
