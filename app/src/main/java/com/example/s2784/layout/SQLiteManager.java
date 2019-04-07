@@ -13,6 +13,7 @@ public class SQLiteManager {
     static private String DBNAME = "CHENG_LINE";
     static private String Badge_table_name = "BADGE";
     static private String Login_table_name = "LOGIN";
+    static private String Intro_table_name = "INTRO";
     static private Context ctx;
 
     static public void setContext(Context context){ ctx = context; }
@@ -32,12 +33,18 @@ public class SQLiteManager {
         DB.execSQL(instruction);
     }
 
+    static public void createTableForIntro(){
+        String sql = "CREATE TABLE IF NOT EXISTS " + Intro_table_name + "(intro VARCHAR(36))";
+        DB.execSQL(sql);
+    }
+
     static public void queryForBadge(String code){
         Cursor c = DB.rawQuery("SELECT " + "*" + " FROM " + Badge_table_name + " WHERE " + "Room = " + "'" + code + "'", null);
         if(c.getCount() == 0){
             insertFirst(code);
         }
         badgePlus(code);
+        c.close();
     }
 
     static public int querySingleRoomBadge(String code){
@@ -46,22 +53,29 @@ public class SQLiteManager {
         if(c.moveToFirst()){
             num = c.getInt(0);
         }
+        c.close();
         return num;
     }
 
     static public boolean queryForLogin(){
+        boolean result;
         Cursor c = DB.rawQuery("SELECT id FROM " + Login_table_name,null);
         if(c.getCount() == 0){
-            return false;
+            result =  false;
         }else {
-            return true;
+            result =  true;
         }
+        c.close();
+        return result;
     }
 
     static public String getUserID(){
+        String userID;
         Cursor c = DB.rawQuery("SELECT id FROM " + Login_table_name + " LIMIT 1",null);
         c.moveToFirst();
-        return c.getString(0);
+        userID  = c.getString(0);
+        c.close();
+        return userID;
     }
 
     static public void addUser(String id){
@@ -102,6 +116,7 @@ public class SQLiteManager {
             }
         }
         ShortcutBadger.applyCount(ctx,num);
+        c.close();
     }
 
     static public int getTotalUnread(){
@@ -114,6 +129,7 @@ public class SQLiteManager {
                 c.moveToNext();
             }
         }
+        c.close();
         return num;
     }
 
@@ -126,5 +142,32 @@ public class SQLiteManager {
     static public void deleteAllUser(){
         String instruction = "DELETE FROM " + Login_table_name;
         DB.execSQL(instruction);
+    }
+
+    static public String getIntro() {
+        String intro;
+        Cursor c = DB.rawQuery("SELECT intro FROM " + Intro_table_name + " LIMIT 1", null);
+        if(c.getCount() == 0) {
+            intro = ctx.getString(R.string.default_intro);
+            ContentValues cv = new ContentValues(1);
+            cv.put("intro", intro);
+            DB.insert(Intro_table_name, null, cv);
+        } else {
+            c.moveToFirst();
+            intro = c.getString(0);
+        }
+        c.close();
+        return intro;
+    }
+
+    static public boolean setIntro(String newIntro) {
+        ContentValues cv = new ContentValues(1);
+        cv.put("intro", newIntro);
+        int result = DB.update(Intro_table_name, cv, null, null);
+        if(result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

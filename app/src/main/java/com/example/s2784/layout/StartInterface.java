@@ -19,6 +19,7 @@ public class StartInterface extends AppCompatActivity {
         SQLiteManager.DBinit();
         SQLiteManager.createTableForBadge();
         SQLiteManager.createTableForLogin();
+        SQLiteManager.createTableForIntro();
         //Change status color
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

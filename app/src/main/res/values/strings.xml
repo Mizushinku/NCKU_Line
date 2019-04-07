@@ -40,6 +40,10 @@ u
     <string name="change_name_fail">更改名字失敗</string>
     <string name="ok">確認</string>
     <string name="cancel">取消</string>
+    <string name="default_intro">brief introduction of myself</string>
+    <string name="new_intro">新狀態(36字元內)</string>
+    <string name="change_intro_succeed">更改狀態成功</string>
+    <string name="change_intro_fail">更改狀態失敗</string>
     
 
 

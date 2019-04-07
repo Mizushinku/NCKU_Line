@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
     private CircleImageView userIcon_tab1;
     private TextView userName_tab1;
+    private TextView userIntro;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     public static List<String> listDataHeader;
@@ -77,8 +79,10 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
         userIcon_tab1 = (CircleImageView) view.findViewById(R.id.userIcon_tab1);
         userName_tab1 = (TextView) view.findViewById(R.id.userName_tab1);
+        userIntro = view.findViewById(R.id.intro);
 
         userName_tab1.setText(testViewModel.getUserName());
+        userIntro.setText(SQLiteManager.getIntro());
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);

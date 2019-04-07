@@ -48,7 +48,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
     protected GridView gridView;
     protected Tab4_Grid_Adapter gridAdapter;
     private String tab4_letters[] = {
-            "頭貼更換", "更改名字","尚無功能","尚無功能",
+            "頭貼更換", "更改名字","變更狀態","尚無功能",
             "尚無功能","尚無功能","尚無功能","尚無功能",
             "尚無功能","尚無功能","尚無功能","尚無功能",
             "尚無功能","尚無功能","尚無功能","尚無功能",
@@ -56,7 +56,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
             "尚無功能","尚無功能","尚無功能","尚無功能",
                                     };
     private int tab4_icons[] = {
-            R.drawable.personal_photo, R.drawable.change_name,R.drawable.news_inactive,R.drawable.news_inactive,
+            R.drawable.personal_photo, R.drawable.change_name,R.drawable.change_intro,R.drawable.news_inactive,
             R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
             R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
             R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,R.drawable.news_inactive,
@@ -114,6 +114,9 @@ public class Tab4 extends Fragment implements View.OnClickListener {
                         changeName();
                         break;
                     case 2:
+                        changeIntro();
+                        break;
+                    case 3:
                         break;
                     default:
                         Toast.makeText(view.getContext(), "尚無功能", Toast.LENGTH_LONG).show();
@@ -226,7 +229,6 @@ public class Tab4 extends Fragment implements View.OnClickListener {
         }
     }
 
-    @TargetApi(21)
     private void changeName() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         final View view = inflater.inflate(R.layout.dialog_change_name, null);
@@ -242,6 +244,33 @@ public class Tab4 extends Fragment implements View.OnClickListener {
                             Toast.makeText(getContext(), R.string.confirm_name_format, Toast.LENGTH_LONG).show();
                         } else {
                             Tabs.mqtt.changeUserName(newName);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    private void changeIntro() {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_change_intro, null);
+
+        new AlertDialog.Builder(getContext())
+                .setView(view)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText et_newIntro = view.findViewById(R.id.et_newIntro);
+                        String newIntro = et_newIntro.getText().toString();
+                        boolean result = SQLiteManager.setIntro(newIntro);
+                        if(result) {
+                            Toast.makeText(getContext(), R.string.change_intro_succeed, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), R.string.change_intro_fail, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

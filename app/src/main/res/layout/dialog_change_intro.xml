@@ -5,22 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/change_name_logo" />
-
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:hintTextAppearance="@style/MyTextInputLayout"
         app:counterEnabled="true"
-        app:counterMaxLength="16"
+        app:counterMaxLength="36"
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/et_newName"
+            android:id="@+id/et_newIntro"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -28,10 +23,12 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="15dp"
-            android:maxLength="16"
-            android:maxLines="1"
-            android:hint="@string/new_name" />
+            android:maxLength="36"
+            android:maxLines="3"
+            android:hint="@string/new_intro" />
 
     </android.support.design.widget.TextInputLayout>
+
+
 
 </LinearLayout>

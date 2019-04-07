@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:gravity="top"
                     android:textColor="@color/darkgrey"
-                    android:text="brief introduction of myself"
+                    android:text=""
                     android:textSize="14dp"
                     android:textStyle="bold" />
             </LinearLayout>
