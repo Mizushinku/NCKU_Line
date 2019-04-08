@@ -85,6 +85,18 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         userIntro.setText(SQLiteManager.getIntro());
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
+        userIcon_tab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent StudentData = new Intent(getActivity(), StudentData.class);
+                StudentData.putExtra("name",testViewModel.getUserName());
+                StudentData.putExtra("ID",testViewModel.getUserID());
+                StudentData.putExtra("MeOrNot","1"); //It's me
+                //StudentData.putExtra("image",testViewModel.getUserIcon());
+
+                startActivity(StudentData);
+            }
+        });
         listView = (ExpandableListView)view.findViewById(R.id.lvExp);
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);

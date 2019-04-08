@@ -1,10 +1,13 @@
 package com.example.s2784.layout;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +33,19 @@ public class StudentData extends AppCompatActivity {
     private TextView txv_studentID;
     private TextView txv_name;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_data);
+        //Change status color
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        } else {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
 
         Log.d("Create","StudentData");
 
@@ -44,9 +56,19 @@ public class StudentData extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String ID = intent.getStringExtra("ID");
-        byte[] img = intent.getByteArrayExtra("image");
-        Bitmap b = BitmapFactory.decodeByteArray(img,0,img.length);
-        img_proPic.setImageBitmap(b);
+        //byte[] img = intent.getByteArrayExtra("image");
+        //Bitmap b = BitmapFactory.decodeByteArray(img,0,img.length);
+        //img_proPic.setImageBitmap(b);
+        String MeOrNot = intent.getStringExtra("MeOrNot");
+        if(MeOrNot.equals("1")) //myself
+        {
+            img_proPic.setImageBitmap(Tabs.testViewModel.getUserIcon());
+        }
+        else if(MeOrNot.equals("0")) //my friend
+        {
+            img_proPic.setImageBitmap(Tabs.mqtt.MapBitmap(ID));
+        }
+
         txv_studentID.setText(ID);
         txv_name.setText(name);
 

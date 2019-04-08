@@ -1150,7 +1150,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 Intent studentData = new Intent(Tabs.this, StudentData.class);
                 studentData.putExtra("name", roomInfo.getFriendName());
                 studentData.putExtra("ID", roomInfo.getStudentID());
-                studentData.putExtra("image", roomInfo.getIcon_data());
+                //studentData.putExtra("image", roomInfo.getIcon_data());
+                studentData.putExtra("MeOrNot", "0"); //friend
                 startActivity(studentData);
             } else if(tachiba.equals("2")) {
                 AddFriendNotification(roomInfo.getRoomName());

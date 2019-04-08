@@ -30,11 +30,10 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userIcon_tab1"
                     android:layout_width="match_parent"
-                    app:civ_border_color="@color/darkgoldenrod"
-                    app:civ_border_width="1dp"
                     android:layout_height="match_parent"
                     android:padding="5dp"
-                    />
+                    app:civ_border_color="@color/darkgoldenrod"
+                    app:civ_border_width="1dp" />
             </LinearLayout>
 
             <LinearLayout

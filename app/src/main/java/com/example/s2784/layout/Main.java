@@ -680,7 +680,8 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
             Intent studentData = new Intent(Main.this, StudentData.class);
             studentData.putExtra("name", roomInfo.getFriendName());
             studentData.putExtra("ID", roomInfo.getStudentID());
-            studentData.putExtra("image", roomInfo.getIcon_data());
+            //studentData.putExtra("image", roomInfo.getIcon_data());
+            studentData.putExtra("MeOrNot", 0); //It's my friend
             startActivity(studentData);
         }
 
