@@ -63,7 +63,7 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
         spannableString.setSpan(imageSpan_clock, 4 + name.length(), 5 + name.length(), 0);
         viewHolder.status.setText(spannableString);
         viewHolder.content.setText(replyData.getContent());
-
+        viewHolder.name.setText(name);
         if (replyData.getName().equals(Tabs.userID)) {
             viewHolder.itemView.setOnCreateContextMenuListener(viewHolder);
         }
@@ -75,13 +75,13 @@ public class ReplyDataAdapter extends RecyclerView.Adapter<ReplyDataAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
-        TextView content,status;
+        TextView content,status,name;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             content = itemView.findViewById(R.id.reply_card_content);
             status = itemView.findViewById(R.id.reply_card_status);
-
+            name = itemView.findViewById(R.id.reply_id);
 //            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
 

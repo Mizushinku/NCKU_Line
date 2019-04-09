@@ -26,8 +26,9 @@
             android:id="@+id/discuss_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingHorizontal="10dp"
+            android:background="@color/common_google_signin_btn_text_dark_disabled"
+            >
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
@@ -42,6 +43,7 @@
         android:src="@drawable/plus_white"
         app:fabCustomSize="60dp"
         app:fabSize="auto"
+        android:backgroundTint="@color/ncku_red_pressed"
         app:maxImageSize="32dp">
     </android.support.design.widget.FloatingActionButton>
 

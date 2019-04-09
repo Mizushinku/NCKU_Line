@@ -3,6 +3,8 @@ package com.example.s2784.layout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CardData implements Parcelable {
 
     private String title;

@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHolder> {
 
     private Context context;
     private List<CardData> dataList;
     private RoomInfo roomInfo;
+
 
     public CardDataAdapter(Context context, List<CardData> data, RoomInfo roomInfo) {
         this.context = context;
@@ -62,6 +65,7 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
         date = date.concat("日");
         viewHolder.time.setText(date);
 
+        viewHolder.poster_icon.setImageResource(R.drawable.man);
         viewHolder.reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +90,7 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView title, name, content, time;
         ImageView reply;
+        private CircleImageView poster_icon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +99,7 @@ public class CardDataAdapter extends RecyclerView.Adapter<CardDataAdapter.ViewHo
             content = itemView.findViewById(R.id.card_content);
             time = itemView.findViewById(R.id.card_time);
             reply = itemView.findViewById(R.id.card_reply);
+            poster_icon = itemView.findViewById(R.id.discuss_poster_icon);
 
 //            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
