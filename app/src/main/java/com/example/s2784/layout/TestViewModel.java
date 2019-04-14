@@ -29,7 +29,7 @@ public class TestViewModel extends ViewModel {
 
     public String getUserName() { return userName; }
 
-    public void setUserName(String userName) { this.userName = userName; }
+    public void setUserName(String userName) { this.userName = userName; FCM_MessageService.setCurUser(userName);}
 
     public Bitmap getUserIcon() { return userIcon; }
 

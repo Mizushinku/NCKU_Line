@@ -18,6 +18,7 @@ import java.util.Map;
 public class FCM_MessageService extends FirebaseMessagingService {
 
     private static String visibleRoomCode = "";
+    private static String curUser = "";
 
     @Override
     public void onNewToken(String token) {
@@ -34,7 +35,7 @@ public class FCM_MessageService extends FirebaseMessagingService {
             String msgText = data.get("msgText");
             String code = data.get("code");
 
-            if(!code.equals(visibleRoomCode)) {
+            if(!code.equals(visibleRoomCode) && !msgTitle.equals(curUser)) {
                 sendNotification(msgTitle, msgText);
                 SQLiteManager.setContext(getApplicationContext());
                 SQLiteManager.DBinit();
@@ -76,4 +77,7 @@ public class FCM_MessageService extends FirebaseMessagingService {
         FCM_MessageService.visibleRoomCode = visibleRoomCode;
     }
 
+    public static void setCurUser(String curUser) {
+        FCM_MessageService.curUser = curUser;
+    }
 }
