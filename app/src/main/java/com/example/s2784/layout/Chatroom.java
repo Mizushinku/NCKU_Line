@@ -347,11 +347,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 int index = data.getIntExtra("index",-1);
                 String code_member = data.getStringExtra("member");
 //                Toast.makeText(this,String.valueOf(index),Toast.LENGTH_LONG).show();
-                StringTokenizer stringTokenizer = new StringTokenizer(code_member,",");
-                while (stringTokenizer.hasMoreElements()){
-                    String code = stringTokenizer.nextToken();
-                    Toast.makeText(this,code,Toast.LENGTH_SHORT).show();
-                }
+//                StringTokenizer stringTokenizer = new StringTokenizer(code_member,",");
+//                while (stringTokenizer.hasMoreElements()){
+//                    String code = stringTokenizer.nextToken();
+//                    Toast.makeText(this,code,Toast.LENGTH_SHORT).show();
+//                }
+                Tabs.mqtt.forwardTXT(code_member, msgList.get(index).getTxtMsg());
                 break;
         }
     }

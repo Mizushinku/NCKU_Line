@@ -1513,6 +1513,25 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public void forwardTXT(String codes, String MSG) {
+            String topic = "IDF/ForwardTXT/" + user + "/" + codes;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void forwardIMG(String codes, Bitmap bitmap){
+            String topic = "IDF/ForwardIMG/" + user + "/" + codes;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+            try {
+                client.publish(topic, baos.toByteArray(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
     }
     ////////////////////////////////////////////////////////////////////////
     private void networkCheck(NetworkInfo mNetworkInfo){
