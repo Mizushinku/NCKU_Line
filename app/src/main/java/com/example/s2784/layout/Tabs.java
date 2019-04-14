@@ -646,6 +646,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private String processingCode = "";
         private ArrayList<RoomInfo> roomInfoList; // 暫存用 並非更新至正確資料 正確版本存在Main底下的friend,group
         private HashMap<String, Bitmap> friendInfoMap;
+        private HashMap<String, String> friendIntroMap;
         private HashMap<String, String> aliasMap;
 
         private Mqtt_Client(Context context, String user) {
@@ -653,6 +654,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             this.user = user;
             roomInfoList = new ArrayList<>();
             friendInfoMap = new HashMap<>();
+            friendIntroMap = new HashMap<>();
             aliasMap = new HashMap<>();
         }
 
@@ -723,12 +725,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                         for (int i = 0; i < roomInfo.getMemberID().size(); i++) {
                                             if (!roomInfo.getMemberID().get(i).equals(userID)) {
                                                 roomInfo.setStudentID(roomInfo.getMemberID().get(i));
+                                                roomInfo.setIntro(init_info[6]);
                                                 aliasMap.put(roomInfo.getStudentID(),roomInfo.getRoomName());
+                                                friendIntroMap.put(roomInfo.getStudentID(), init_info[6]);
                                                 break;
                                             }
                                         }
                                     }else{
                                         roomInfo.setStudentID("");
+                                        roomInfo.setIntro("");
                                     }
                                     roomInfo.setType(init_info[3]);
                                     roomInfo.setrMsg(init_info[4]);
@@ -1412,6 +1417,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public Bitmap MapBitmap(String id) {
             return friendInfoMap.get(id);
         }
+
+        public String MapIntro(String id) { return friendIntroMap.get(id); }
 
         public String MapAlias(String id){ return aliasMap.get(id); }
 

@@ -18,6 +18,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         private Context context;
         private static List<String> listDataHeader;
         private static HashMap<String,ArrayList<RoomInfo>> listHashMap;
+        private static LayoutInflater inflater = null;
 //        private Handler handler = new Handler(){
 //            @Override
 //            public void handleMessage(Message msg) {
@@ -31,6 +32,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
+        this.inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -86,14 +88,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int i, int j, boolean b, View view, ViewGroup viewGroup) {
         final RoomInfo roomInfo = (RoomInfo) getChild(i, j);
 
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if(roomInfo.getType().equals("F")) {
+            view = inflater.inflate(R.layout.tab1_list_item_with_intro, null);
+
+            TextView txtlistChild = (TextView) view.findViewById(R.id.listItemName);
+            txtlistChild.setText(roomInfo.getRoomName());
+            TextView txtlistChileIntro = view.findViewById(R.id.listItemIntro);
+            txtlistChileIntro.setText(roomInfo.getIntro());
+            ImageView imageChild = (ImageView) view.findViewById(R.id.listImage);
+            imageChild.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
+
+        } else {
             view = inflater.inflate(R.layout.tab1_list_item, null);
+
+            TextView txtlistChild = (TextView) view.findViewById(R.id.listItem);
+            txtlistChild.setText(roomInfo.getRoomName());
+            ImageView imageChild = (ImageView) view.findViewById(R.id.listImage);
+            imageChild.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
         }
-        TextView txtlistChild = (TextView) view.findViewById(R.id.listItem);
-        txtlistChild.setText(roomInfo.getRoomName());
-        ImageView imageChild = (ImageView) view.findViewById(R.id.listImage);
-        imageChild.setImageBitmap(BitmapFactory.decodeByteArray(roomInfo.getIcon_data(),0,roomInfo.getIcon_data().length));
+
         return view;
 
     }

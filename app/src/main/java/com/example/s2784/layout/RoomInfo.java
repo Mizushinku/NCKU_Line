@@ -23,6 +23,7 @@ public class RoomInfo implements Parcelable, Comparable {
     private String type;
     private String rMsg;
     private String rMsgDate;
+    private String intro;
     private byte[] icon_data;
     private ArrayList<String> memberID = new ArrayList<>();
     private int unReadNum;
@@ -128,6 +129,14 @@ public class RoomInfo implements Parcelable, Comparable {
     public int getUnReadNum() { return unReadNum; }
 
     public void setUnReadNum(int unReadNum) { this.unReadNum = unReadNum; }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
 
     @Override
     public int describeContents() {
