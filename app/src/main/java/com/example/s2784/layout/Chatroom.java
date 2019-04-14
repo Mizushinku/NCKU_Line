@@ -340,19 +340,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             case RESULT_OK:
                 Uri uri = data.getData();
                 new SendingImg(this).execute(uri);
-//                Toast.makeText(this,"BACK 1",Toast.LENGTH_LONG).show();
                 break;
             case REQUEST_CODE_FORWARD:
-//                Toast.makeText(this,"BACK 2",Toast.LENGTH_LONG).show();
                 int index = data.getIntExtra("index",-1);
                 String code_member = data.getStringExtra("member");
-//                Toast.makeText(this,String.valueOf(index),Toast.LENGTH_LONG).show();
-//                StringTokenizer stringTokenizer = new StringTokenizer(code_member,",");
-//                while (stringTokenizer.hasMoreElements()){
-//                    String code = stringTokenizer.nextToken();
-//                    Toast.makeText(this,code,Toast.LENGTH_SHORT).show();
-//                }
-                Tabs.mqtt.forwardTXT(code_member, msgList.get(index).getTxtMsg());
+                if(msgList.get(index).getData_t() == 0) { // text
+                    Tabs.mqtt.forwardTXT(code_member, msgList.get(index).getTxtMsg());
+                }else {
+                    new ForwardIMG(this).execute(msgList.get(index).getImage(), code_member);
+                }
                 break;
         }
     }
@@ -421,6 +417,39 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 }
                 ++i;
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            if(roomWeakReference.get() == null) {
+                return;
+            }
+            roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+        }
+    }
+
+    protected static class ForwardIMG extends AsyncTask<Object, Void, Void> {
+
+        private WeakReference<Chatroom> roomWeakReference;
+
+        private ForwardIMG(Chatroom chatroom) {
+            roomWeakReference = new WeakReference<>(chatroom);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+            roomWeakReference.get().findViewById(R.id.progressBar_img).bringToFront();
+        }
+
+        @Override
+        protected Void doInBackground(Object... params) {
+            Bitmap bitmap = (Bitmap) params[0];
+            String codes = (String) params[1];
+            Tabs.mqtt.forwardIMG(codes,bitmap);
             return null;
         }
 
