@@ -32,6 +32,7 @@ public class StudentData extends AppCompatActivity {
     private ImageView img_proPic;
     private TextView txv_studentID;
     private TextView txv_name;
+    private TextView txv_Intro;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -52,6 +53,7 @@ public class StudentData extends AppCompatActivity {
         img_proPic = findViewById(R.id.proPic);
         txv_studentID = findViewById(R.id.studentID);
         txv_name = findViewById(R.id.name);
+        txv_Intro = findViewById(R.id.Intro);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
@@ -63,15 +65,16 @@ public class StudentData extends AppCompatActivity {
         if(MeOrNot.equals("1")) //myself
         {
             img_proPic.setImageBitmap(Tabs.testViewModel.getUserIcon());
+            txv_Intro.setText(SQLiteManager.getIntro());
         }
         else if(MeOrNot.equals("0")) //my friend
         {
             img_proPic.setImageBitmap(Tabs.mqtt.MapBitmap(ID));
+            txv_Intro.setText(Tabs.mqtt.MapIntro(ID));
         }
 
         txv_studentID.setText(ID);
         txv_name.setText(name);
-
     }
 
 

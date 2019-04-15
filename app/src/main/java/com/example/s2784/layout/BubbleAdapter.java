@@ -154,6 +154,21 @@ public class BubbleAdapter extends BaseAdapter {
             } else {
                 pic.setImageBitmap(Bubble.getPic());
             }
+            pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent StudentData = new Intent(context, StudentData.class);
+                    if (Tabs.mqtt.MapAlias(Bubble.getName()) != null) {
+                        StudentData.putExtra("name",Tabs.mqtt.MapAlias(Bubble.getName()));
+                    } else {
+                        StudentData.putExtra("name",Bubble.getName());
+                    }
+                    StudentData.putExtra("ID",Bubble.getName());
+                    StudentData.putExtra("MeOrNot","0"); //my friend
+
+                    context.startActivity(StudentData);
+                }
+            });
         } else {
             if (data_t == TYPE_TXT) {
                 if (position > 0 && msgList.get(position).getDate().equals(msgList.get(position - 1).getDate())) {

@@ -36,14 +36,23 @@
         android:text="TextView"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/Intro"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textSize="18sp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:layout_weight="0"
-        android:onClick="onClick"
         android:background="@drawable/nomal_button_stytle"
-        android:textColor="@color/white"
+        android:onClick="onClick"
         android:text="確認"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 </LinearLayout>
