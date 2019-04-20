@@ -80,18 +80,21 @@ public class TestViewModel extends ViewModel {
         for(int i=0;i<friend.size();i++){
             roomInfo = friend.get(i);
             if(code.equals(roomInfo.getCode())){
+                friend.get(i).setUnReadNum(0);
                 return roomInfo;
             }
         }
         for (int i=0;i<group.size();i++) {
             roomInfo = group.get(i);
             if(code.equals(roomInfo.getCode())){
+                group.get(i).setUnReadNum(0);
                 return roomInfo;
             }
         }
         for (int i=0;i<course.size();i++) {
             roomInfo = course.get(i);
             if(code.equals(roomInfo.getCode())){
+                course.get(i).setUnReadNum(0);
                 return roomInfo;
             }
         }

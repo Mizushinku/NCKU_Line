@@ -80,25 +80,32 @@ public class Tab2 extends Fragment {
                 RoomInfo roomInfo = (RoomInfo) testViewModel.getRoomList().get(position);
                 String code = roomInfo.getCode();
 
-                for(int i=0;i<testViewModel.getFriend().size();i++){
-                    if(code.equals(testViewModel.getFriend().get(i).getCode())){
-                        testViewModel.getFriend().get(i).setUnReadNum(0);
-                        break;
-                    }
-                }
-                for(int i =0;i<testViewModel.getGroup().size();i++){
-                    if(code.equals(testViewModel.getGroup().get(i).getCode())){
-                        testViewModel.getGroup().get(i).setUnReadNum(0);
-                        break;
-                    }
-                }
+                /*
+                String thisRoomType = roomInfo.getType();
 
-                for(int i =0;i<testViewModel.getCourse().size();i++){
-                    if(code.equals(testViewModel.getCourse().get(i).getCode())){
-                        testViewModel.getCourse().get(i).setUnReadNum(0);
-                        break;
+                if(thisRoomType.equals("F")) {
+                    for (int i = 0; i < testViewModel.getFriend().size(); i++) {
+                        if (code.equals(testViewModel.getFriend().get(i).getCode())) {
+                            testViewModel.getFriend().get(i).setUnReadNum(0);
+                            break;
+                        }
+                    }
+                } else if(thisRoomType.equals("G")) {
+                    for (int i = 0; i < testViewModel.getGroup().size(); i++) {
+                        if (code.equals(testViewModel.getGroup().get(i).getCode())) {
+                            testViewModel.getGroup().get(i).setUnReadNum(0);
+                            break;
+                        }
+                    }
+                } else if(thisRoomType.equals("C")) {
+                    for (int i = 0; i < testViewModel.getCourse().size(); i++) {
+                        if (code.equals(testViewModel.getCourse().get(i).getCode())) {
+                            testViewModel.getCourse().get(i).setUnReadNum(0);
+                            break;
+                        }
                     }
                 }
+                */
 
                 Intent chat = null;
                 if(!roomInfo.getType().equals("C")) {

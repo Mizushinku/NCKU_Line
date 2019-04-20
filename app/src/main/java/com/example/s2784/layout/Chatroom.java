@@ -119,6 +119,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
 
+        if(roomInfo == null) {
+            roomInfo = Tabs.testViewModel.getRoomInfo(code);
+        }
+
         toolbar = findViewById(R.id.chat_toolbar);
         if (roomInfo.getType().equals("F")) {
             toolbar.setTitle(roomInfo.getRoomName());

@@ -2,6 +2,10 @@ package com.example.s2784.layout;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -34,9 +38,11 @@ public class FCM_MessageService extends FirebaseMessagingService {
             String msgTitle = data.get("msgTitle");
             String msgText = data.get("msgText");
             String code = data.get("code");
+            String userID = data.get("userID");
+            String roomType = data.get("roomType");
 
             if(!code.equals(visibleRoomCode) && !msgTitle.equals(curUser)) {
-                sendNotification(msgTitle, msgText);
+                sendNotification(msgTitle, msgText, code, userID, roomType);
                 SQLiteManager.setContext(getApplicationContext());
                 SQLiteManager.DBinit();
                 SQLiteManager.queryForBadge(code);
@@ -49,7 +55,39 @@ public class FCM_MessageService extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String title, String text) {
+    private void sendNotification(String title, String text, String code, String userID, String roomType) {
+
+        Log.d("fcm", "userID = " + userID + ";\t" + "roomType = " + roomType + ";");
+
+        Intent resultIntent = null;
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        switch (roomType) {
+            case "F":
+            case "G":
+                resultIntent = new Intent(this, Chatroom.class);
+                stackBuilder.addParentStack(Chatroom.class);
+                Log.d("fcm", "in case F or G");
+                break;
+
+            case "C":
+                resultIntent = new Intent(this, Classroom.class);
+                stackBuilder.addParentStack(Classroom.class);
+                Log.d("fcm", "in case C");
+                break;
+
+            default:
+                resultIntent =new Intent(this, Tabs.class);
+                stackBuilder.addParentStack(Tabs.class);
+                Log.d("fcm", "in case default");
+                break;
+        }
+        resultIntent.putExtra("code", code);
+        resultIntent.putExtra("id",userID);
+
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -59,7 +97,8 @@ public class FCM_MessageService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(text)
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri);
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(resultPendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
