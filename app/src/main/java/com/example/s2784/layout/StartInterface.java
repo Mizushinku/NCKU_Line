@@ -35,6 +35,8 @@ public class StartInterface extends AppCompatActivity {
                 public void run() {
                     String user = SQLiteManager.getUserID();
                     Intent mainIntent = new Intent(StartInterface.this, Tabs.class);
+                    mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mainIntent.putExtra("userID",user);
                     StartInterface.this.startActivity(mainIntent);
                     StartInterface.this.finish();

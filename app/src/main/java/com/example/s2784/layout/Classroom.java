@@ -38,6 +38,11 @@ public class Classroom extends Chatroom{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void startCreate() {
+        super.startCreate();
         Tabs.mqtt.getAuth(code);
     }
 

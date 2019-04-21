@@ -57,10 +57,10 @@ public class FCM_MessageService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String text, String code, String userID, String roomType) {
 
-        Log.d("fcm", "userID = " + userID + ";\t" + "roomType = " + roomType + ";");
-
-        Intent resultIntent = null;
+        Intent resultIntent = new Intent(this, Tabs.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Tabs.class);
+        /*
         switch (roomType) {
             case "F":
             case "G":
@@ -81,8 +81,12 @@ public class FCM_MessageService extends FirebaseMessagingService {
                 Log.d("fcm", "in case default");
                 break;
         }
+        */
         resultIntent.putExtra("code", code);
         resultIntent.putExtra("id",userID);
+        resultIntent.putExtra("roomType", roomType);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =

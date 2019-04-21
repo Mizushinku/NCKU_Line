@@ -22,6 +22,7 @@ public class LinkModule {
         void memberChange(String memberID);
         void refreshListView();
         void setAuth(int auth);
+        void startCreate();
         //void what_you_want();
     }
 
@@ -107,6 +108,12 @@ public class LinkModule {
     public void callSetAuth(int auth) {
         if(mListener != null) {
             mListener.setAuth(auth);
+        }
+    }
+
+    public void callStartCreat() {
+        if(mListener != null) {
+            mListener.startCreate();
         }
     }
 

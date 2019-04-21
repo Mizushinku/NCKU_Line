@@ -99,6 +99,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
 
+        Intent intent = getIntent();
+        code = intent.getStringExtra("code");
+        id = intent.getStringExtra("id");
+        roomInfo = intent.getParcelableExtra("roomInfo");
+        //設定正在執行的chat room
+        Tabs.mqtt.setProcessingCode(code);
+
         getWindow().setBackgroundDrawableResource(R.drawable.bg5);
         Log.d("TAG", "Create");
 
@@ -112,24 +119,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         } else {
             getWindow().setStatusBarColor(getColor(R.color.ncku_red));
         }
+
+
         //Change status color
-
-        Intent intent = getIntent();
-        code = intent.getStringExtra("code");
-        id = intent.getStringExtra("id");
-        roomInfo = intent.getParcelableExtra("roomInfo");
-
-        if(roomInfo == null) {
-            roomInfo = Tabs.testViewModel.getRoomInfo(code);
-        }
-
         toolbar = findViewById(R.id.chat_toolbar);
-        if (roomInfo.getType().equals("F")) {
-            toolbar.setTitle(roomInfo.getRoomName());
-        } else {
-            toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
-        }
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setTitle("__No Name__");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -145,32 +140,21 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         gridView = findViewById(R.id.grid_view);
 
-        // Bubble manipulation
 
-
-
-
-
-        set_gridAdapter(); //must be override by child class
-        gridView.setAdapter(gridAdapter);
-        set_gridview_onItemClickListener(); //must be override by child class
 
         btn.setOnClickListener(this);
         slide_btn.setOnClickListener(this);
         //設定該class為callback function 實作方
         LinkModule.getInstance().setListener(this);
 
-        //設定正在執行的chat room
-        Tabs.mqtt.setProcessingCode(code);
-
-        //拿到聊天紀錄
-        Tabs.mqtt.GetRecord(code);
-
         //已讀
         SQLiteManager.badgeClear(code);
 
-        bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
-        lv.setAdapter(bubbleAdapter);
+        if(Tabs.mqtt.isConnected()) {
+            startCreate();
+        }
+
+
 //        bubble_left.setOnLongClickListener(this);
 //        bubble_left_nodate.setOnLongClickListener(this);
 //        bubble_right.setOnLongClickListener(this);
@@ -244,6 +228,30 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    @Override
+    public void startCreate() {
+        if(roomInfo == null) {
+            roomInfo = Tabs.testViewModel.getRoomInfo(code);
+        }
+        if (roomInfo.getType().equals("F")) {
+            toolbar.setTitle(roomInfo.getRoomName());
+        } else {
+            toolbar.setTitle(roomInfo.getRoomName() + "(" + roomInfo.getMemberID().size() + ")");
+        }
+
+        Log.d("TAG", "in startCreat : roomName = " + roomInfo.getRoomName());
+
+        set_gridAdapter(); //must be override by child class
+        gridView.setAdapter(gridAdapter);
+        set_gridview_onItemClickListener(); //must be override by child class
+
+
+        //拿到聊天紀錄
+        Tabs.mqtt.GetRecord(code);
+
+        bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
+        lv.setAdapter(bubbleAdapter);
+    }
 
 
     //callback function 實作

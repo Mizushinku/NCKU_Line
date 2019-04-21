@@ -119,6 +119,29 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         Intent intentFromUpload = getIntent();
         userID = intentFromUpload.getStringExtra("userID");
+
+        //if userID != null  =>  intent from the StartInterface
+        //if userID == null  =>  intent from a notification
+        if(userID == null) {
+            userID = intentFromUpload.getStringExtra("id");
+            String code_from_noti = intentFromUpload.getStringExtra("code");
+            String roomType = intentFromUpload.getStringExtra("roomType");
+            Intent chat = null;
+            switch (roomType) {
+                case "F":
+                case "G":
+                    chat = new Intent(this, Chatroom.class);
+                    break;
+
+                case "C":
+                    chat = new Intent(this, Classroom.class);
+                    break;
+            }
+            chat.putExtra("code", code_from_noti);
+            chat.putExtra("id", userID);
+            startActivity(chat);
+        }
+
         testViewModel.setUserID(userID);
         mqtt = new Mqtt_Client(this.getApplicationContext(), userID);
 
@@ -245,74 +268,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
             }
         });
-//        /*for search view*/
-//
-//        //adapter_ForSearch = new ListAdapter(arrayList,this,Tab1.listDataHeader,testViewModel.getListHash());
-//        //adapter= new ListAdapter(arrayList);
-//        activityTabsBinding.listView.setAdapter(adapter_ForSearch);
-//
-//        activityTabsBinding.search.setActivated(true);
-//        activityTabsBinding.search.setQueryHint("Type your keyword here");
-//        activityTabsBinding.search.onActionViewExpanded();
-//        activityTabsBinding.search.setIconified(false);
-//        activityTabsBinding.search.clearFocus();
-//        //click to chatroom
-//        listView_search = (ListView)findViewById(R.id.list_view);
-//        //listView_search.setAdapter(adapter);
-//        listView_search.setOnItemClickListener(new ListView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                RoomInfo roomInfo = (RoomInfo) adapter_ForSearch.getChild(position);
-//                String code = roomInfo.getCode();
-//                Intent chat = new Intent(Tabs.this,Chatroom.class);
-//                chat.putExtra("code", code);
-//                chat.putExtra("id",userID);
-//                startActivity(chat);
-//            }
-//        });
-//        //click to chatroom
-//
-//        activityTabsBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//
-//                adapter_ForSearch.getFilter().filter(newText);
-//
-//                return false;
-//            }
-//        });
-//
-//        listView_search.setOnScrollListener(new ListView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                switch (scrollState) {
-//                    case SCROLL_STATE_IDLE:
-//                        //scroll was stopped, let's show search bar again
-//                        break;
-//                    case SCROLL_STATE_TOUCH_SCROLL:
-//                        //user is scrolling, let's hide search bar
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                if (firstVisibleItem > 0) {
-//                    //user scrolled down, first element is hidden
-//                }
-//            }
-//
-//        });
-//
-//
-//        /*for search view*/
-
 
         Log.d("TAG", "Tabs : onCtrate()");
         LinkModule.getInstance().setRmsgListener(this);
@@ -367,6 +322,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         }
 
         Log.d("TAG", "Tabs : onDestroy()");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("TAG", "Tabs : onNewIntent");
     }
 
     public void onFragmentInteraction(Uri uri) {
@@ -1036,6 +996,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public boolean isConnected() {
+            if(client == null) {
+                return false;
+            }
+            return client.isConnected();
+        }
+
 
         private void mqttSub() {
             try {
@@ -1094,6 +1061,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 arrayList.add(roomInfo);
                 testViewModel.putListHash("課程", testViewModel.getCourse());
                 viewPager.getAdapter().notifyDataSetChanged();
+            }
+
+            if(roomInfo.getCode().equals(processingCode)) {
+                String s = String.format("in Init/Re : roomName = %s", roomInfo.getRoomName());
+                Log.d("TAG", s);
+                LinkModule.getInstance().callStartCreat();
             }
         }
 
