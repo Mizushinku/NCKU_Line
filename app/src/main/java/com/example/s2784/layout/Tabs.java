@@ -1,5 +1,6 @@
 package com.example.s2784.layout;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,6 +13,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -19,8 +21,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -83,7 +88,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     public static String userID;
     public static Mqtt_Client mqtt;
-
+    public static SipData sipData;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -269,8 +274,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         });
 
-        Log.d("TAG", "Tabs : onCtrate()");
+        Log.d("TAG", "Tabs : onCreate()");
         LinkModule.getInstance().setRmsgListener(this);
+        sipData = new SipData(this);
+        check_SIP_permission();
     }
 
     @Override
@@ -1664,5 +1671,33 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
     }
 
+    private void check_SIP_permission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.USE_SIP ,Manifest.permission.RECORD_AUDIO},0);
+        }else{
+            init_SIP();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 0 :
+                if(grantResults.length > 0){
+                    boolean use_sip_permit = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean record_audio_permit = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if(use_sip_permit && record_audio_permit){
+                        init_SIP();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void init_SIP(){
+//        Toast.makeText(this,"INIT",Toast.LENGTH_LONG).show();
+    }
 }
 
