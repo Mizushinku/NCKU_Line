@@ -257,6 +257,8 @@ public class BubbleAdapter extends BaseAdapter {
         Button btn_copy = (Button) view.findViewById(R.id.copy);
         Button btn_foward = (Button) view.findViewById(R.id.foward);
         Button btn_delete = (Button) view.findViewById(R.id.delete);
+        Button btn_zoomin = (Button) view.findViewById(R.id.zoomin);
+
         //1.构造一个PopupWindow，参数依次是加载的View，宽高
         final PopupWindow popWindow = new PopupWindow(view,
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -336,6 +338,7 @@ public class BubbleAdapter extends BaseAdapter {
                     popWindow.dismiss();
                 }
             });
+            btn_zoomin.setVisibility(View.INVISIBLE);
         }
 
         if(msgList.get(position).getType() == MSG_OTHERSELF){
