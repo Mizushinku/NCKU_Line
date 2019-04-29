@@ -33,7 +33,8 @@ public class SearchView extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
         ArrayList<RoomInfo> friend_and_group_list;
-        friend_and_group_list = getIntent().getParcelableArrayListExtra("friend_and_group_list");
+        //friend_and_group_list = getIntent().getParcelableArrayListExtra("friend_and_group_list");
+        friend_and_group_list=Tabs.testViewModel.getRoomList();
         super.onCreate(savedInstanceState);
         searchViewBinding = DataBindingUtil.setContentView(this, R.layout.search_view);
 

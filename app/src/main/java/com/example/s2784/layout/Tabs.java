@@ -368,7 +368,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 case R.id.searchview:
                     msg += "搜尋";
                     Intent intent_search = new Intent(Tabs.this, com.example.s2784.layout.SearchView.class);
-                    intent_search.putParcelableArrayListExtra("friend_and_group_list",arrayList);
+                    //intent_search.putParcelableArrayListExtra("friend_and_group_list",arrayList);
                     startActivityForResult(intent_search, REQUEST_CODE_Search);
                     break;
                 case R.id.build_group:
