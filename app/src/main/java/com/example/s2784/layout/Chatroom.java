@@ -168,6 +168,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         } else if (roomInfo.getType().equals("G")) {
             gridAdapter = new Grid_Adapter(this, group_icons, group_letters);
         }
+        gridView.setAdapter(gridAdapter);
     }
 
     //must be override by child class
@@ -242,7 +243,6 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         Log.d("TAG", "in startCreat : roomName = " + roomInfo.getRoomName());
 
         set_gridAdapter(); //must be override by child class
-        gridView.setAdapter(gridAdapter);
         set_gridview_onItemClickListener(); //must be override by child class
 
 

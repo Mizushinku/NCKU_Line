@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 public class Classroom extends Chatroom{
 
     private static final int choosePic = 0;
-    private static final int news = 1;
+    private static final int discuss = 1;
     private static final int changeAuth0 = 2;
     private static final int changeAuth1 = 3;
     private static final int changeAuth2 = 4;
@@ -33,7 +33,7 @@ public class Classroom extends Chatroom{
     private int A1_course_icons[] = {R.drawable.pic,R.drawable.discuss,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar,R.drawable.announcement,};
     private int A2_course_icons[] = {R.drawable.pic,R.drawable.discuss,R.drawable.auth0,R.drawable.auth1,R.drawable.auth2,R.drawable.group_member,R.drawable.document,R.drawable.album,R.drawable.calendar};
 
-    private int auth;
+    private int auth = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +58,28 @@ public class Classroom extends Chatroom{
         else if(auth == 2) {
             Toast.makeText(this, "auth 2", Toast.LENGTH_SHORT).show();
         }
+        set_gridAdapter();
+        set_gridview_onItemClickListener();
     }
 
     @Override
     protected void set_gridAdapter() {
+        if(auth < 0) return;
         if(roomInfo.getType().equals("C")){
-            gridAdapter = new Grid_Adapter(this,A2_course_icons, A2_course_letters);
+            if(auth == 0) {
+                gridAdapter = new Grid_Adapter(this, A0_course_icons, A0_course_letters);
+            } else if(auth == 1) {
+                gridAdapter = new Grid_Adapter(this, A1_course_icons, A1_course_letters);
+            } else if(auth == 2) {
+                gridAdapter = new Grid_Adapter(this, A2_course_icons, A2_course_letters);
+            }
         }
+        gridView.setAdapter(gridAdapter);
     }
 
     @Override
     protected void set_gridview_onItemClickListener() {
+        if(auth < 0) return;
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,7 +88,7 @@ public class Classroom extends Chatroom{
                         case choosePic:
                             choosePic();
                             break;
-                        case 1:
+                        case discuss:
                             Intent discuss = new Intent(getApplicationContext(),DiscussActivity.class);
                             discuss.putExtra("roomInfo", roomInfo);
                             startActivity(discuss);
@@ -94,7 +105,7 @@ public class Classroom extends Chatroom{
                             break;
                         case 7:
                             break;
-                        case 8:
+                        case schedule:
                             Intent calendar = new Intent(getApplicationContext(),Calendar.class);
 //                            discuss.putExtra("roomInfo", roomInfo);
                             startActivity(calendar);
@@ -114,6 +125,7 @@ public class Classroom extends Chatroom{
             }
         });
     }
+
     private void changeAuth(int auth){
         this.auth  = auth;
     }
