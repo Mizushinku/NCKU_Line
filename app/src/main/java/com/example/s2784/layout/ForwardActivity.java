@@ -1,8 +1,10 @@
 package com.example.s2784.layout;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +23,20 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayList<RoomInfo> roomlist;
     private int index;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forward);
+
+        //Change status color
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        } else {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
         roomlist = Tabs.testViewModel.getRoomList();
         index = getIntent().getIntExtra("index",-1);
         forward_button = findViewById(R.id.forward_btn);

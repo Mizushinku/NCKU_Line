@@ -99,6 +99,7 @@
         <activity android:name=".ForwardActivity" />
         <activity android:name=".CallingInActivity" />
         <activity android:name=".CallingOutActivity" />
+        <activity android:name=".FullScreenImage" />
 
     </application>
 

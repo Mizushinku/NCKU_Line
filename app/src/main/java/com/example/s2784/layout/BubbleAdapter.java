@@ -25,6 +25,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -323,6 +324,26 @@ public class BubbleAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     popWindow.dismiss();
                     saveImage(msgList.get(position).getImage());
+                }
+            });
+            btn_zoomin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                    Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, FullScreenImage.class);
+
+                    //imageView.buildDrawingCache();
+                    //Bitmap image= imageView.getDrawingCache();
+                    //Bundle extras = new Bundle();
+                    //extras.putParcelable("imagebitmap", image);
+                    //intent.putExtras(extras);
+                    Bitmap image = msgList.get(position).getImage();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] bytes = stream.toByteArray();
+                    intent.putExtra("bitmapbytes",bytes);
+                    context.startActivity(intent);
                 }
             });
         }else if(msgList.get(position).getData_t() == TYPE_TXT){
