@@ -23,7 +23,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         hang_up = findViewById(R.id.button_hangup_callingIn);
         textView = findViewById(R.id.textview_callingIn);
 
-        textView.setText(Tabs.sipData.sipAudioCall.getPeerProfile().getDisplayName() + " is calling you");
+//        textView.setText(Tabs.sipData.sipAudioCall.getPeerProfile().getDisplayName() + " is calling you");
         answer.setOnClickListener(this);
         hang_up.setOnClickListener(this);
 
@@ -40,36 +40,36 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         };
-        Tabs.sipData.sipAudioCall.setListener(listener);
+//        Tabs.sipData.sipAudioCall.setListener(listener);
 
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.button_answer_callingIn:
-                if(!Tabs.sipData.sipAudioCall.isInCall()){
-                    try {
-                        Tabs.sipData.sipAudioCall.answerCall(30);
-                        Tabs.sipData.sipAudioCall.startAudio();
-                        Tabs.sipData.sipAudioCall.setSpeakerMode(true);
-                        if(Tabs.sipData.sipAudioCall.isMuted()) {
-                            Tabs.sipData.sipAudioCall.toggleMute();
-                        }
-
-                    }catch(Exception e){
-                        Log.d("SIP",e.getMessage());
-                    }
-                    textView.setText("Call Established");
-                }
-                break;
-            case R.id.button_hangup_callingIn:
-                try {
-                    Tabs.sipData.sipAudioCall.endCall();
-                } catch (Exception e) {
-                    Log.d("SIP", e.getMessage());
-                }
-                break;
+//            case R.id.button_answer_callingIn:
+//                if(!Tabs.sipData.sipAudioCall.isInCall()){
+//                    try {
+//                        Tabs.sipData.sipAudioCall.answerCall(30);
+//                        Tabs.sipData.sipAudioCall.startAudio();
+//                        Tabs.sipData.sipAudioCall.setSpeakerMode(true);
+//                        if(Tabs.sipData.sipAudioCall.isMuted()) {
+//                            Tabs.sipData.sipAudioCall.toggleMute();
+//                        }
+//
+//                    }catch(Exception e){
+//                        Log.d("SIP",e.getMessage());
+//                    }
+//                    textView.setText("Call Established");
+//                }
+//                break;
+//            case R.id.button_hangup_callingIn:
+//                try {
+//                    Tabs.sipData.sipAudioCall.endCall();
+//                } catch (Exception e) {
+//                    Log.d("SIP", e.getMessage());
+//                }
+//                break;
         }
     }
 

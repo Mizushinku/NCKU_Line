@@ -89,6 +89,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public static String userID;
     public static Mqtt_Client mqtt;
     public static SipData sipData;
+    public IncomingCallReceiver callReceiver;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -276,8 +277,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         Log.d("TAG", "Tabs : onCreate()");
         LinkModule.getInstance().setRmsgListener(this);
-        sipData = new SipData(this);
+
         check_SIP_permission();
+        sipData = new SipData(this);
+        sipData.initializeManager();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(sipData.intentAction);
+        callReceiver = new IncomingCallReceiver();
+        this.registerReceiver(callReceiver, filter);
     }
 
     @Override
@@ -322,6 +330,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     protected void onDestroy() {
         super.onDestroy();
         mqtt.disconnect();
+
+        if(sipData.call != null){
+            sipData.call.close();
+            sipData.call = null;
+        }
+        sipData.closeLocalProfile();
 
         if (netReceiver != null) {
             unregisterReceiver(netReceiver);
@@ -1674,8 +1688,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private void check_SIP_permission(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.USE_SIP ,Manifest.permission.RECORD_AUDIO},0);
-        }else{
-            init_SIP();
         }
     }
 

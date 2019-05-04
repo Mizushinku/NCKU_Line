@@ -81,11 +81,11 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
 //            }
         };
         try {
-            Tabs.sipData.sipAudioCall = Tabs.sipData.sipManager.makeAudioCall(Tabs.sipData.sipProfile.getUriString(), Tabs.sipData.peer.getUriString(), listener, 30 );
+//            Tabs.sipData.sipAudioCall = Tabs.sipData.sipManager.makeAudioCall(Tabs.sipData.sipProfile.getUriString(), Tabs.sipData.peer.getUriString(), listener, 30 );
         }catch (Exception e){
             Log.d("SIP",e.getMessage());
         }
-        Tabs.sipData.sipAudioCall.setListener(listener);
+//        Tabs.sipData.sipAudioCall.setListener(listener);
 
         handler = new Handler();
         runnable = new Runnable() {
@@ -101,7 +101,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         switch(v.getId()){
             case R.id.button_hangup_callingOut:
                 try {
-                    Tabs.sipData.sipAudioCall.endCall();
+//                    Tabs.sipData.sipAudioCall.endCall();
                 } catch (Exception e) {
                     Log.d("SIP", e.getMessage());
                 }
