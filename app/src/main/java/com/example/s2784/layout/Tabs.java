@@ -471,9 +471,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public void FLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = testViewModel.getFriend().get(childPos).getStudentID();
         String code = testViewModel.getFriend().get(childPos).getCode();
-        RoomInfo roomInfo = new RoomInfo();
-        roomInfo.setCode(code);
-        roomInfo.setStudentID(ID);
         switch (which) {
             case 0:
                 //指定哪個朋友要被刪除
@@ -485,7 +482,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         break;
                     }
                 }
-
+                break;
+            case 1:
+                //撥打電話
+                Toast.makeText(this, mqtt.MapPhoneNum(testViewModel.getFriend().get(childPos).getStudentID()), Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -494,9 +494,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public void GLCM_onItemClick(DialogFragment dialog, int which, int childPos) {
         String ID = testViewModel.getGroup().get(childPos).getRoomName();
         String code = testViewModel.getGroup().get(childPos).getCode();
-        RoomInfo roomInfo = new RoomInfo();
-        roomInfo.setCode(code);
-        roomInfo.setRoomName(ID);
         switch (which) {
             case 0:
                 //指定要退出哪個群組

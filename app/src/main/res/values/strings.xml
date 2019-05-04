@@ -10,6 +10,7 @@
     <string name="FLCM_title">選項</string>
     <string-array name="friendLongClickMenu">
         <item>刪除好友</item>
+        <item>撥打電話</item>
         <item>返回</item>
     </string-array>
 
