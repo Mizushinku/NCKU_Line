@@ -279,13 +279,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         LinkModule.getInstance().setRmsgListener(this);
 
         check_SIP_permission();
-        sipData = new SipData(this);
-        sipData.initializeManager();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(sipData.intentAction);
-        callReceiver = new IncomingCallReceiver();
-        this.registerReceiver(callReceiver, filter);
     }
 
     @Override
@@ -331,11 +324,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         super.onDestroy();
         mqtt.disconnect();
 
-        if(sipData.call != null){
-            sipData.call.close();
-            sipData.call = null;
+        if(sipData != null) {
+            if (sipData.call != null) {
+                sipData.call.close();
+                sipData.call = null;
+            }
+            sipData.closeLocalProfile();
         }
-        sipData.closeLocalProfile();
 
         if (netReceiver != null) {
             unregisterReceiver(netReceiver);
@@ -629,6 +624,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         private HashMap<String, Bitmap> friendInfoMap;
         private HashMap<String, String> friendIntroMap;
         private HashMap<String, String> aliasMap;
+        private HashMap<String, String> phoneMap;
 
         private Mqtt_Client(Context context, String user) {
             this.context = context;
@@ -637,6 +633,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             friendInfoMap = new HashMap<>();
             friendIntroMap = new HashMap<>();
             aliasMap = new HashMap<>();
+            phoneMap = new HashMap<>();
         }
 
 
@@ -750,8 +747,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 }
                                 break;
                             case "GetUserData":
-                                String name = new String(message.getPayload());
-                                GetUserData_re(name);
+                                String userdata_str = new String(message.getPayload()); // name and friend phone numbers
+                                GetUserData_re(userdata_str);
                                 break;
                             case "GetUserIcon":
                                 Bitmap userIcon = BitmapFactory.decodeByteArray(message.getPayload(), 0, message.getPayload().length);
@@ -1101,11 +1098,23 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        private void GetUserData_re(String name){
+        private void GetUserData_re(String str){
+            String name = str.split("\r")[0];
             testViewModel.setUserName(name);
             viewPager.getAdapter().notifyDataSetChanged();
             aliasMap.put(user,name);
+
+            String phone_str = str.split("\r")[1];
+            StringTokenizer stringTokenizer = new StringTokenizer(phone_str, ",");
+            while(stringTokenizer.hasMoreElements()){
+                String token = stringTokenizer.nextToken();
+                String id = token.split("\t")[0];
+                String phone = token.split("\t")[1];
+                phoneMap.put(id,phone);
+//                Log.d("TEST", id + ":" + phone);
+            }
             GetUserIcon();
+            init_SIP();
         }
 
         private void GetUserIcon(){
@@ -1417,6 +1426,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         public String MapAlias(String id){ return aliasMap.get(id); }
 
+        public String MapPhoneNum(String id) { return phoneMap.get(id);}
+
         private void SubmitFCMToken() {
             String token = getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token", "empty");
             if(token.equals("empty")) {
@@ -1699,7 +1710,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                     boolean use_sip_permit = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean record_audio_permit = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     if(use_sip_permit && record_audio_permit){
-                        init_SIP();
+//                        init_SIP();
                     }
                 }
                 break;
@@ -1710,6 +1721,13 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     private void init_SIP(){
 //        Toast.makeText(this,"INIT",Toast.LENGTH_LONG).show();
+        sipData = new SipData(this);
+        sipData.initializeManager();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(sipData.intentAction);
+        callReceiver = new IncomingCallReceiver();
+        this.registerReceiver(callReceiver, filter);
     }
 }
 

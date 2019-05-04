@@ -76,9 +76,9 @@ public class SipData {
             closeLocalProfile();
         }
 
-        String username = "4040";
-        String password = "4040@ncku";
-        String displayName = "4040";
+        String username = Tabs.mqtt.MapPhoneNum(Tabs.userID);
+        String password = username + "@ncku";
+        String displayName = username;
 
         try{
             SipProfile.Builder builder = new SipProfile.Builder(username, domain);
