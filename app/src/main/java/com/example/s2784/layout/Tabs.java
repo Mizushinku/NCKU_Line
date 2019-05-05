@@ -1429,7 +1429,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             String token = getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token", "empty");
             if(token.equals("empty")) {
                 Toast.makeText(Tabs.this,"FCM token error. 請重新安裝或清除資料再啟動", Toast.LENGTH_LONG).show();
-                System.exit(0);
+                System.exit(99);
             }
             String topic = "IDF/SubmitFCMToken/" + user;
             try {
