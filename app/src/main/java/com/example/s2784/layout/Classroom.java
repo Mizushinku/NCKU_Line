@@ -10,9 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.MenuParams;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-public class Classroom extends Chatroom{
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
+public class Classroom extends Chatroom implements OnMenuItemClickListener {
 
     private static final int choosePic = 0;
     private static final int discuss = 1;
@@ -35,6 +41,11 @@ public class Classroom extends Chatroom{
 
     private int auth = -1;
 
+    private ContextMenuDialogFragment contextMenuDialogFragment;
+    private ArrayList<MenuObject> menuObjects;
+
+    //onCreate -> startCreate -> setAuth
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +60,11 @@ public class Classroom extends Chatroom{
     @Override
     public void setAuth(int auth) {
         this.auth = auth;
+        set_gridAdapter();
+        set_gridview_onItemClickListener();
         if(auth == 0) {
             Toast.makeText(this, "auth 0", Toast.LENGTH_SHORT).show();
+            setContextMenu();
         }
         else if(auth == 1) {
             Toast.makeText(this, "auth 1", Toast.LENGTH_SHORT).show();
@@ -58,8 +72,6 @@ public class Classroom extends Chatroom{
         else if(auth == 2) {
             Toast.makeText(this, "auth 2", Toast.LENGTH_SHORT).show();
         }
-        set_gridAdapter();
-        set_gridview_onItemClickListener();
     }
 
     @Override
@@ -115,7 +127,10 @@ public class Classroom extends Chatroom{
 //                            TimePickerFragment timePickerFragment = new TimePickerFragment();
 //                            timePickerFragment.show(getSupportFragmentManager(),"TimePickerFragment");
                             break;
-                        case 9:
+                        case annoouncement:
+                            if(getSupportFragmentManager().findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                                contextMenuDialogFragment.show(getSupportFragmentManager(), ContextMenuDialogFragment.TAG);
+                            }
                             break;
                         default:
                             Toast.makeText(Classroom.this, "Wrong", Toast.LENGTH_LONG).show();
@@ -124,6 +139,35 @@ public class Classroom extends Chatroom{
                 }
             }
         });
+    }
+
+    private void setContextMenu() {
+        menuObjects = new ArrayList<>();
+        menuObjects.add(newMO(R.string.assignment, R.drawable.assignment));
+        menuObjects.add(newMO(R.string.exam, R.drawable.exam));
+        menuObjects.add(newMO(R.string.vote, R.drawable.vote));
+        menuObjects.add(newMO(R.string.cancel, R.drawable.cancel));
+
+        MenuParams menuParams = new MenuParams();
+        menuParams.setActionBarSize(250);
+        menuParams.setMenuObjects(menuObjects);
+        menuParams.setClosableOutside(true);
+        menuParams.setFitsSystemWindow(true);
+        menuParams.setClipToPadding(false);
+
+        contextMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
+        contextMenuDialogFragment.setItemClickListener(this);
+    }
+
+    private MenuObject newMO(int titleID, int drawableID) {
+        MenuObject menuObject = new MenuObject(getResources().getString(titleID));
+        menuObject.setResource(drawableID);
+        return menuObject;
+    }
+
+    @Override
+    public  void onMenuItemClick(View v, int p) {
+        Toast.makeText(this, "Clicked on : " + menuObjects.get(p).getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     private void changeAuth(int auth){

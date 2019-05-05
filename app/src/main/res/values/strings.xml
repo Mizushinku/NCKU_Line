@@ -45,6 +45,9 @@ u
     <string name="new_intro">新狀態(36字元內)</string>
     <string name="change_intro_succeed">更改狀態成功</string>
     <string name="change_intro_fail">更改狀態失敗</string>
+    <string name="assignment">作業</string>
+    <string name="exam">考試</string>
+    <string name="vote">投票</string>
     
 
 

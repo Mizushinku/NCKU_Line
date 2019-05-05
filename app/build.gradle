@@ -66,6 +66,9 @@ dependencies {
     implementation 'q.rorbin:badgeview:1.1.3'
     implementation 'com.githang:status-bar-compat:latest.integration'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+
+    //Yalantis/Context-Menu.Android
+    implementation 'com.github.Yalantis:Context-Menu.Android:1.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -170,18 +170,8 @@
     <color name="bubble_send">#AA3939</color>
     <color name="bubble_send_press">#7e2626</color>
     <color name="bubble_send_text">#ffffff</color>
-    <color name="sliding_drawer">#fcbaba</color
-
-        >
-
-
-
+    <color name="sliding_drawer">#fcbaba</color>
     <color name="black">#000000</color><!--黑色 -->
-
-
-
     <color name="line">#DCDCDC</color>
-
-=======
->>>>>>> c68e5ee7afe4c262bdc315204f85a3b1287bc471
+    <color name="transparent">#00000000</color>
 </resources>
