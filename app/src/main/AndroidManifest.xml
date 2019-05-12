@@ -85,7 +85,8 @@
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <activity
-            android:name=".Tabs"/>
+            android:name=".Tabs"
+            android:launchMode="singleTop"/>
 
         <service android:name=".FCM_MessageService">
             <intent-filter>
