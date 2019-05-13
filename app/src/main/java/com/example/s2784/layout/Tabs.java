@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -85,6 +86,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
 
     public static TestViewModel testViewModel;
+    public static AnnocViewModel annocViewModel;
 
     public static String userID;
     public static Mqtt_Client mqtt;
@@ -122,6 +124,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
    //Change status color
 
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
+        annocViewModel = ViewModelProviders.of(this).get(AnnocViewModel.class);
 
         Intent intentFromUpload = getIntent();
         userID = intentFromUpload.getStringExtra("userID");
@@ -609,6 +612,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
         viewPager.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void addAnnoc(String text) {
+        annocViewModel.add_annoc(text);
     }
 
     private class MyBroadcastReceiver extends BroadcastReceiver{

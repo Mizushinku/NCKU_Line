@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MsgBulletin"
-    tools:ignore="NestedWeights">
+    android:background="@drawable/bg5"
+    tools:context=".Tab3">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
+        <!--
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="0dp"
@@ -20,6 +20,16 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/msg01" />
+        -->
+        <ListView
+            android:id="@+id/annoc_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="0.2dp"
+            android:divider="@drawable/custom_listview_divider"
+            >
+
+        </ListView>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,13 +1,18 @@
 package com.example.s2784.layout;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 //        onAttach()：Fragment和Activity相關聯時調用。可以通過該方法獲取Activity引用，還可以通過getArguments()獲取參數。
@@ -24,6 +29,9 @@ import android.view.WindowManager;
 
 public class Tab3 extends Fragment {
 
+    private ListView annocListView;
+    private AnnocListAdapter annocListAdapter;
+    private ArrayList<String> text_list = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,8 +60,15 @@ public class Tab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_tab3, container, false);
 
-        return inflater.inflate(R.layout.fragment_tab3, container, false);
+        text_list = ViewModelProviders.of(getActivity()).get(AnnocViewModel.class).getText_list();
+
+        annocListView = view.findViewById(R.id.annoc_lv);
+        annocListAdapter = new AnnocListAdapter(getActivity(), text_list);
+        annocListView.setAdapter(annocListAdapter);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -75,10 +90,23 @@ public class Tab3 extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("TAG", "in Tab3 onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("TAG", "in Tab3 onResume");
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

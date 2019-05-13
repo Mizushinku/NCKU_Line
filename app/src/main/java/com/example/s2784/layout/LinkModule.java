@@ -38,6 +38,7 @@ public class LinkModule {
 
     public interface RMSGListener{
         void updateRMSG(String code, String rMSG, String rMSGDate);
+        void addAnnoc(String text);
     }
 
     private static LinkModule mInstance;
@@ -144,6 +145,12 @@ public class LinkModule {
     public void callUpdateRMSG(String code, String rMSG, String rMSGDate){
         if(rmsgListener != null){
             rmsgListener.updateRMSG(code,rMSG,rMSGDate);
+        }
+    }
+
+    public void callAddAnnoc(String text) {
+        if(rmsgListener != null) {
+            rmsgListener.addAnnoc(text);
         }
     }
 }

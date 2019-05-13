@@ -168,6 +168,11 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
     @Override
     public  void onMenuItemClick(View v, int p) {
         Toast.makeText(this, "Clicked on : " + menuObjects.get(p).getTitle(), Toast.LENGTH_SHORT).show();
+        if(!menuObjects.get(p).getTitle().equals(getResources().getString(R.string.cancel))) {
+            String text = String.format("From : %s,\nAnnouncement : %s",
+                    roomInfo.getRoomName(), menuObjects.get(p).getTitle());
+            Tabs.annocViewModel.add_annoc(text);
+        }
     }
 
     private void changeAuth(int auth){
