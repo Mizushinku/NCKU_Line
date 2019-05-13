@@ -3,9 +3,7 @@ package com.example.s2784.layout;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.sip.SipAudioCall;
-import android.net.sip.SipProfile;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +20,6 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
     private Button buttonMute;
     private Button buttonSpeaker;
     private Button buttonHangUp;
-    private TextView tv_msg;
     private TextView tv_calleeName;
     private ImageView imageViewAvatar;
 
@@ -36,7 +33,6 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         buttonMute = findViewById(R.id.button_mute);
         buttonSpeaker = findViewById(R.id.button_speaker);
         buttonHangUp = findViewById(R.id.button_hangup_callingOut);
-        tv_msg = findViewById(R.id.textview_calloutMsg);
         tv_calleeName = findViewById(R.id.textView_calleeName);
         imageViewAvatar = findViewById(R.id.imageview_call_out_avatar);
 
@@ -54,10 +50,6 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         initiateCall();
     }
 
-    private void closeCall(){
-        finish();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -67,14 +59,127 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void initiateCall(){
+    private void closeCall(){
+        try {
+            outgoingCall.endCall();
+            updateStatus("通話結束...");
+        }catch (Exception e){
+            Log.d(TAG,"in closeCall func:" + e.getMessage());
+        }
+        outgoingCall.close();
+        Tabs.sipData.call = null;
+        finish();
+    }
 
+    public void initiateCall(){
+        try {
+            SipAudioCall.Listener listener = new SipAudioCall.Listener(){
+                @Override
+                public void onChanged(SipAudioCall call) {
+                    super.onChanged(call);
+                    Log.d(TAG, "onChanged");
+                }
+
+                @Override
+                public void onReadyToCall(SipAudioCall call) {
+                    super.onReadyToCall(call);
+                    Log.d(TAG, "onReadyToCall");
+                }
+
+                @Override
+                public void onCalling(SipAudioCall call) {
+                    super.onCalling(call);
+                    updateStatus("正在連線...");
+                    Log.d(TAG, "onCalling");
+                }
+
+                @Override
+                public void onCallBusy(SipAudioCall call) {
+                    super.onCallBusy(call);
+                    updateStatus("無人接聽...");
+                    closeCall();
+                    Log.d(TAG, "onCallBusy");
+                }
+
+                @Override
+                public void onRingingBack(SipAudioCall call) {
+                    super.onRingingBack(call);
+                    updateStatus("撥號中...");
+                    Log.d(TAG, "onRingingBack");
+                }
+
+                @Override
+                public void onCallEstablished(SipAudioCall call) {
+                    super.onCallEstablished(call);
+                    call.startAudio();
+                    updateStatus("通話中...");
+                    Log.d(TAG, "onCallEstablished");
+                }
+
+                @Override
+                public void onCallEnded(SipAudioCall call) {
+                    super.onCallEnded(call);
+                    updateStatus("通話結束...");
+                    Log.d(TAG, "onCallEnded");
+                    closeCall();
+                }
+
+                @Override
+                public void onError(SipAudioCall call, int errorCode, String errorMessage) {
+                    super.onError(call, errorCode, errorMessage);
+                    Log.d(TAG, "in onError,  errorCode: " + Integer.toString(errorCode)
+                            + "\nerrorMessage : " + errorMessage);
+                    closeCall();
+                }
+            };
+
+            outgoingCall = Tabs.sipData.manager.makeAudioCall(Tabs.sipData.me.getUriString(), sipPeerAddress, null, 30);
+            outgoingCall.setListener(listener, true);
+            outgoingCall.setSpeakerMode(false);
+
+            Tabs.sipData.call = outgoingCall;
+        }catch (Exception e){
+            Log.i(TAG, "in InitiateCall catch block", e);
+            Tabs.sipData.closeLocalProfile();
+            Tabs.sipData.initializeManager();
+            if (outgoingCall != null) {
+                outgoingCall.close();
+            }
+        }
+    }
+
+    public void updateStatus(final String status){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView labelView = findViewById(R.id.textview_calloutMsg);
+                labelView.setText(status);
+            }
+        });
     }
 
     public void toggleMute(View view){
-        Toast.makeText(this, "toggleMute", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "toggleMute", Toast.LENGTH_LONG).show();
+        if(outgoingCall.isInCall()){
+            if(buttonMute.isSelected()){
+                buttonMute.setSelected(false);
+            }else{
+                buttonMute.setSelected(true);
+            }
+            outgoingCall.toggleMute();
+        }
     }
     public void toggleSpeaker(View view){
-        Toast.makeText(this, "toggleSpeaker", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "toggleSpeaker", Toast.LENGTH_LONG).show();
+        if(outgoingCall.isInCall()){
+            if(buttonSpeaker.isSelected()){
+                buttonSpeaker.setSelected(false);
+                outgoingCall.setSpeakerMode(false);
+            }else {
+                buttonSpeaker.setSelected(true);
+                outgoingCall.setSpeakerMode(true);
+            }
+        }
     }
+
 }

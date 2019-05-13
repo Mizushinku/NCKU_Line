@@ -7,6 +7,8 @@ import android.net.sip.SipAudioCall;
 import android.net.sip.SipProfile;
 import android.util.Log;
 
+import java.util.Objects;
+
 public class IncomingCallReceiver extends BroadcastReceiver {
 
     private String TAG = "!!IncomingCallReceiver";
@@ -34,29 +36,13 @@ public class IncomingCallReceiver extends BroadcastReceiver {
             Log.d(TAG, "in onReceive catch");
         }
 
-//        try {
-//            SipAudioCall.Listener listener = new SipAudioCall.Listener() {
-//                @Override
-//                public void onRinging(SipAudioCall call, SipProfile caller) {
-//                    try {
-//                        call.answerCall(30);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            };
-//            Tabs tabs = (Tabs) context;
-//            incomingCall = tabs.sipData.sipManager.takeAudioCall(intent, listener);
-//            tabs.sipData.sipAudioCall = incomingCall;
-//        } catch (Exception e) {
-//            if (incomingCall != null) {
-//                incomingCall.close();
-//            }
-//        }
-
         Intent callInActivity;
         callInActivity = new Intent(context, CallingInActivity.class);
+        callerName = Objects.requireNonNull(incomingCall).getPeerProfile().getUserName();
+        callInActivity.putExtra("callerName", callerName);
         context.startActivity(callInActivity);
+
+
     }
 }
 
