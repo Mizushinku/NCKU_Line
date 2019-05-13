@@ -48,7 +48,7 @@ u
     <string name="assignment">作業</string>
     <string name="exam">考試</string>
     <string name="vote">投票</string>
-    
 
+    <string name="imagedescription">imageDescription</string>
 
 </resources>

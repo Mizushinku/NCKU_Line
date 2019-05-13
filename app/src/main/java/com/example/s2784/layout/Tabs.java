@@ -485,7 +485,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 break;
             case 1:
                 //撥打電話
-                Toast.makeText(this, mqtt.MapPhoneNum(testViewModel.getFriend().get(childPos).getStudentID()), Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, mqtt.MapPhoneNum(testViewModel.getFriend().get(childPos).getStudentID()), Toast.LENGTH_LONG).show();
+                try {
+                    if (sipData.manager.isRegistered(sipData.me.getUriString())) {
+                        String id = testViewModel.getFriend().get(childPos).getStudentID();
+                        Intent calloutActivity = new Intent(Tabs.this, CallingOutActivity.class);
+                        calloutActivity.putExtra("sipUserName", mqtt.MapPhoneNum(id));
+                        calloutActivity.putExtra("Name", mqtt.MapAlias(id));
+                        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                        mqtt.MapBitmap(id).compress(Bitmap.CompressFormat.JPEG,100,bs);
+                        calloutActivity.putExtra("avatar", bs.toByteArray());
+
+                        startActivity(calloutActivity);
+                    }else{
+                        sipData.closeLocalProfile();
+                        sipData.initializeManager();
+                        Toast.makeText(this, "Unregister to sip server!", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e){
+                    Log.d("SIP", e.getMessage());
+                }
                 break;
         }
     }

@@ -1,31 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:orientation="vertical"
-    android:layout_gravity="center">
+    tools:context=".CallingOutActivity">
 
-    <TextView
-        android:layout_marginTop="200dp"
-        android:layout_gravity="center"
-        android:id="@+id/textview_callingOut"
+    <ImageView
+        android:id="@+id/imageview_call_out_avatar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/imagedescription"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_call_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_call_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calling out"
-        android:textSize="24dp"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40" />
 
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
+    <TextView
+        android:id="@+id/textView_calleeName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_call_out" />
 
-        <Button
-            android:id="@+id/button_hangup_callingOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hang up" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textview_calloutMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView_calleeName" />
+
+    <Button
+        android:id="@+id/button_mute"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_mic"
+        android:onClick="toggleMute"
+        app:layout_constraintEnd_toStartOf="@+id/button_hangup_callingOut"
+        app:layout_constraintTop_toTopOf="@+id/button_speaker" />
+
+    <Button
+        android:id="@+id/button_speaker"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_speaker"
+        android:onClick="toggleSpeaker"
+        app:layout_constraintBottom_toTopOf="@+id/button_hangup_callingOut"
+        app:layout_constraintStart_toEndOf="@+id/button_hangup_callingOut" />
 
 
-</android.support.v7.widget.LinearLayoutCompat>
+    <Button
+        android:id="@+id/button_hangup_callingOut"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_call_end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_calloutMsg"
+        app:layout_constraintVertical_bias="0.8" />
+
+</android.support.constraint.ConstraintLayout>
