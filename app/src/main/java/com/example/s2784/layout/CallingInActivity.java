@@ -38,7 +38,8 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         buttonSpeaker = findViewById(R.id.button_call_in_speaker);
 
         String callerName = getIntent().getStringExtra("callerName");
-        tv_callerName.setText(callerName);
+        tv_callerName.setText(Tabs.mqtt.MapAlias(Tabs.mqtt.MapPhoneNum2ID(callerName)));
+        imageViewAvatar.setImageBitmap(Tabs.mqtt.MapBitmap(Tabs.mqtt.MapPhoneNum2ID(callerName)));
 
         buttonAnswer.setOnClickListener(this);
         buttonCallEnd.setOnClickListener(this);

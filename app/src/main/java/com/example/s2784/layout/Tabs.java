@@ -57,6 +57,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import q.rorbin.badgeview.QBadgeView;
@@ -1451,6 +1452,14 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         public String MapAlias(String id){ return aliasMap.get(id); }
 
         public String MapPhoneNum(String id) { return phoneMap.get(id);}
+
+        public String MapPhoneNum2ID(String phone) {
+            for(Map.Entry<String, String> entry : phoneMap.entrySet()){
+                String friend_phone = entry.getValue();
+                if(phone.equals(friend_phone)) return entry.getKey();
+            }
+            return "";
+        }
 
         private void SubmitFCMToken() {
             String token = getSharedPreferences("FCM_Token", MODE_PRIVATE).getString("token", "empty");
