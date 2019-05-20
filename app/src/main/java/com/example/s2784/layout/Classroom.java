@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,22 +173,26 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
 
     @Override
     public  void onMenuItemClick(View v, int p) {
-        String clicked = menuObjects.get(p).getTitle();
+        final String clicked = menuObjects.get(p).getTitle();
+        final String roomName = roomInfo.getRoomName();
         if(!clicked.equals(getResources().getString(R.string.cancel))) {
-            String text = String.format("From : %s,\nAnnouncement : %s",
-                    roomInfo.getRoomName(), menuObjects.get(p).getTitle());
-            Tabs.annocViewModel.add_annoc(text);
-
             LayoutInflater inflater = LayoutInflater.from(this);
 
             if(clicked.equals(getResources().getString(R.string.assignment))) {
-                annoc_view = inflater.inflate(R.layout.dialog_annoc_datetime, null);
+                final View view = inflater.inflate(R.layout.dialog_annoc_datetime, null);
+                annoc_view = view;
                 new AlertDialog.Builder(this)
-                        .setView(annoc_view)
+                        .setView(view)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                EditText title_et = view.findViewById(R.id.title_et);
+                                String title = title_et.getText().toString();
+                                TextView date_tv = view.findViewById(R.id.date_tv);
+                                String date = date_tv.getText().toString();
+                                String text = String.format("From : %s,\nAnnouncement : %s\nTitle : %s\nDue : %s",
+                                        roomName, clicked, title, date);
+                                Tabs.annocViewModel.add_annoc(text);
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -218,7 +223,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = String.format("%s-%s-%s", String.valueOf(year), String.valueOf(month), String.valueOf(dayOfMonth));
+                String date = String.format("%s-%s-%s", String.valueOf(year), String.valueOf(month+1), String.valueOf(dayOfMonth));
                 date_tv.setText(date);
             }
         }, year, month, day).show();
