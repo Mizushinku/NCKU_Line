@@ -1,13 +1,17 @@
 package com.example.s2784.layout;
 
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -15,7 +19,6 @@ import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class Classroom extends Chatroom implements OnMenuItemClickListener {
@@ -43,6 +46,8 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
 
     private ContextMenuDialogFragment contextMenuDialogFragment;
     private ArrayList<MenuObject> menuObjects;
+
+    private View annoc_view = null;
 
     //onCreate -> startCreate -> setAuth
 
@@ -167,16 +172,56 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
 
     @Override
     public  void onMenuItemClick(View v, int p) {
-        Toast.makeText(this, "Clicked on : " + menuObjects.get(p).getTitle(), Toast.LENGTH_SHORT).show();
-        if(!menuObjects.get(p).getTitle().equals(getResources().getString(R.string.cancel))) {
+        String clicked = menuObjects.get(p).getTitle();
+        if(!clicked.equals(getResources().getString(R.string.cancel))) {
             String text = String.format("From : %s,\nAnnouncement : %s",
                     roomInfo.getRoomName(), menuObjects.get(p).getTitle());
             Tabs.annocViewModel.add_annoc(text);
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+
+            if(clicked.equals(getResources().getString(R.string.assignment))) {
+                annoc_view = inflater.inflate(R.layout.dialog_annoc_datetime, null);
+                new AlertDialog.Builder(this)
+                        .setView(annoc_view)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
         }
     }
 
     private void changeAuth(int auth){
         this.auth  = auth;
+    }
+
+    @TargetApi(24)
+    public void datePicker(View v) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int year = calendar.get(java.util.Calendar.YEAR);
+        int month = calendar.get(java.util.Calendar.MONTH);
+        final int day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
+
+        final TextView date_tv = annoc_view.findViewById(R.id.date_tv);
+
+        new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date = String.format("%s-%s-%s", String.valueOf(year), String.valueOf(month), String.valueOf(dayOfMonth));
+                date_tv.setText(date);
+            }
+        }, year, month, day).show();
     }
 
 }
