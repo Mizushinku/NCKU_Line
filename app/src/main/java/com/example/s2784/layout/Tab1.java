@@ -101,7 +101,6 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,testViewModel.getListHash());
         listView.setAdapter(listAdapter);
 
-        listView.setAdapter(listAdapter);
         for (int i = 0; i < 3; i++) {
             listView.expandGroup(i);
         }

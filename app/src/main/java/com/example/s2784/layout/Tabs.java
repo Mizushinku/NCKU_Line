@@ -1640,6 +1640,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             Log.d("Feeee", "有網路");
 //                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
                             testViewModel.clearAll();
+                            viewPager.getAdapter().notifyDataSetChanged();
                             mqtt.disconnect();
                             mqtt.Connect();
                             break;
@@ -1647,6 +1648,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             Log.d("Feeee", "wifi");
 //                            Toast.makeText(Tabs.this, "網路已連線", Toast.LENGTH_SHORT).show();
                             testViewModel.clearAll();
+                            viewPager.getAdapter().notifyDataSetChanged();
                             mqtt.disconnect();
                             mqtt.Connect();
                             break;

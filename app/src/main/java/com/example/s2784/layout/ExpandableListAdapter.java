@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-        private Context context;
-        private static List<String> listDataHeader;
-        private static HashMap<String,ArrayList<RoomInfo>> listHashMap;
-        private static LayoutInflater inflater = null;
+    private Context context;
+    private List<String> listDataHeader;
+    private HashMap<String,ArrayList<RoomInfo>> listHashMap;
+    private LayoutInflater inflater = null;
 //        private Handler handler = new Handler(){
 //            @Override
 //            public void handleMessage(Message msg) {
@@ -52,7 +52,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int i, int j) {
-        return listHashMap.get(listDataHeader.get(i)).get(j); // i =Group Item  j = Child Item
+        return listHashMap.get(listDataHeader.get(i)).get(j); // i = Group Item  j = Child Item
     }
 
 
@@ -86,8 +86,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int i, int j, boolean b, View view, ViewGroup viewGroup) {
-        final RoomInfo roomInfo = (RoomInfo) getChild(i, j);
 
+        final RoomInfo roomInfo = (RoomInfo) getChild(i, j);
 
         if(roomInfo.getType().equals("F")) {
             view = inflater.inflate(R.layout.tab1_list_item_with_intro, null);
@@ -117,32 +117,4 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    //-----------------use for Main.java
-    public static int getGroupCount_ForMain() {
-        return listDataHeader.size();
-    }
-
-    public static int getChildrenCount_ForMain(int i) {
-        return listHashMap.get(listDataHeader.get(i)).size();
-    }
-
-    public static Object getChild_ForMain(int i, int j) {
-        return listHashMap.get(listDataHeader.get(i)).get(j); // i =Group Item  j = Child Item
-    }
-//    public void refresh(ExpandableListView expandableListView, int groupPosition){
-//        handler.sendMessage(new Message());
-//        //重新伸縮 更新數據
-//        if(expandableListView.isGroupExpanded(groupPosition)){
-//            expandableListView.collapseGroup(groupPosition);
-//            expandableListView.expandGroup(groupPosition);
-//        }
-//        else
-//        {
-//            expandableListView.expandGroup(groupPosition);
-//            expandableListView.collapseGroup(groupPosition);
-//        }
-
-//
-//    }
-    //-----------------use for Main.java
 }

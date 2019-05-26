@@ -9,6 +9,7 @@ import android.net.sip.SipManager;
 import android.net.sip.SipProfile;
 import android.net.sip.SipRegistrationListener;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 public class SipData {
@@ -115,6 +116,11 @@ public class SipData {
             public void run() {
                 TextView textView = tabs.findViewById(R.id.textview_sipStatus);
                 textView.setText(status);
+                if(status.equals("Register Done")){
+                    textView.setVisibility(View.GONE);
+                }else {
+                    textView.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
