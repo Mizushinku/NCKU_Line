@@ -106,6 +106,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         SQLiteManager.DBinit();
 
         initReceiver();
+        init_BadgeReceiver();
         arrayList.clear();
 
   //Change status color
@@ -294,11 +295,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.s2784.layout.action.badgeNum");
-        receiver = new MyBroadcastReceiver();
-        registerReceiver(receiver,intentFilter);
-
         qBadgeView.setBadgeNumber(SQLiteManager.getTotalUnread());
         viewPager.getAdapter().notifyDataSetChanged();
         Log.d("TAG", "Tabs : onResume()");
@@ -314,7 +310,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     protected void onStop() {
         super.onStop();
         Log.d("TAG", "Tabs : onStop()");
-        unregisterReceiver(receiver);
     }
 
     @Override
@@ -339,6 +334,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         if (netReceiver != null) {
             unregisterReceiver(netReceiver);
             netReceiver = null;
+        }
+        if (receiver != null){
+            unregisterReceiver(receiver);
+            receiver = null;
         }
 
         Log.d("TAG", "Tabs : onDestroy()");
@@ -1610,6 +1609,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
     }
 
+    private void init_BadgeReceiver(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.example.s2784.layout.action.badgeNum");
+        receiver = new MyBroadcastReceiver();
+        registerReceiver(receiver,intentFilter);
+    }
 
     private void initReceiver() {
         IntentFilter timeFilter = new IntentFilter();
@@ -1621,7 +1626,6 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(netReceiver, timeFilter);
     }
-
 
     BroadcastReceiver netReceiver = new BroadcastReceiver() {
         @Override

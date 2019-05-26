@@ -75,7 +75,7 @@ public class TestViewModel extends ViewModel {
         listHash.put(string,list);
     }
 
-    public RoomInfo getRoomInfo(String code){
+    public RoomInfo getRoomInfo(String code){   //only call when into chatroom activity, also set unread
         RoomInfo roomInfo = new RoomInfo();
         for(int i=0;i<friend.size();i++){
             roomInfo = friend.get(i);
