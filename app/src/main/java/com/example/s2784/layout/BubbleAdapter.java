@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -128,6 +129,25 @@ public class BubbleAdapter extends BaseAdapter {
                             return true;
                         }
                     });
+                    bubble_img_left_nodate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, FullScreenImage.class);
+
+                            //imageView.buildDrawingCache();
+                            //Bitmap image= imageView.getDrawingCache();
+                            //Bundle extras = new Bundle();
+                            //extras.putParcelable("imagebitmap", image);
+                            //intent.putExtras(extras);
+                            Bitmap image = msgList.get(position).getImage();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytes = stream.toByteArray();
+                            intent.putExtra("bitmapbytes",bytes);
+                            context.startActivity(intent);
+                        }
+                    });
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_left, null);
                     bubble_img_left = rowView.findViewById(R.id.bubble_chat_img_left);
@@ -136,6 +156,25 @@ public class BubbleAdapter extends BaseAdapter {
                         public boolean onLongClick(View v) {
                             initPopWindow(v, position);
                             return true;
+                        }
+                    });
+                    bubble_img_left.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, FullScreenImage.class);
+
+                            //imageView.buildDrawingCache();
+                            //Bitmap image= imageView.getDrawingCache();
+                            //Bundle extras = new Bundle();
+                            //extras.putParcelable("imagebitmap", image);
+                            //intent.putExtras(extras);
+                            Bitmap image = msgList.get(position).getImage();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytes = stream.toByteArray();
+                            intent.putExtra("bitmapbytes",bytes);
+                            context.startActivity(intent);
                         }
                     });
                     date = (TextView) rowView.findViewById(R.id.date_left);
@@ -206,6 +245,26 @@ public class BubbleAdapter extends BaseAdapter {
                             return true;
                         }
                     });
+                    bubble_img_right_nodate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, FullScreenImage.class);
+
+                            //imageView.buildDrawingCache();
+                            //Bitmap image= imageView.getDrawingCache();
+                            //Bundle extras = new Bundle();
+                            //extras.putParcelable("imagebitmap", image);
+                            //intent.putExtras(extras);
+                            Bitmap image = msgList.get(position).getImage();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytes = stream.toByteArray();
+                            intent.putExtra("bitmapbytes",bytes);
+                            context.startActivity(intent);
+                        }
+                    });
+
                 } else {
                     rowView = inflater.inflate(R.layout.bubble_chat_img_right, null);
                     bubble_img_right = rowView.findViewById(R.id.bubble_chat_img_right);
@@ -214,6 +273,25 @@ public class BubbleAdapter extends BaseAdapter {
                         public boolean onLongClick(View v) {
                             initPopWindow(v, position);
                             return true;
+                        }
+                    });
+                    bubble_img_right.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, FullScreenImage.class);
+
+                            //imageView.buildDrawingCache();
+                            //Bitmap image= imageView.getDrawingCache();
+                            //Bundle extras = new Bundle();
+                            //extras.putParcelable("imagebitmap", image);
+                            //intent.putExtras(extras);
+                            Bitmap image = msgList.get(position).getImage();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytes = stream.toByteArray();
+                            intent.putExtra("bitmapbytes",bytes);
+                            context.startActivity(intent);
                         }
                     });
                     date = (TextView) rowView.findViewById(R.id.date_right);
@@ -258,7 +336,6 @@ public class BubbleAdapter extends BaseAdapter {
         Button btn_copy = (Button) view.findViewById(R.id.copy);
         Button btn_foward = (Button) view.findViewById(R.id.foward);
         Button btn_delete = (Button) view.findViewById(R.id.delete);
-        Button btn_zoomin = (Button) view.findViewById(R.id.zoomin);
 
         //1.构造一个PopupWindow，参数依次是加载的View，宽高
         final PopupWindow popWindow = new PopupWindow(view,
@@ -326,26 +403,6 @@ public class BubbleAdapter extends BaseAdapter {
                     saveImage(msgList.get(position).getImage());
                 }
             });
-            btn_zoomin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popWindow.dismiss();
-                    Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, FullScreenImage.class);
-
-                    //imageView.buildDrawingCache();
-                    //Bitmap image= imageView.getDrawingCache();
-                    //Bundle extras = new Bundle();
-                    //extras.putParcelable("imagebitmap", image);
-                    //intent.putExtras(extras);
-                    Bitmap image = msgList.get(position).getImage();
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] bytes = stream.toByteArray();
-                    intent.putExtra("bitmapbytes",bytes);
-                    context.startActivity(intent);
-                }
-            });
         }else if(msgList.get(position).getData_t() == TYPE_TXT){
             btn_copy.setText("複製");
             btn_copy.setOnClickListener(new View.OnClickListener() {
@@ -359,7 +416,6 @@ public class BubbleAdapter extends BaseAdapter {
                     popWindow.dismiss();
                 }
             });
-            btn_zoomin.setVisibility(View.INVISIBLE);
         }
 
         if(msgList.get(position).getType() == MSG_OTHERSELF){
