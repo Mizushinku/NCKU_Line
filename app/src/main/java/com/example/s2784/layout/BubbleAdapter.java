@@ -141,10 +141,13 @@ public class BubbleAdapter extends BaseAdapter {
                             //extras.putParcelable("imagebitmap", image);
                             //intent.putExtras(extras);
                             Bitmap image = msgList.get(position).getImage();
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte[] bytes = stream.toByteArray();
-                            intent.putExtra("bitmapbytes",bytes);
+                            if(image!=null)
+                            {
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                byte[] bytes = stream.toByteArray();
+                                intent.putExtra("bitmapbytes",bytes);
+                            }
                             context.startActivity(intent);
                         }
                     });
@@ -170,10 +173,13 @@ public class BubbleAdapter extends BaseAdapter {
                             //extras.putParcelable("imagebitmap", image);
                             //intent.putExtras(extras);
                             Bitmap image = msgList.get(position).getImage();
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte[] bytes = stream.toByteArray();
-                            intent.putExtra("bitmapbytes",bytes);
+                            if(image!=null)
+                            {
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                byte[] bytes = stream.toByteArray();
+                                intent.putExtra("bitmapbytes",bytes);
+                            }
                             context.startActivity(intent);
                         }
                     });
@@ -257,10 +263,13 @@ public class BubbleAdapter extends BaseAdapter {
                             //extras.putParcelable("imagebitmap", image);
                             //intent.putExtras(extras);
                             Bitmap image = msgList.get(position).getImage();
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte[] bytes = stream.toByteArray();
-                            intent.putExtra("bitmapbytes",bytes);
+                            if(image!=null)
+                            {
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                byte[] bytes = stream.toByteArray();
+                                intent.putExtra("bitmapbytes",bytes);
+                            }
                             context.startActivity(intent);
                         }
                     });
@@ -287,10 +296,13 @@ public class BubbleAdapter extends BaseAdapter {
                             //extras.putParcelable("imagebitmap", image);
                             //intent.putExtras(extras);
                             Bitmap image = msgList.get(position).getImage();
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte[] bytes = stream.toByteArray();
-                            intent.putExtra("bitmapbytes",bytes);
+                            if(image!=null)
+                            {
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                byte[] bytes = stream.toByteArray();
+                                intent.putExtra("bitmapbytes",bytes);
+                            }
                             context.startActivity(intent);
                         }
                     });

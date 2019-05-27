@@ -42,7 +42,15 @@ public class FullScreenImage  extends Activity {
         //Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");
 
         byte[] bytes = getIntent().getByteArrayExtra("bitmapbytes");
-        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Bitmap bmp=null;
+        if(bytes!=null)
+        {
+            bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+//        else
+//        {
+//            bmp = BitmapFactory.decodeByteArray(bytes, 0, 0);
+//        }
 
         final ImageView imgDisplay = (ImageView) findViewById(R.id.imgDisplay);
         imgDisplay.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
