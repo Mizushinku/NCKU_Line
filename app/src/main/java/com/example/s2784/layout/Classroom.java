@@ -4,6 +4,7 @@ package com.example.s2784.layout;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -21,6 +23,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Classroom extends Chatroom implements OnMenuItemClickListener {
 
@@ -190,8 +193,10 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                 String title = title_et.getText().toString();
                                 TextView date_tv = view.findViewById(R.id.date_tv);
                                 String date = date_tv.getText().toString();
-                                String text = String.format("From : %s,\nAnnouncement : %s\nTitle : %s\nDue : %s",
-                                        roomName, clicked, title, date);
+                                TextView time_tv = view.findViewById(R.id.time_tv);
+                                String time = time_tv.getText().toString();
+                                String text = String.format("From : %s,\nAnnouncement : %s\nTitle : %s\nDue : %s, %s",
+                                        roomName, clicked, title, date, time);
                                 Tabs.annocViewModel.add_annoc(text);
                             }
                         })
@@ -204,6 +209,8 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                         .setCancelable(false)
                         .show();
             }
+
+            //annoc_view = null;
         }
     }
 
@@ -223,10 +230,26 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = String.format("%s-%s-%s", String.valueOf(year), String.valueOf(month+1), String.valueOf(dayOfMonth));
+                String date = String.format(Locale.getDefault(),"%s-%s-%s", year, month+1, dayOfMonth);
                 date_tv.setText(date);
             }
         }, year, month, day).show();
+    }
+
+    public void timePicker(View v) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int hour = calendar.get(java.util.Calendar.HOUR);
+        int min = calendar.get(java.util.Calendar.MINUTE);
+
+        final TextView time_tv = annoc_view.findViewById(R.id.time_tv);
+
+        new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String time = String.format(Locale.getDefault(),"%02d : %02d", hourOfDay, minute);
+                time_tv.setText(time);
+            }
+        }, hour, min, false).show();
     }
 
 }
