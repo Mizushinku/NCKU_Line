@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.sip.SipAudioCall;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CallingOutActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,7 +21,10 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
     private Button buttonSpeaker;
     private Button buttonHangUp;
     private TextView tv_calleeName;
+    private TextView tv_status;
     private ImageView imageViewAvatar;
+    private Long startTime;
+    private Handler handler = new Handler();
 
     private final String TAG = "!CallingOutActivity";
 
@@ -34,6 +37,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         buttonSpeaker = findViewById(R.id.button_speaker);
         buttonHangUp = findViewById(R.id.button_hangup_callingOut);
         tv_calleeName = findViewById(R.id.textView_calleeName);
+        tv_status = findViewById(R.id.textview_calloutMsg);
         imageViewAvatar = findViewById(R.id.imageview_call_out_avatar);
 
         String peerUserName = getIntent().getStringExtra("sipUserName");
@@ -68,6 +72,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         }
         outgoingCall.close();
         Tabs.sipData.call = null;
+        endCount();
         finish();
     }
 
@@ -114,6 +119,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
                     call.startAudio();
                     updateStatus("通話中...");
                     Log.d(TAG, "onCallEstablished");
+                    startCount();
                 }
 
                 @Override
@@ -152,8 +158,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView labelView = findViewById(R.id.textview_calloutMsg);
-                labelView.setText(status);
+                tv_status.setText(status);
             }
         });
     }
@@ -181,5 +186,36 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
+    void startCount(){
+        Log.d("TEST", "start");
+        startTime = System.currentTimeMillis();
+        handler.removeCallbacks(updateTimer);
+        handler.postDelayed(updateTimer, 1000);
+        updateStatus("0:00");
+    }
+
+    void endCount(){
+        Log.d("TEST", "end");
+        handler.removeCallbacks(updateTimer);
+    }
+
+    private Runnable updateTimer = new Runnable() {
+        @Override
+        public void run() {
+            Long spentTime = System.currentTimeMillis() - startTime;
+            Long min = (spentTime/1000)/60;
+            Long sec = (spentTime/1000)%60;
+            String str;
+            if(sec < 10){
+                str = min + ":0" + sec;
+            }else{
+                str = min + ":" + sec;
+            }
+            handler.postDelayed(this, 1000);
+            updateStatus(str);
+            Log.d("TEST", "run");
+        }
+    };
 
 }

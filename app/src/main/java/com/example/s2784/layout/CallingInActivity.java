@@ -3,6 +3,7 @@ package com.example.s2784.layout;
 import android.net.sip.SipAudioCall;
 import android.net.sip.SipProfile;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
@@ -17,12 +18,16 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
 
     private ImageView imageViewAvatar;
     private TextView tv_callerName;
+    private TextView tv_status;
     private Button buttonAnswer;
     private Button buttonCallEnd;
     private Button buttonMute;
     private Button buttonSpeaker;
     private Group groupCallIn;
-    private String TAG = "!CallingInActivity";
+    private Long startTime;
+    private Handler handler = new Handler();
+
+    private final String TAG = "!CallingInActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
 
         imageViewAvatar = findViewById(R.id.imageview_call_in_avatar);
         tv_callerName = findViewById(R.id.textView_callerName);
+        tv_status = findViewById(R.id.textview_callinMsg);
         groupCallIn = findViewById(R.id.group_call_in);
         buttonAnswer = findViewById(R.id.button_answer_callingIn);
         buttonCallEnd = findViewById(R.id.button_hangup_callingIn);
@@ -56,6 +62,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
                 super.onCallEstablished(call);
                 updateStatus("通話中...");
                 Log.d(TAG, "onCallEstablished");
+                startCount();
             }
 
             @Override
@@ -115,8 +122,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView labelView = findViewById(R.id.textview_callinMsg);
-                labelView.setText(status);
+                tv_status.setText(status);
             }
         });
     }
@@ -130,6 +136,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         }
         Tabs.sipData.call.close();
         Tabs.sipData.call = null;
+        endCount();
         finish();
     }
 
@@ -164,4 +171,35 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
+
+    void startCount(){
+        Log.d("TEST", "start");
+        startTime = System.currentTimeMillis();
+        handler.removeCallbacks(updateTimer);
+        handler.postDelayed(updateTimer, 1000);
+        updateStatus("0:00");
+    }
+
+    void endCount(){
+        Log.d("TEST", "end");
+        handler.removeCallbacks(updateTimer);
+    }
+
+    private Runnable updateTimer = new Runnable() {
+        @Override
+        public void run() {
+            Long spentTime = System.currentTimeMillis() - startTime;
+            Long min = (spentTime/1000)/60;
+            Long sec = (spentTime/1000)%60;
+            String str;
+            if(sec < 10){
+                str = min + ":0" + sec;
+            }else{
+                str = min + ":" + sec;
+            }
+            handler.postDelayed(this, 1000);
+            updateStatus(str);
+            Log.d("TEST", "run");
+        }
+    };
 }
