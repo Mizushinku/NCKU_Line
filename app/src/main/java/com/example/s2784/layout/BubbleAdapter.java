@@ -132,7 +132,7 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_img_left_nodate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), "縮放檢視", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, FullScreenImage.class);
 
                             //imageView.buildDrawingCache();
@@ -164,7 +164,7 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_img_left.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), "縮放檢視", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, FullScreenImage.class);
 
                             //imageView.buildDrawingCache();
@@ -254,7 +254,7 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_img_right_nodate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), "縮放檢視", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, FullScreenImage.class);
 
                             //imageView.buildDrawingCache();
@@ -287,7 +287,7 @@ public class BubbleAdapter extends BaseAdapter {
                     bubble_img_right.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(v.getContext(), "放大檢視", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), "縮放檢視", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, FullScreenImage.class);
 
                             //imageView.buildDrawingCache();

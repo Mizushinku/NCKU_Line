@@ -39,13 +39,12 @@ public class SearchView extends AppCompatActivity {
         searchViewBinding = DataBindingUtil.setContentView(this, R.layout.search_view);
 
         //Change status color
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(getColor(R.color.ncku_red));
-                } else {
-                    getWindow().setStatusBarColor(getColor(R.color.ncku_red));
-                }
-                //Change status color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        } else {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
 
 
         adapter_ForSearch = new ListAdapter(friend_and_group_list,this,Tab1.listDataHeader,Tabs.testViewModel.getListHash());

@@ -3,9 +3,11 @@ package com.example.s2784.layout;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.sip.SipAudioCall;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +30,19 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
 
     private final String TAG = "!CallingOutActivity";
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_callingout);
+
+        //Change status color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        } else {
+            getWindow().setStatusBarColor(getColor(R.color.ncku_red));
+        }
+        //Change status color
 
         buttonMute = findViewById(R.id.button_mute);
         buttonSpeaker = findViewById(R.id.button_speaker);

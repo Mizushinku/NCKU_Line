@@ -24,16 +24,20 @@ import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import static com.example.s2784.layout.Tabs.mqtt;
+import static com.example.s2784.layout.Tabs.sipData;
 
 public class Chatroom extends AppCompatActivity implements View.OnClickListener, LinkModule.MListener {
 
     private String group_letters[] = {"群組成員", "邀請好友", "選擇圖片"};
     private int group_icons[] = {R.drawable.group_member, R.drawable.invite_friend, R.drawable.pic};
-    private String friend_letters[] = {"群組成員", "選擇圖片"};
-    private int friend_icons[] = {R.drawable.group_member, R.drawable.pic};
+    private String friend_letters[] = {"群組成員", "選擇圖片", "撥打電話"};
+    private int friend_icons[] = {R.drawable.group_member, R.drawable.pic, R.drawable.call};
 
     protected ImageButton btn;
     protected Button slide_btn;
@@ -78,7 +82,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Tabs.mqtt.setProcessingCode("");
+        mqtt.setProcessingCode("");
     }
 
     @Override
@@ -104,7 +108,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         id = intent.getStringExtra("id");
         roomInfo = intent.getParcelableExtra("roomInfo");
         //設定正在執行的chat room
-        Tabs.mqtt.setProcessingCode(code);
+        mqtt.setProcessingCode(code);
 
         getWindow().setBackgroundDrawableResource(R.drawable.bg5);
         Log.d("TAG", "Create");
@@ -150,7 +154,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //已讀
         SQLiteManager.badgeClear(code);
 
-        if(Tabs.mqtt.isConnected()) {
+        if(mqtt.isConnected()) {
             startCreate();
         }
 
@@ -199,6 +203,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                         case 1:
                             choosePic();
                             break;
+                        case 2:
+                            ToCall();
+                            break;
                         default:
                             Toast.makeText(Chatroom.this, "Wrong", Toast.LENGTH_LONG).show();
                             break;
@@ -216,7 +223,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                     //發送聊天紀錄
                     String text = et.getText().toString().replace("\t", "    ");
                     String msg = code + "\t" + id + "\t" + text;
-                    Tabs.mqtt.SendMessage(msg);
+                    mqtt.SendMessage(msg);
                 }
                 et.setText("");
                 break;
@@ -247,7 +254,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
 
         //拿到聊天紀錄
-        Tabs.mqtt.GetRecord(code);
+        mqtt.GetRecord(code);
 
         bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
         lv.setAdapter(bubbleAdapter);
@@ -260,7 +267,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         if (sender.equals(id)) {
             msgList.add(new Bubble(1, 0, text, sender, time));
         } else {
-            msgList.add(new Bubble(0, 0, text, sender, time, Tabs.mqtt.MapBitmap(sender)));
+            msgList.add(new Bubble(0, 0, text, sender, time, mqtt.MapBitmap(sender)));
         }
         //更新一則訊息
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
@@ -272,7 +279,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         if (sender.equals(id)) {
             msgList.add(new Bubble(1, 1, image, sender, time));
         } else {
-            msgList.add(new Bubble(0, 1, image, sender, time, Tabs.mqtt.MapBitmap(sender)));
+            msgList.add(new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
         }
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
         lv.setSelection(bubbleAdapter.getCount());
@@ -346,6 +353,31 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         startActivityForResult(intent, REQUEST_CODE_CHOOSEPIC);
     }
 
+    protected  void ToCall()
+    {
+        try {
+            if (sipData.manager.isRegistered(sipData.me.getUriString())) {
+                String id = roomInfo.getMemberID().get(1);
+                Intent calloutActivity = new Intent(Chatroom.this, CallingOutActivity.class);
+                calloutActivity.putExtra("sipUserName", mqtt.MapPhoneNum(id));
+                calloutActivity.putExtra("Name", mqtt.MapAlias(id));
+                ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                mqtt.MapBitmap(id).compress(Bitmap.CompressFormat.JPEG,100,bs);
+                calloutActivity.putExtra("avatar", bs.toByteArray());
+
+                startActivity(calloutActivity);
+            }else{
+                sipData.closeLocalProfile();
+                sipData.initializeManager();
+                Toast.makeText(this, "Unregister to sip server!", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e){
+            Log.d("SIP", e.getMessage());
+        }
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode){
@@ -357,7 +389,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 int index = data.getIntExtra("index",-1);
                 String code_member = data.getStringExtra("member");
                 if(msgList.get(index).getData_t() == 0) { // text
-                    Tabs.mqtt.forwardTXT(code_member, msgList.get(index).getTxtMsg());
+                    mqtt.forwardTXT(code_member, msgList.get(index).getTxtMsg());
                 }else {
                     new ForwardIMG(this).execute(msgList.get(index).getImage(), code_member);
                 }
@@ -383,7 +415,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         @Override
         protected Void doInBackground(Uri... params) {
             Uri uri = params[0];
-            Tabs.mqtt.SendImg(uri, roomWeakReference.get().code, R.integer.SEND_IMG_M1);
+            mqtt.SendImg(uri, roomWeakReference.get().code, R.integer.SEND_IMG_M1);
             return null;
         }
 
@@ -425,7 +457,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                     roomWeakReference.get().updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
                 } else if (token_splitLine[3].equals("img")) {
                     roomWeakReference.get().updateImg(token_splitLine[0], null, token_splitLine[2]);
-                    Tabs.mqtt.RecordImgBack(token_splitLine[1], i);
+                    mqtt.RecordImgBack(token_splitLine[1], i);
                 }
                 ++i;
             }
@@ -461,7 +493,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         protected Void doInBackground(Object... params) {
             Bitmap bitmap = (Bitmap) params[0];
             String codes = (String) params[1];
-            Tabs.mqtt.forwardIMG(codes,bitmap);
+            mqtt.forwardIMG(codes,bitmap);
             return null;
         }
 
