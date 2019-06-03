@@ -22,6 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -680,6 +681,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         GetUserData();
                         Initialize();
                         SubmitFCMToken();
+                        getAnnoc();
                     }
 
                     @Override
@@ -983,6 +985,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                 break;
                             case "PubAnnoc":
                                 PubAnnoc_re(new String(message.getPayload()));
+                                break;
+                            case "GetAnnoc":
+                                new GetAnnoc().execute(new String(message.getPayload()));
                                 break;
 
                             default:
@@ -1601,6 +1606,17 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 Toast.makeText(context, getResources().getString(R.string.annoc_fail), Toast.LENGTH_SHORT).show();
             }
         }
+
+        private void getAnnoc()
+        {
+            String topic = "IDF/GetAnnoc/" + user;
+            String MSG = "";
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
     }
     ////////////////////////////////////////////////////////////////////////
     private void networkCheck(NetworkInfo mNetworkInfo){
@@ -1791,6 +1807,28 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         filter.addAction(sipData.intentAction);
         callReceiver = new IncomingCallReceiver();
         this.registerReceiver(callReceiver, filter);
+    }
+
+    protected static class GetAnnoc extends AsyncTask<String, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String[] annoc_list = params[0].split("\t");
+            for(String annoc : annoc_list) {
+                Tabs.annocViewModel.add_annoc(annoc);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+
+        }
     }
 }
 
