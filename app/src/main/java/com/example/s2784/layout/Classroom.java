@@ -175,7 +175,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
     }
 
     @Override
-    public  void onMenuItemClick(View v, int p) {
+    public  void onMenuItemClick(View v,final int p) {
         final String clicked = menuObjects.get(p).getTitle();
         final String roomName = roomInfo.getRoomName();
         if(!clicked.equals(getResources().getString(R.string.cancel))) {
@@ -195,9 +195,11 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                 String date = date_tv.getText().toString();
                                 TextView time_tv = view.findViewById(R.id.time_tv);
                                 String time = time_tv.getText().toString();
-                                String text = String.format("From : %s,\nAnnouncement : %s\nTitle : %s\nDue : %s, %s",
-                                        roomName, clicked, title, date, time);
-                                Tabs.annocViewModel.add_annoc(text);
+                                String text = String.format(Locale.getDefault(),
+                                        "%d\t%s\tFrom : %s\nAnnouncement : %s\nTitle : %s\nDue : %s, %s",
+                                        p, code, roomName, clicked, title, date, time);
+                                //Tabs.annocViewModel.add_annoc(text);
+                                Tabs.mqtt.pubAnnoc(text);
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -980,6 +981,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     Toast.makeText(context, R.string.change_intro_fail, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
+                            case "PubAnnoc":
+                                PubAnnoc_re(new String(message.getPayload()));
+                                break;
 
                             default:
                                 if (idf[1].contains("FriendIcon")) {
@@ -1575,6 +1579,26 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 client.publish(topic, baos.toByteArray(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
+            }
+        }
+
+        public void pubAnnoc(String msg)
+        {
+            String topic = "IDF/PubAnnoc/" + user;
+            try {
+                client.publish(topic, msg.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void PubAnnoc_re(String result)
+        {
+            if(result.equals("OK")) {
+                Toast.makeText(context, getResources().getString(R.string.annoc_OK), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(context, getResources().getString(R.string.annoc_fail), Toast.LENGTH_SHORT).show();
             }
         }
     }

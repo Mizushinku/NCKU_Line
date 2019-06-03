@@ -28,6 +28,8 @@
     <string name="CHANNEL_NAME_AddFriend">Add Friend Notification</string>
     <string name="CHANNEL_ID_AddGroup">2</string>
     <string name="CHANNEL_NAME_AddGroup">Add Group Notification</string>
+    <string name="CHANNEL_ID_ReceiveAnnoc">3</string>
+    <string name="CHANNEL_NAME_ReceiveAnnoc">Receive Announcement Notification</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -53,6 +55,8 @@ u
     <string name="select_date">選擇日期</string>
     <string name="time">時間</string>
     <string name="select_time">選擇時間</string>
+    <string name="annoc_OK">發布公告成功</string>
+    <string name="annoc_fail">發布失敗</string>
 
     <string name="imagedescription">imageDescription</string>
 
