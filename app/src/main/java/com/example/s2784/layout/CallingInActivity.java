@@ -200,9 +200,7 @@ public class CallingInActivity extends AppCompatActivity {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     buttonCallEnd.setVisibility(View.GONE);
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(buttonAnswer.isCompleted() == false) {
-                        buttonCallEnd.setVisibility(View.VISIBLE);
-                    }
+                    buttonCallEnd.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -214,13 +212,56 @@ public class CallingInActivity extends AppCompatActivity {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     buttonAnswer.setVisibility(View.GONE);
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(buttonCallEnd.isCompleted() == false) {
-                        buttonAnswer.setVisibility(View.VISIBLE);
-                    }else{
-                        buttonAnswer.setVisibility(View.GONE);
-                    }
+                    buttonAnswer.setVisibility(View.VISIBLE);
                 }
                 return false;
+            }
+        });
+
+        buttonAnswer.setOnSlideToActAnimationEventListener(new SlideToActView.OnSlideToActAnimationEventListener() {
+            @Override
+            public void onSlideCompleteAnimationStarted(SlideToActView slideToActView, float v) {
+                buttonCallEnd.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlideCompleteAnimationEnded(SlideToActView slideToActView) {
+                buttonCallEnd.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlideResetAnimationStarted(SlideToActView slideToActView) {
+            }
+
+            @Override
+            public void onSlideResetAnimationEnded(SlideToActView slideToActView) {
+            }
+        });
+
+        buttonCallEnd.setOnSlideToActAnimationEventListener(new SlideToActView.OnSlideToActAnimationEventListener() {
+            @Override
+            public void onSlideCompleteAnimationStarted(SlideToActView slideToActView, float v) {
+                buttonAnswer.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlideCompleteAnimationEnded(SlideToActView slideToActView) {
+                buttonAnswer.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlideResetAnimationStarted(SlideToActView slideToActView) {
+            }
+
+            @Override
+            public void onSlideResetAnimationEnded(SlideToActView slideToActView) {
+            }
+        });
+
+        buttonHangup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeCall();
             }
         });
     }
