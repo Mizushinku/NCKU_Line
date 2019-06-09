@@ -198,7 +198,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    void startCount(){
+    private void startCount(){
         Log.d("TEST", "start");
         startTime = System.currentTimeMillis();
         handler.removeCallbacks(updateTimer);
@@ -206,7 +206,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         updateStatus("0:00");
     }
 
-    void endCount(){
+    private void endCount(){
         Log.d("TEST", "end");
         handler.removeCallbacks(updateTimer);
     }

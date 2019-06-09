@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="button_call_in_speaker,button_call_in_mute" />
+        app:constraint_referenced_ids="button_call_in_speaker,button_call_in_mute, button_hangup_callingIn" />
 
     <Button
         android:id="@+id/button_call_in_mute"
@@ -77,19 +77,6 @@
         app:layout_constraintStart_toEndOf="@+id/button_hangup_callingIn" />
 
     <Button
-        android:id="@+id/button_answer_callingIn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/ic_call"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
-        app:layout_constraintVertical_bias="0.8" />
-
-    <Button
         android:id="@+id/button_hangup_callingIn"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -97,10 +84,80 @@
         android:background="@drawable/ic_call_end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
         app:layout_constraintVertical_bias="0.8" />
+
+    <!--<Button-->
+        <!--android:id="@+id/button_answer_callingIn"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:background="@drawable/ic_call"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.15"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"-->
+        <!--app:layout_constraintVertical_bias="0.8" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_hangup_callingIn"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:background="@drawable/ic_call_end"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.85"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"-->
+        <!--app:layout_constraintVertical_bias="0.8" />-->
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slide_btn_answer"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        app:animate_completion="false"
+        app:area_margin="0dp"
+        app:inner_color="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
+        app:layout_constraintVertical_bias="0.8"
+        app:outer_color="@android:color/transparent"
+        app:rotate_icon="false"
+        app:slider_icon="@drawable/ic_call_foreground"
+        app:slider_icon_color="@android:color/white"
+        app:text=">>>"
+        app:text_color="@color/black" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slide_btn_hangup"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        app:slider_icon="@drawable/ic_call_end_foreground"
+        app:slider_icon_color="@android:color/white"
+        app:inner_color="@android:color/holo_red_light"
+        app:outer_color="@color/transparent"
+        app:area_margin="0dp"
+        app:text= "&lt;&lt;&lt;"
+        app:text_color="@color/black"
+        app:slider_reversed="true"
+        android:rotationX="180"
+        app:animate_completion="false"
+        app:rotate_icon="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
+        app:layout_constraintVertical_bias="0.8" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>

@@ -9,20 +9,25 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class CallingInActivity extends AppCompatActivity implements View.OnClickListener {
+import com.ncorti.slidetoact.SlideToActView;
+
+public class CallingInActivity extends AppCompatActivity {
 
     private ImageView imageViewAvatar;
     private TextView tv_callerName;
     private TextView tv_status;
-    private Button buttonAnswer;
-    private Button buttonCallEnd;
+    private SlideToActView buttonAnswer;
+    private SlideToActView buttonCallEnd;
     private Button buttonMute;
     private Button buttonSpeaker;
+    private Button buttonHangup;
     private Group groupCallIn;
     private Long startTime;
     private Handler handler = new Handler();
@@ -38,17 +43,17 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         tv_callerName = findViewById(R.id.textView_callerName);
         tv_status = findViewById(R.id.textview_callinMsg);
         groupCallIn = findViewById(R.id.group_call_in);
-        buttonAnswer = findViewById(R.id.button_answer_callingIn);
-        buttonCallEnd = findViewById(R.id.button_hangup_callingIn);
+        buttonAnswer = findViewById(R.id.slide_btn_answer);
+        buttonCallEnd = findViewById(R.id.slide_btn_hangup);
         buttonMute = findViewById(R.id.button_call_in_mute);
         buttonSpeaker = findViewById(R.id.button_call_in_speaker);
+        buttonHangup = findViewById(R.id.button_hangup_callingIn);
 
         String callerName = getIntent().getStringExtra("callerName");
         tv_callerName.setText(Tabs.mqtt.MapAlias(Tabs.mqtt.MapPhoneNum2ID(callerName)));
         imageViewAvatar.setImageBitmap(Tabs.mqtt.MapBitmap(Tabs.mqtt.MapPhoneNum2ID(callerName)));
 
-        buttonAnswer.setOnClickListener(this);
-        buttonCallEnd.setOnClickListener(this);
+        setBtnListener();
 
         SipAudioCall.Listener listener = new SipAudioCall.Listener(){
             @Override
@@ -92,32 +97,6 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         Tabs.sipData.call.setListener(listener, true);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button_answer_callingIn:
-                changeUI();
-                try{
-                    Tabs.sipData.call.answerCall(30);
-                    Tabs.sipData.call.startAudio();
-                    Tabs.sipData.call.setSpeakerMode(false);
-                    if(Tabs.sipData.call.isMuted()){
-                        Tabs.sipData.call.toggleMute();
-                    }
-                }catch (Exception e){
-                    Tabs.sipData.call.close();
-                    Tabs.sipData.call = null;
-                    Log.d(TAG, "in onClick ANSWER_CALL catch block");
-                }
-                Log.d(TAG, "in onClick ANSWER_CALL");
-                break;
-            case R.id.button_hangup_callingIn:
-                closeCall();
-                break;
-        }
-
-    }
-
     public void updateStatus(final String status){
         this.runOnUiThread(new Runnable() {
             @Override
@@ -142,10 +121,11 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
 
     private void changeUI(){
         buttonAnswer.setVisibility(View.GONE);
+        buttonCallEnd.setVisibility(View.GONE);
         groupCallIn.setVisibility(View.VISIBLE);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) buttonCallEnd.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) buttonHangup.getLayoutParams();
         layoutParams.horizontalBias = 0.5f;
-        buttonCallEnd.setLayoutParams(layoutParams);
+        buttonHangup.setLayoutParams(layoutParams);
     }
 
     public void toggleMute(View view){
@@ -172,7 +152,7 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    void startCount(){
+    private void startCount(){
         Log.d("TEST", "start");
         startTime = System.currentTimeMillis();
         handler.removeCallbacks(updateTimer);
@@ -180,9 +160,69 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
         updateStatus("0:00");
     }
 
-    void endCount(){
+    private void endCount(){
         Log.d("TEST", "end");
         handler.removeCallbacks(updateTimer);
+    }
+
+    private void setBtnListener(){
+        buttonAnswer.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
+            @Override
+            public void onSlideComplete(SlideToActView slideToActView) {
+                changeUI();
+                try{
+                    Tabs.sipData.call.answerCall(30);
+                    Tabs.sipData.call.startAudio();
+                    Tabs.sipData.call.setSpeakerMode(false);
+                    if(Tabs.sipData.call.isMuted()){
+                        Tabs.sipData.call.toggleMute();
+                    }
+                }catch (Exception e){
+                    Tabs.sipData.call.close();
+                    Tabs.sipData.call = null;
+                    Log.d(TAG, "in onClick ANSWER_CALL catch block");
+                }
+                Log.d(TAG, "in onClick ANSWER_CALL");
+            }
+        });
+
+        buttonCallEnd.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
+            @Override
+            public void onSlideComplete(SlideToActView slideToActView) {
+                buttonAnswer.setVisibility(View.GONE);
+                closeCall();
+            }
+        });
+
+        buttonAnswer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    buttonCallEnd.setVisibility(View.GONE);
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(buttonAnswer.isCompleted() == false) {
+                        buttonCallEnd.setVisibility(View.VISIBLE);
+                    }
+                }
+                return false;
+            }
+        });
+
+        buttonCallEnd.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    buttonAnswer.setVisibility(View.GONE);
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(buttonCallEnd.isCompleted() == false) {
+                        buttonAnswer.setVisibility(View.VISIBLE);
+                    }else{
+                        buttonAnswer.setVisibility(View.GONE);
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private Runnable updateTimer = new Runnable() {
@@ -202,4 +242,6 @@ public class CallingInActivity extends AppCompatActivity implements View.OnClick
             Log.d("TEST", "run");
         }
     };
+
+
 }
