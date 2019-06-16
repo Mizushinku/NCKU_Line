@@ -118,13 +118,12 @@
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/slide_btn_answer"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         app:animate_completion="false"
         app:area_margin="0dp"
         app:inner_color="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
         app:layout_constraintVertical_bias="0.8"
@@ -133,12 +132,13 @@
         app:slider_icon="@drawable/ic_call_foreground"
         app:slider_icon_color="@android:color/white"
         app:text=">>>"
-        app:text_color="@color/black" />
+        app:text_color="@color/black"
+        android:layout_marginEnd="108dp"/>
 
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/slide_btn_hangup"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         app:slider_icon="@drawable/ic_call_end_foreground"
         app:slider_icon_color="@android:color/white"
         app:inner_color="@android:color/holo_red_light"
@@ -151,11 +151,11 @@
         app:animate_completion="false"
         app:rotate_icon="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_callinMsg"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.8"
+        android:layout_marginStart="108dp"/>
 
 
 

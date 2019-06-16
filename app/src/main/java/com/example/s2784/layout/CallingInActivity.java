@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ncorti.slidetoact.SlideToActView;
 
@@ -166,6 +165,7 @@ public class CallingInActivity extends AppCompatActivity {
     }
 
     private void setBtnListener(){
+
         buttonAnswer.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
             @Override
             public void onSlideComplete(SlideToActView slideToActView) {
@@ -264,6 +264,7 @@ public class CallingInActivity extends AppCompatActivity {
                 closeCall();
             }
         });
+
     }
 
     private Runnable updateTimer = new Runnable() {
