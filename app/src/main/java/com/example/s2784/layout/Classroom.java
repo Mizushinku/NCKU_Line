@@ -248,7 +248,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
         new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = String.format(Locale.getDefault(),"%02d : %02d", hourOfDay, minute);
+                String time = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
                 time_tv.setText(time);
             }
         }, hour, min, false).show();
