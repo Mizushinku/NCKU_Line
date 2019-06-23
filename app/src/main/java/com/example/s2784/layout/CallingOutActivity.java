@@ -2,6 +2,7 @@ package com.example.s2784.layout;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.sip.SipAudioCall;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
     private ImageView imageViewAvatar;
     private Long startTime;
     private Handler handler = new Handler();
+    private MediaPlayer mp = new MediaPlayer();
+    private int playcnt = 0;
 
     private final String TAG = "!CallingOutActivity";
 
@@ -63,6 +66,12 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         buttonHangUp.setOnClickListener(this);
 
         initiateCall();
+        try {
+            mp = MediaPlayer.create(this, R.raw.ring1);
+            mp.prepare();
+        }catch (Exception e){
+            Log.d(TAG, "ERROR RING Oncreate");
+        }
     }
 
     @Override
@@ -84,6 +93,12 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         outgoingCall.close();
         Tabs.sipData.call = null;
         endCount();
+        try{
+            mp.stop();
+            mp.release();
+        }catch (Exception e){
+            Log.d(TAG, "ERROR RING closeCall");
+        }
         finish();
     }
 
@@ -121,6 +136,7 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
                 public void onRingingBack(SipAudioCall call) {
                     super.onRingingBack(call);
                     updateStatus("撥號中...");
+                    playRingback();
                     Log.d(TAG, "onRingingBack");
                 }
 
@@ -131,6 +147,12 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
                     updateStatus("通話中...");
                     Log.d(TAG, "onCallEstablished");
                     startCount();
+                    try{
+                        mp.stop();
+                        mp.release();
+                    }catch (Exception e){
+                        Log.d(TAG, "ERROR RING onCallEstabished");
+                    }
                 }
 
                 @Override
@@ -229,4 +251,24 @@ public class CallingOutActivity extends AppCompatActivity implements View.OnClic
         }
     };
 
+    private void playRingback(){
+        try {
+            Log.d(TAG, "PLAYING");
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.start();
+                    playcnt++;
+                    Log.d(TAG, "COMPLETE");
+                    if(playcnt == 2) {
+                        updateStatus("無人接聽...");
+                        closeCall();
+                    }
+                }
+            });
+        } catch (Exception e){
+            Log.d(TAG, "ERROR RING platRingback");
+        }
+    }
 }

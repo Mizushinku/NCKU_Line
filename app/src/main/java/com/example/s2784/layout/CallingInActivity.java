@@ -1,7 +1,9 @@
 package com.example.s2784.layout;
 
+import android.media.MediaPlayer;
 import android.net.sip.SipAudioCall;
 import android.net.sip.SipProfile;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -30,6 +32,7 @@ public class CallingInActivity extends AppCompatActivity {
     private Group groupCallIn;
     private Long startTime;
     private Handler handler = new Handler();
+    private MediaPlayer mp = new MediaPlayer();
 
     private final String TAG = "!CallingInActivity";
 
@@ -66,6 +69,12 @@ public class CallingInActivity extends AppCompatActivity {
                 super.onCallEstablished(call);
                 updateStatus("通話中...");
                 Log.d(TAG, "onCallEstablished");
+                try{
+                    mp.stop();
+                    mp.release();
+                }catch (Exception e){
+                    Log.d(TAG, "ERROR RING onCallEstabished");
+                }
                 startCount();
             }
 
@@ -94,6 +103,36 @@ public class CallingInActivity extends AppCompatActivity {
         };
 
         Tabs.sipData.call.setListener(listener, true);
+
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected void onPreExecute() {
+                try {
+                    mp = MediaPlayer.create(getApplicationContext(), R.raw.ring2);
+                    mp.prepare();
+                }catch (Exception e){
+                    Log.d(TAG, "ERROR RING Oncreate");
+                }
+            }
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                try {
+                    mp.start();
+                    mp.setLooping(true);
+                }catch (Exception e){
+                    Log.d(TAG, "ERROR RING PLAY");
+                }
+            }
+        };
+
+        asyncTask.execute();
+
     }
 
     public void updateStatus(final String status){
@@ -115,6 +154,12 @@ public class CallingInActivity extends AppCompatActivity {
         Tabs.sipData.call.close();
         Tabs.sipData.call = null;
         endCount();
+        try{
+            mp.stop();
+            mp.release();
+        }catch (Exception e){
+            Log.d(TAG, "ERROR RING closeCall");
+        }
         finish();
     }
 
