@@ -196,9 +196,46 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                 TextView time_tv = view.findViewById(R.id.time_tv);
                                 String time = time_tv.getText().toString();
                                 String text = String.format(Locale.getDefault(),
-                                        "%d\t%s\tFrom : %s\nAnnouncement : %s\nTitle : %s\nDue : %s, %s",
-                                        p, code, roomName, clicked, title, date, time);
-                                //Tabs.annocViewModel.add_annoc(text);
+                                         "%d\t" +
+                                                "%s\t" +
+                                                "From : %s\nAnnouncement : %s\nTitle : %s\nDue : %s, %s\t" +
+                                                "%s %s:59",
+                                        p, code, roomName, clicked, title, date, time, date, time);
+                                Tabs.mqtt.pubAnnoc(text);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
+            else if(clicked.equals(getResources().getString(R.string.exam)))
+            {
+                final View view = inflater.inflate(R.layout.dialog_annoc_dtplace, null);
+                annoc_view = view;
+                new AlertDialog.Builder(this)
+                        .setView(view)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText title_et = view.findViewById(R.id.title_et);
+                                String title = title_et.getText().toString();
+                                TextView date_tv = view.findViewById(R.id.date_tv);
+                                String date = date_tv.getText().toString();
+                                TextView time_tv = view.findViewById(R.id.time_tv);
+                                String time = time_tv.getText().toString();
+                                EditText place_et = view.findViewById(R.id.place_et);
+                                String place = place_et.getText().toString();
+                                String text = String.format(Locale.getDefault(),
+                                        "%d\t" +
+                                                "%s\t" +
+                                                "From : %s\nAnnouncement : %s\nTitle : %s\ndate : %s, %s\nlocation : %s\t" +
+                                                "%s %s:59",
+                                        p, code, roomName, clicked, title, date, time, place, date, time);
                                 Tabs.mqtt.pubAnnoc(text);
                             }
                         })
