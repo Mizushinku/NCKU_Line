@@ -983,6 +983,15 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     Toast.makeText(context, R.string.change_intro_fail, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
+                            case "ChangeUserPassword":
+                                String MSG = new String(message.getPayload());
+                                if(MSG.split("\t")[0].equals("OK")) {
+                                    SQLiteManager.setPassword(MSG.split("\t")[1]);
+                                    Toast.makeText(context, R.string.change_password_succeed, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, R.string.change_password_fail, Toast.LENGTH_SHORT).show();
+                                }
+                                break;
                             case "PubAnnoc":
                                 PubAnnoc_re(new String(message.getPayload()));
                                 break;
@@ -1567,6 +1576,16 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
+        public void changeUserPassword(String newPassword) {
+            String topic = "IDF/ChangeUserPassword/" + user;
+            String MSG = newPassword;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
         public void forwardTXT(String codes, String MSG) {
             String topic = "IDF/ForwardTXT/" + user + "/" + codes;
             try {
@@ -1746,6 +1765,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         SQLiteManager.deleteAllUser();
                         SQLiteManager.deleteAllBadge();
                         SQLiteManager.deleteAllIntro();
+                        SQLiteManager.deleteAllPassword();
                         Intent intent_Login = new Intent(Tabs.this, LogIn.class);
                         startActivity(intent_Login);
                         finish();

@@ -40,6 +40,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
     private CircleImageView userIcon_tab1;
     private TextView userName_tab1;
     private TextView userIntro;
+    private TextView userPassword;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     public static List<String> listDataHeader;
@@ -80,9 +81,11 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         userIcon_tab1 = (CircleImageView) view.findViewById(R.id.userIcon_tab1);
         userName_tab1 = (TextView) view.findViewById(R.id.userName_tab1);
         userIntro = view.findViewById(R.id.intro);
+        userPassword = view.findViewById(R.id.intro);
 
         userName_tab1.setText(testViewModel.getUserName());
         userIntro.setText(SQLiteManager.getIntro());
+        userPassword.setText(SQLiteManager.getPassword()); //for debug
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
         userIcon_tab1.setOnClickListener(new View.OnClickListener() {

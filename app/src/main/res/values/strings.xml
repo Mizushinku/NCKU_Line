@@ -43,10 +43,17 @@ u
     <string name="change_name_fail">更改名字失敗</string>
     <string name="ok">確認</string>
     <string name="cancel">取消</string>
+
     <string name="default_intro">brief introduction of myself</string>
     <string name="new_intro">新狀態(36字元內)</string>
     <string name="change_intro_succeed">更改狀態成功</string>
     <string name="change_intro_fail">更改狀態失敗</string>
+
+    <string name="default_password">12345678</string>
+    <string name="new_password">新密碼(36字元內)</string>
+    <string name="change_password_succeed">變更密碼成功</string>
+    <string name="change_password_fail">變更密碼失敗</string>
+
     <string name="assignment">作業</string>
     <string name="exam">考試</string>
     <string name="vote">投票</string>

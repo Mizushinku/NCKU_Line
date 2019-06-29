@@ -14,6 +14,7 @@ public class SQLiteManager {
     static private String Badge_table_name = "BADGE";
     static private String Login_table_name = "LOGIN";
     static private String Intro_table_name = "INTRO";
+    static private String Password_table_name = "PASSWORD";
     static private Context ctx;
 
     static public void setContext(Context context){ ctx = context; }
@@ -35,6 +36,11 @@ public class SQLiteManager {
 
     static public void createTableForIntro(){
         String sql = "CREATE TABLE IF NOT EXISTS " + Intro_table_name + "(intro VARCHAR(36))";
+        DB.execSQL(sql);
+    }
+
+    static public void createTableForPassword(){
+        String sql = "CREATE TABLE IF NOT EXISTS " + Password_table_name + "(intro VARCHAR(36))";
         DB.execSQL(sql);
     }
 
@@ -149,6 +155,11 @@ public class SQLiteManager {
         DB.execSQL(sql);
     }
 
+    static public void deleteAllPassword() {
+        String sql = "DELETE FROM " + Password_table_name;
+        DB.execSQL(sql);
+    }
+
     static public String getIntro() {
         String intro;
         Cursor c = DB.rawQuery("SELECT intro FROM " + Intro_table_name + " LIMIT 1", null);
@@ -169,6 +180,33 @@ public class SQLiteManager {
         ContentValues cv = new ContentValues(1);
         cv.put("intro", newIntro);
         int result = DB.update(Intro_table_name, cv, null, null);
+        if(result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    static public String getPassword() {
+        String password;
+        Cursor c = DB.rawQuery("SELECT intro FROM " + Password_table_name + " LIMIT 1", null);
+        if(c.getCount() == 0) {
+            password = ctx.getString(R.string.default_password);
+            ContentValues cv = new ContentValues(1);
+            cv.put("password", password);
+            DB.insert(Password_table_name, null, cv);
+        } else {
+            c.moveToFirst();
+            password = c.getString(0);
+        }
+        c.close();
+        return password;
+    }
+
+    static public boolean setPassword(String newPassword) {
+        ContentValues cv = new ContentValues(1);
+        cv.put("password", newPassword);
+        int result = DB.update(Password_table_name, cv, null, null);
         if(result > 0) {
             return true;
         } else {
