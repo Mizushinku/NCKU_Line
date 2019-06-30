@@ -1,87 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg5"
     tools:context=".Tab1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg5"
-        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/tab1_profile"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
-
+            android:background="@color/transparent"
+            >
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:id="@+id/icon_layout"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:minHeight="0dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/icon_layout"
+                    android:layout_marginLeft="10dp"
+
                     >
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/userIcon_tab1"
-                    android:layout_width="match_parent"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/userIcon_tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        app:civ_border_color="@color/darkgoldenrod"
+                        app:civ_border_width="1dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    app:civ_border_color="@color/darkgoldenrod"
-                    app:civ_border_width="1dp" />
+                    android:orientation="vertical"
+                    android:gravity="left"
+                    android:layout_weight="3"
+                    android:layout_marginLeft="5dp">
+
+                    <TextView
+                        android:id="@+id/userName_tab1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.5"
+                        android:gravity="bottom"
+                        android:text="USER"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/intro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:textColor="@color/darkgrey"
+                        android:text=""
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="left"
-                android:layout_weight="3"
-                android:layout_marginLeft="5dp">
+        </android.support.design.widget.AppBarLayout>
 
-                <TextView
-                    android:id="@+id/userName_tab1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1.5"
-                    android:gravity="bottom"
-                    android:text="USER"
-                    android:textSize="24dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/intro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="top"
-                    android:textColor="@color/darkgrey"
-                    android:text=""
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
+            android:id="@+id/tab1_listview"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
 
             <ExpandableListView
                 android:id="@+id/lvExp"
+                android:nestedScrollingEnabled="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="match_parent"
+                >
             </ExpandableListView>
 
-        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-    </LinearLayout>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

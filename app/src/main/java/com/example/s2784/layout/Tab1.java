@@ -5,12 +5,20 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -47,6 +55,11 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
     private OnFragmentInteractionListener mListener;
     private TestViewModel testViewModel;
     private String userID;
+    private boolean isTopShow = true;
+    private boolean scrollflag = false;
+    private int lastVisibleItemPosition = 0; // 上次滑動初始位置
+    private int visiblePosition;
+    private LinearLayoutManager linearLayoutManager;
     public Tab1() {
         // Required empty public constructor
     }
@@ -69,6 +82,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +99,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 
         userName_tab1.setText(testViewModel.getUserName());
         userIntro.setText(SQLiteManager.getIntro());
-        userPassword.setText(SQLiteManager.getPassword()); //for debug
+//        userPassword.setText(SQLiteManager.getPassword()); //for debug
 //        Log.d("NAME","NAME:" + userName_tab1.getText());
         userIcon_tab1.setImageBitmap(testViewModel.getUserIcon());
         userIcon_tab1.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +121,73 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         for (int i = 0; i < 3; i++) {
             listView.expandGroup(i);
         }
+
+        final AppBarLayout tab1_profile = view.findViewById(R.id.tab1_profile);
+
+//        final CoordinatorLayout tab1_layout = view.findViewById(R.id.tab1_layout);
+//        final LinearLayout tab1_listview = view.findViewById(R.id.tab1_listview);
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+//                    visiblePosition = listView.getFirstVisiblePosition();
+//                    if (visiblePosition == 0) {
+//                        tab1_profile.setExpanded(true,true);
+//                    }
+//                }
+
+//                switch (scrollState) {
+//                    // 螢幕不滾動時
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+//                        scrollflag = false;
+//                        // 判斷滾到底部
+//                        if (actualListView.getLastVisiblePosition() == (actualListView
+//                                .getCount() - 1)) {
+//
+//                        }
+//                         判斷滾到頂部
+//                        if (actualListView.getFirstVisiblePosition() == 0) {
+////
+////                        }
+
+//                        break;
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:// 滾動時
+//                        scrollflag = true;
+//                        break;
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+//                        // 快速滑動時
+//                        scrollflag = true;
+//                        break;
+//                }
+
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+//                //当滑动时
+//                if (scrollflag) {
+//                    if (firstVisibleItem < lastVisibleItemPosition) {
+//                        // 上滑跑出來
+//                        tab1_layout.animate().translationY(0);
+//                        tab1_listview.getLayoutParams().height = tab1_layout.getHeight();
+//
+//
+//                        isTopShow = true;
+//                    } else if (firstVisibleItem > lastVisibleItemPosition) {
+//                        // 下滑收起來
+//                        tab1_listview.getLayoutParams().height = tab1_layout.getHeight();
+//
+//                        tab1_layout.animate().translationY(-tab1_profile.getHeight()).setDuration(200);
+//                        isTopShow = false;
+//                    } else {
+//                        return;
+//                    }
+//                    lastVisibleItemPosition = firstVisibleItem;//更新位置
+
+
+
+//            }
+//        });
 
 //        listView.expandGroup(0);
 //        listView.expandGroup(1);
