@@ -1,6 +1,5 @@
 package com.example.s2784.layout;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
@@ -297,7 +294,7 @@ public class Tab4 extends Fragment implements View.OnClickListener {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText et_newPassword = view.findViewById(R.id.et_newIntro);
+                        EditText et_newPassword = view.findViewById(R.id.et_newPassword);
                         String newPassword = et_newPassword.getText().toString();
                         Tabs.mqtt.changeUserPassword(newPassword);
                         /*

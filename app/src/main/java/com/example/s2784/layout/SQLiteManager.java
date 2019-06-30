@@ -40,7 +40,7 @@ public class SQLiteManager {
     }
 
     static public void createTableForPassword(){
-        String sql = "CREATE TABLE IF NOT EXISTS " + Password_table_name + "(intro VARCHAR(36))";
+        String sql = "CREATE TABLE IF NOT EXISTS " + Password_table_name + "(password VARCHAR(36))";
         DB.execSQL(sql);
     }
 
@@ -189,7 +189,7 @@ public class SQLiteManager {
 
     static public String getPassword() {
         String password;
-        Cursor c = DB.rawQuery("SELECT intro FROM " + Password_table_name + " LIMIT 1", null);
+        Cursor c = DB.rawQuery("SELECT password FROM " + Password_table_name + " LIMIT 1", null);
         if(c.getCount() == 0) {
             password = ctx.getString(R.string.default_password);
             ContentValues cv = new ContentValues(1);
