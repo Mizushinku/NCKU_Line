@@ -43,13 +43,24 @@ public class AnnocListAdapter extends BaseAdapter {
         String text = (String)getItem(position);
 
         if(rowView == null) {
-            rowView = inflater.inflate(R.layout.tab3_base_list_item, null);
+            if(getAnnocType(text).equals(context.getResources().getString(R.string.vote)))
+            {
+                rowView = inflater.inflate(R.layout.tab3_vote_list_item,  null);
+            }
+            else {
+                rowView = inflater.inflate(R.layout.tab3_base_list_item, null);
+            }
         }
 
         TextView textView = rowView.findViewById(R.id.item_tv);
         textView.setText(text);
 
         return rowView;
+    }
+
+    private String getAnnocType(String text)
+    {
+        return text.split("\n")[1].split(" : ")[1];
     }
 
 }

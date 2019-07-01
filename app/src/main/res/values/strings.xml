@@ -59,12 +59,16 @@ u
     <string name="vote">投票</string>
     <string name="title">標題</string>
     <string name="place">地點</string>
+    <string name="content">內文</string>
     <string name="date">日期</string>
     <string name="select_date">選擇日期</string>
     <string name="time">時間</string>
     <string name="select_time">選擇時間</string>
     <string name="annoc_OK">發布公告成功</string>
     <string name="annoc_fail">發布失敗</string>
+
+    <string name="yes">同意</string>
+    <string name="no">不同意</string>
 
     <string name="imagedescription">imageDescription</string>
 
