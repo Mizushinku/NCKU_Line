@@ -768,7 +768,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     roomInfo.setType("F");
                                     roomInfoList.add(roomInfo);
                                     aliasMap.put(roomInfo.getStudentID(),roomInfo.getRoomName());
-                                    GetFriendIcon("Add", addFriend_info[2], addFriend_info[4]);
+                                    phoneMap.put(roomInfo.getStudentID(),addFriend_info[4]);
+                                    GetFriendIcon("Add", addFriend_info[2], addFriend_info[5]);
                                 } else if (addFriend_info[0].equals("false")) {
                                     Toast.makeText(Tabs.this, "加入好友失敗", Toast.LENGTH_SHORT).show();
                                 }
