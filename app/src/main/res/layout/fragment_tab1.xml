@@ -19,8 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:minHeight="0dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
                 >
                 <LinearLayout
                     android:layout_width="0dp"

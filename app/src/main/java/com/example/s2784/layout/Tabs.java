@@ -196,6 +196,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
         final TextView mainTitle = findViewById(R.id.mainTitle);
         mainTitle.setText("好友&群組");
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
