@@ -125,7 +125,7 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
         final AppBarLayout tab1_profile = view.findViewById(R.id.tab1_profile);
 
 //        final CoordinatorLayout tab1_layout = view.findViewById(R.id.tab1_layout);
-//        final LinearLayout tab1_listview = view.findViewById(R.id.tab1_listview);
+//        final LinearLayout  = view.findViewById(R.id.);
 //        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -169,13 +169,13 @@ public class Tab1 extends Fragment implements Tab1_CM.CtrlUnit {
 //                    if (firstVisibleItem < lastVisibleItemPosition) {
 //                        // 上滑跑出來
 //                        tab1_layout.animate().translationY(0);
-//                        tab1_listview.getLayoutParams().height = tab1_layout.getHeight();
+//                        .getLayoutParams().height = tab1_layout.getHeight();
 //
 //
 //                        isTopShow = true;
 //                    } else if (firstVisibleItem > lastVisibleItemPosition) {
 //                        // 下滑收起來
-//                        tab1_listview.getLayoutParams().height = tab1_layout.getHeight();
+//                        .getLayoutParams().height = tab1_layout.getHeight();
 //
 //                        tab1_layout.animate().translationY(-tab1_profile.getHeight()).setDuration(200);
 //                        isTopShow = false;

@@ -72,9 +72,8 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:background="@color/ncku_red"
-            android:minHeight="?android:attr/actionBarSize"
             app:tabIndicatorColor="@color/ncku_red"
 
             ></android.support.design.widget.TabLayout>

@@ -75,7 +75,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     private ConnectivityManager mConnectivityManager;
     private QBadgeView qBadgeView;
     private MyBroadcastReceiver receiver;
-
+    private int[] tab_selector = {R.drawable.tab1_img_selector,R.drawable.tab2_img_selector,R.drawable.tab3_img_selector,R.drawable.tab4_img_selector};
+    private int[] tab_layout ={R.layout.layout_tab,R.layout.layout_tab_2,R.layout.layout_tab_3,R.layout.layout_tab_4};
+    private String[] tab_text = {"個人頁面","聊天","公佈欄","其他"};
 //    private String tab_string[] = {"個人頁面","聊天","公佈欄","其他"};
 //    private int tab_icon_light[] = {R.drawable.friend,R.drawable.chat,R.drawable.news,R.drawable.setting};
 //    private int tab_icon_dark[] = {R.drawable.friend_inactive,R.drawable.chat_inactive,R.drawable.news_inactive,R.drawable.setting_inactive};
@@ -95,6 +97,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
     public static Mqtt_Client mqtt;
     public static SipData sipData;
     public IncomingCallReceiver callReceiver;
+
+
+    private View view_tmp;
+    private TextView textView_tmp;
+    private ImageView imageView_tmp;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -177,13 +184,29 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         tabLayout.setTabTextColors(getResources().getColor(R.color.tabs_pic_inactive), getResources().getColor(R.color.white));
 
         // tab1 add view
-        View view = getLayoutInflater().inflate(R.layout.layout_tab,null);
-        final TextView textView = view.findViewById(R.id.tab_TextView);
-        ImageView imageView = view.findViewById(R.id.tab_imageView);
-        textView.setText("聊天");
-        textView.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
-        imageView.setImageResource(R.drawable.chat_inactive);
-        tabLayout.getTabAt(1).setCustomView(view);
+        View view;
+        TextView textView;
+        ImageView  imageView;
+
+        for(int i = 0;i<tabLayout.getTabCount();i++){
+            view = getLayoutInflater().inflate(tab_layout[i],null);
+            textView = view.findViewById(R.id.tab_TextView);
+            imageView = view.findViewById(R.id.tab_imageView);
+            textView.setText(tab_text[i]);
+            imageView.setBackground(getDrawable(tab_selector[i]));
+            tabLayout.getTabAt(i).setCustomView(view);
+        }
+//        textView.setText("聊天");
+////        textView.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+//        imageView.setImageResource(R.drawable.chat_inactive);
+//        tabLayout.getTabAt(1).setCustomView(view);
+//
+//        for(int i = 0;i<tabLayout.getTabCount();i++){
+//            if(i==1)
+//                break;;
+//            textView.setText(tab_text[i]);
+//            im
+//        }
 
         //badge test
         qBadgeView = new QBadgeView(getBaseContext());
@@ -208,55 +231,54 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
             @Override
             public void onPageSelected(int position) {
-                View view_tmp;
-                TextView textView_tmp;
-                ImageView imageView_tmp;
-                switch (position) {
-                    case 0:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.friend);
-                        view_tmp = tabLayout.getTabAt(1).getCustomView();
-                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
-                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
-                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
-                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                        mainTitle.setText("好友&群組");
-                        break;
-                    case 1:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        view_tmp = tabLayout.getTabAt(1).getCustomView();
-                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
-                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
-                        textView_tmp.setTextColor(getResources().getColor(R.color.white));
-                        imageView_tmp.setImageResource(R.drawable.chat);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                        mainTitle.setText("聊天室");
-                        break;
-                    case 2:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        view_tmp = tabLayout.getTabAt(1).getCustomView();
-                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
-                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
-                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
-                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.news);
-                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
-                        mainTitle.setText("公佈欄");
-                        break;
-                    case 3:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
-                        view_tmp = tabLayout.getTabAt(1).getCustomView();
-                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
-                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
-                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
-                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
-                        tabLayout.getTabAt(3).setIcon(R.drawable.setting);
-                        mainTitle.setText("其他");
-                        break;
-                }
+
+//                switch (position) {
+//                    case 0:
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.friend);
+//                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+//                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+//                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+//                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+//                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+//                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+//                        mainTitle.setText("好友&群組");
+//                        break;
+//                    case 1:
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+//                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+//                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+//                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+//                        textView_tmp.setTextColor(getResources().getColor(R.color.white));
+//                        imageView_tmp.setImageResource(R.drawable.chat);
+//
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+//                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+//                        mainTitle.setText("聊天室");
+//                        break;
+//                    case 2:
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+//                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+//                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+//                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+//                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+//                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.news);
+//                        tabLayout.getTabAt(3).setIcon(R.drawable.setting_inactive);
+//                        mainTitle.setText("公佈欄");
+//                        break;
+//                    case 3:
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.friend_inactive);
+//                        view_tmp = tabLayout.getTabAt(1).getCustomView();
+//                        textView_tmp = view_tmp.findViewById(R.id.tab_TextView);
+//                        imageView_tmp = view_tmp.findViewById(R.id.tab_imageView);
+//                        textView_tmp.setTextColor(getResources().getColor(R.color.tabs_pic_inactive));
+//                        imageView_tmp.setImageResource(R.drawable.chat_inactive);
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.news_inactive);
+//                        tabLayout.getTabAt(3).setIcon(R.drawable.setting);
+//                        mainTitle.setText("其他");
+//                        break;
+//                }
             }
 
             @Override
