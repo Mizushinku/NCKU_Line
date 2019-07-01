@@ -86,7 +86,8 @@ public class LogIn extends AppCompatActivity {
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            mqtt.Login(login_et.getText().toString().trim().toUpperCase());
+                        mqtt.Login(login_et.getText().toString().trim().toUpperCase());
+                        mqtt.LoginWithPassword(pw_et.getText().toString().trim());
                         login_et.setText("");
                         pw_et.setText("");
                         /*
@@ -335,6 +336,16 @@ public class LogIn extends AppCompatActivity {
         public void Login(String id){
             String topic = "IDF/Login/" + user;
             String MSG = id;
+            try {
+                client.publish(topic,MSG.getBytes(),0,false);
+            }catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void LoginWithPassword(String password){
+            String topic = "IDF/LoginWithPassword/" + user;
+            String MSG = password;
             try {
                 client.publish(topic,MSG.getBytes(),0,false);
             }catch (MqttException e) {
