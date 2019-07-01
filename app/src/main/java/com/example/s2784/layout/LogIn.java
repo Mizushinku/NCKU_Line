@@ -86,8 +86,7 @@ public class LogIn extends AppCompatActivity {
                 btn_logIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mqtt.Login(login_et.getText().toString().trim().toUpperCase());
-                        mqtt.LoginWithPassword(pw_et.getText().toString().trim());
+                        mqtt.LoginWithPassword(login_et.getText().toString().trim().toUpperCase(), pw_et.getText().toString().trim());
                         login_et.setText("");
                         pw_et.setText("");
                         /*
@@ -261,9 +260,9 @@ public class LogIn extends AppCompatActivity {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String[] idf = topic.split("/");
+                    String msg[] = new String(message.getPayload()).split(",");
                     switch (idf[1]){
                         case "Login":
-                            String msg[] = new String(message.getPayload()).split(",");
                             if(msg[0].equals("True")){
                                 // Go Main page
                                 LayoutInflater inflater = getLayoutInflater();
@@ -278,14 +277,47 @@ public class LogIn extends AppCompatActivity {
                                 Toast toast = new Toast(getApplicationContext());
                                 toast.setView(layout);
                                 toast.show();
-//                                Toast.makeText(LogIn.this,"登入成功", Toast.LENGTH_SHORT).show();
                                 SQLiteManager.addUser(msg[1]);
                                 Intent mainIntent = new Intent(LogIn.this,Tabs.class);
                                 mainIntent.putExtra("userID",msg[1]);
                                 startActivity(mainIntent);
                                 finish();
                             }else if(msg[0].equals("False")){
-//                                Toast.makeText(LogIn.this,"登入失敗", Toast.LENGTH_SHORT).show();
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.warning_toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+                                ImageView image = (ImageView) layout.findViewById(R.id.image);
+                                image.setImageResource(R.drawable.warning);
+                                TextView text = (TextView) layout.findViewById(R.id.text);
+                                text.setText("登入失敗!");
+
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setView(layout);
+                                toast.show();
+                            }
+                            break;
+                        case "LoginWithPassword" :
+                            if(msg[0].equals("True")){
+                                // Go Main page
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.success_toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+                                ImageView image = (ImageView) layout.findViewById(R.id.image);
+                                image.setImageResource(R.drawable.success);
+                                TextView text = (TextView) layout.findViewById(R.id.text);
+                                text.setText("登入成功");
+
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setView(layout);
+                                toast.show();
+                                SQLiteManager.addUser(msg[1]);
+                                Intent mainIntent = new Intent(LogIn.this,Tabs.class);
+                                mainIntent.putExtra("userID",msg[1]);
+                                startActivity(mainIntent);
+                                finish();
+                            }else if(msg[0].equals("False")){
                                 LayoutInflater inflater = getLayoutInflater();
                                 View layout = inflater.inflate(R.layout.warning_toast,
                                         (ViewGroup) findViewById(R.id.toast_layout_root));
@@ -328,6 +360,8 @@ public class LogIn extends AppCompatActivity {
             try {
                 String topic = "IDF/Login/" + user + "/Re";
                 client.subscribe(topic,2);
+                topic = "IDF/LoginWithPassword/" + user + "/Re";
+                client.subscribe(topic,2);
             }catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -343,9 +377,9 @@ public class LogIn extends AppCompatActivity {
             }
         }
 
-        public void LoginWithPassword(String password){
+        public void LoginWithPassword(String userID, String password){
             String topic = "IDF/LoginWithPassword/" + user;
-            String MSG = password;
+            String MSG = userID + "\t" + password;
             try {
                 client.publish(topic,MSG.getBytes(),0,false);
             }catch (MqttException e) {
