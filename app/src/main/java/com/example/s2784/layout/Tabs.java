@@ -1022,6 +1022,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                             case "GetAnnoc":
                                 new GetAnnoc().execute(new String(message.getPayload()));
                                 break;
+                            case "Voting" :
+                                voting_re(new String(message.getPayload()));
+                                break;
 
                             default:
                                 if (idf[1].contains("FriendIcon")) {
@@ -1658,6 +1661,27 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 client.publish(topic, MSG.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
+            }
+        }
+
+        public void voting(int pk, int selected)
+        {
+            String topic = "IDF/Voting/" + user;
+            String MSG = pk + "\t" + selected;
+            try {
+                client.publish(topic, MSG.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void voting_re(String res)
+        {
+            if(res.equals("OK")) {
+                Toast.makeText(context, R.string.voting_s, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(context, R.string.voting_f, Toast.LENGTH_SHORT).show();
             }
         }
     }

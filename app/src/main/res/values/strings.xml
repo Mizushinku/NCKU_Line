@@ -69,6 +69,9 @@ u
 
     <string name="yes">同意</string>
     <string name="no">不同意</string>
+    <string name="sure_vote">確定投票嗎?</string>
+    <string name="voting_s">投票成功 :D</string>
+    <string name="voting_f">投票失敗 :(</string>
 
     <string name="imagedescription">imageDescription</string>
 

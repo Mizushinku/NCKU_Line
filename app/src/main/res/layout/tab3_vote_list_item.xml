@@ -20,13 +20,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/yes_btn"
+            android:layout_marginEnd="10dp"
             android:text="@string/yes"
             />
 
@@ -34,7 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/no_btn"
-            android:text="@string/no"/>
+            android:layout_marginStart="10dp"
+            android:text="@string/no"
+            />
 
     </LinearLayout>
 
