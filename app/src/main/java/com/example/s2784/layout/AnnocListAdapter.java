@@ -45,12 +45,19 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
     @Override
     public View getView(final int position, View rowView, ViewGroup parent) {
         String text = (String)getItem(position);
-        boolean isVote = false;
+        boolean isVote = false, hasVoted = false;
 
         if(rowView == null) {
             if(getAnnocType(text).equals(context.getResources().getString(R.string.vote)))
             {
-                rowView = inflater.inflate(R.layout.tab3_vote_list_item,  null);
+                int pk = Integer.parseInt(text.split("\n")[0]);
+                if(SQLiteManager.queryForVote(pk)) {
+                    hasVoted = true;
+                    rowView = inflater.inflate(R.layout.tab3_voted_list_item, null);
+                }
+                else {
+                    rowView = inflater.inflate(R.layout.tab3_vote_list_item, null);
+                }
                 isVote = true;
             }
             else {
@@ -60,7 +67,7 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
 
         TextView textView = rowView.findViewById(R.id.item_tv);
         textView.setText(text);
-        if(isVote) {
+        if(isVote && !hasVoted) {
             Button yes_btn = rowView.findViewById(R.id.yes_btn);
             yes_btn.setOnClickListener(this);
             yes_btn.setTag(position);

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Locale;
+
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class SQLiteManager {
@@ -15,6 +17,7 @@ public class SQLiteManager {
     static private String Login_table_name = "LOGIN";
     static private String Intro_table_name = "INTRO";
     static private String Password_table_name = "PASSWORD";
+    static private String vote_table_name = "VOTE";
     static private Context ctx;
 
     static public void setContext(Context context){ ctx = context; }
@@ -41,6 +44,11 @@ public class SQLiteManager {
 
     static public void createTableForPassword(){
         String sql = "CREATE TABLE IF NOT EXISTS " + Password_table_name + "(password VARCHAR(36))";
+        DB.execSQL(sql);
+    }
+
+    static public void createTableForVote() {
+        String sql = "CREATE TABLE IF NOT EXISTS " + vote_table_name + "(annoc_pk int(10))";
         DB.execSQL(sql);
     }
 
@@ -210,6 +218,29 @@ public class SQLiteManager {
         if(result > 0) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    static public void insertVoteRes(int annoc_pk)
+    {
+        ContentValues cv = new ContentValues(1);
+        cv.put("annoc_pk", annoc_pk);
+        DB.insert(vote_table_name, null, cv);
+    }
+
+    static public boolean queryForVote(int pk)
+    {
+        String sql = String.format(Locale.getDefault(),
+                "SELECT null FROM %s WHERE annoc_pk = '%d'",
+                vote_table_name, pk);
+        Cursor c = DB.rawQuery(sql, null);
+        if(c.getCount() > 0) {
+            c.close();
+            return true;
+        }
+        else {
+            c.close();
             return false;
         }
     }
