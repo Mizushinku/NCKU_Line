@@ -114,6 +114,12 @@ public class Tab3 extends Fragment implements Tab3_CM.CtrlUnit{
         this.annocListAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void refresh_one_with_pk(int pk) {
+        this.annocListAdapter.setChanged_pk(pk);
+        this.annocListAdapter.notifyDataSetChanged();
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

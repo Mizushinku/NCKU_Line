@@ -22,6 +22,7 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
 
     private ArrayList<String> text_list;
     private HashMap<Integer, String> MC_map = new HashMap<>();
+    private int changed_pk = -1;
 
     public AnnocListAdapter(Context context, ArrayList<String> list) {
         this.context = context;
@@ -48,14 +49,15 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
     public View getView(final int position, View rowView, ViewGroup parent) {
         String text = (String)getItem(position);
         boolean isVote = false, hasVoted = false, isMCV = false;
+        int pk = Integer.parseInt(text.split("\n")[0]);
 
         if(rowView == null) {
             if(getAnnocType(text).equals(context.getResources().getString(R.string.vote)))
             {
-                int pk = Integer.parseInt(text.split("\n")[0]);
                 if(SQLiteManager.queryForVote(pk)) {
                     hasVoted = true;
                     rowView = inflater.inflate(R.layout.tab3_voted_list_item, null);
+                    Log.d("SQL", String.format("pk = %d, change view!", pk));
                     if(text.split(":::").length >= 2) {
                         isMCV = true;
                     }
@@ -76,19 +78,21 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
                 rowView = inflater.inflate(R.layout.tab3_base_list_item, null);
             }
         }
-        else {
+        else if(pk == this.changed_pk){
             if(getAnnocType(text).equals(context.getResources().getString(R.string.vote)))
             {
-                int pk = Integer.parseInt(text.split("\n")[0]);
                 if(SQLiteManager.queryForVote(pk)) {
                     hasVoted = true;
                     rowView = inflater.inflate(R.layout.tab3_voted_list_item, null);
+                    Log.d("SQL", String.format("pk = %d, change view!!!", pk));
                     if(text.split(":::").length >= 2) {
                         isMCV = true;
                     }
                 }
             }
+            changed_pk = -1;
         }
+
 
         TextView textView = rowView.findViewById(R.id.item_tv);
         textView.setText(text.split(":::")[0]);
@@ -174,6 +178,11 @@ public class AnnocListAdapter extends BaseAdapter implements View.OnClickListene
                     }
                 })
                 .show();
+    }
+
+    public void setChanged_pk(int changingPK)
+    {
+        this.changed_pk = changingPK;
     }
 
 }

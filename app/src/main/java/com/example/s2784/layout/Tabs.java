@@ -1683,7 +1683,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             if(res.equals("OK")) {
                 Toast.makeText(context, R.string.voting_s, Toast.LENGTH_SHORT).show();
                 SQLiteManager.insertVoteRes(pk);
-                Tab3_CM.getInstance().refreshLv();
+                Tab3_CM.getInstance().refresh_one_with_pk(pk);
             }
             else {
                 Toast.makeText(context, R.string.voting_f, Toast.LENGTH_SHORT).show();

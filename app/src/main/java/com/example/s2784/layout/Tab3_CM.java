@@ -4,6 +4,7 @@ public class Tab3_CM {
 
     public interface CtrlUnit {
         void refreshLv();
+        void refresh_one_with_pk(int pk);
     }
 
     private static Tab3_CM mInstance;
@@ -24,5 +25,9 @@ public class Tab3_CM {
 
     public void refreshLv() {
         ctrlUnit.refreshLv();
+    }
+
+    public void refresh_one_with_pk(int pk) {
+        ctrlUnit.refresh_one_with_pk(pk);
     }
 }
