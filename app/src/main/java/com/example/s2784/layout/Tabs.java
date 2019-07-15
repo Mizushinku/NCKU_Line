@@ -1683,6 +1683,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             if(res.equals("OK")) {
                 Toast.makeText(context, R.string.voting_s, Toast.LENGTH_SHORT).show();
                 SQLiteManager.insertVoteRes(pk);
+                Tab3_CM.getInstance().refreshLv();
             }
             else {
                 Toast.makeText(context, R.string.voting_f, Toast.LENGTH_SHORT).show();
@@ -1892,6 +1893,8 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
         @Override
         protected Void doInBackground(String... params) {
             String[] annoc_list = params[0].split("\t");
+            Log.d("VOTE", "In Async");
+
             for(String annoc : annoc_list) {
                 Tabs.annocViewModel.add_annoc(annoc);
             }
