@@ -8,11 +8,16 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,6 +57,8 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
     private ArrayList<MenuObject> menuObjects;
 
     private View annoc_view = null;
+    private String candidates = "";
+
 
     //onCreate -> startCreate -> setAuth
 
@@ -252,7 +259,13 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
             {
                 final View view = inflater.inflate(R.layout.dialog_annoc_vote, null);
                 annoc_view = view;
-                new AlertDialog.Builder(this)
+
+                final RadioButton MC_rb = view.findViewById(R.id.MC_rb);
+                RadioGroup MC_rg = view.findViewById(R.id.vote_rg);
+                MC_rg.setOnCheckedChangeListener(rg_onClickChanged);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
                         .setView(view)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -265,13 +278,28 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                 String time = time_tv.getText().toString();
                                 EditText content_et = view.findViewById(R.id.content_et);
                                 String content = content_et.getText().toString();
+
                                 String text = String.format(Locale.getDefault(),
                                         "%d\t" +
                                                 "%s\t" +
                                                 "From : %s\nAnnouncement : %s\nTitle : %s\ncontent : %s\nDue : %s, %s\t" +
                                                 "%s %s:59",
                                         p, code, roomName, clicked, title, content, date, time, date, time);
-                                Tabs.mqtt.pubAnnoc(text);
+
+                                if(MC_rb.isChecked()) {
+                                    if(!candidates.equals("")) {
+                                        text = String.format("%s\tMC\t%s", text, candidates);
+                                        Tabs.mqtt.pubAnnoc(text);
+                                    }
+                                    else {
+                                        Toast.makeText(Classroom.this, R.string.MCEM3, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                else {
+                                    text = String.format("%s\tAD", text);
+                                    Tabs.mqtt.pubAnnoc(text);
+                                }
+                                candidates = "";
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -324,6 +352,78 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                 time_tv.setText(time);
             }
         }, hour, min, false).show();
+    }
+
+    private RadioGroup.OnCheckedChangeListener rg_onClickChanged =
+            new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if(checkedId == R.id.MC_rb) {
+                        make_MCVote_item();
+                    }
+                }
+            };
+
+    private void make_MCVote_item()
+    {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View view = inflater.inflate(R.layout.dialog_mc_items, null);
+
+        ArrayList<String> items = new ArrayList<>();
+
+        final ListView listView = view.findViewById(R.id.mc_items_lv);
+        final MCItemsAdapter mcItemsAdapter = new MCItemsAdapter(this, items);
+        listView.setAdapter(mcItemsAdapter);
+
+        final EditText mc_item_et = view.findViewById(R.id.mc_item_et);
+        ImageButton mc_add_btn = view.findViewById(R.id.mc_add_btn);
+        mc_add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String item = mc_item_et.getText().toString().replaceAll("[\n\t]", "");
+                if(item.length() == 0) {
+                    Toast.makeText(Classroom.this, R.string.MCEM1, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    mcItemsAdapter.add_item(item);
+                    mcItemsAdapter.notifyDataSetChanged();
+                    mc_item_et.setText("");
+                }
+            }
+        });
+
+        final EditText flag = new EditText(Classroom.this);
+        final EditText tmp = new EditText(Classroom.this);
+        new AlertDialog.Builder(this)
+                .setView(view)
+                .setTitle(R.string.MCDT)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(mcItemsAdapter.getCount() < 2) {
+                            Toast.makeText(Classroom.this, R.string.MCEM2, Toast.LENGTH_LONG).show();
+                            flag.setText("0");
+                        }
+                        else {
+                            String cand = (String)mcItemsAdapter.getItem(0);
+                            for(int i = 1; i < mcItemsAdapter.getCount(); ++i) {
+                                cand = String.format("%s\n%s", cand, (String)mcItemsAdapter.getItem(i));
+                            }
+                            flag.setText("1");
+                            tmp.setText(cand);
+                            candidates = tmp.getText().toString();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        flag.setText("0");
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
 }

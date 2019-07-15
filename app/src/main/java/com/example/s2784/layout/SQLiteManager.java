@@ -168,6 +168,11 @@ public class SQLiteManager {
         DB.execSQL(sql);
     }
 
+    static public void deleteAllVote() {
+        String sql = "DELETE FROM " + vote_table_name;
+        DB.execSQL(sql);
+    }
+
     static public String getIntro() {
         String intro;
         Cursor c = DB.rawQuery("SELECT intro FROM " + Intro_table_name + " LIMIT 1", null);
@@ -235,6 +240,8 @@ public class SQLiteManager {
                 "SELECT null FROM %s WHERE annoc_pk = '%d'",
                 vote_table_name, pk);
         Cursor c = DB.rawQuery(sql, null);
+        Log.d("SQL", String.format("pk = %d, count = %d\n", pk, c.getCount()));
+
         if(c.getCount() > 0) {
             c.close();
             return true;

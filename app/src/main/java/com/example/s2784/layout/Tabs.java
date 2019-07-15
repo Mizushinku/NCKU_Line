@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Handler;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -1817,6 +1818,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                         SQLiteManager.deleteAllBadge();
                         SQLiteManager.deleteAllIntro();
                         SQLiteManager.deleteAllPassword();
+                        SQLiteManager.deleteAllVote();
                         Intent intent_Login = new Intent(Tabs.this, LogIn.class);
                         startActivity(intent_Login);
                         finish();
@@ -1894,6 +1896,12 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                 Tabs.annocViewModel.add_annoc(annoc);
             }
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... params) {
+            super.onProgressUpdate(params);
+            Tab3_CM.getInstance().refreshLv();
         }
 
         @Override

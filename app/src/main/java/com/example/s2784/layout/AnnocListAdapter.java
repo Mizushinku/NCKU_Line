@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class AnnocListAdapter extends BaseAdapter implements View.OnClickListener {

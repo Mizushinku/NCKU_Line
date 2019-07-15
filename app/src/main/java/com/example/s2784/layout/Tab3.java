@@ -27,7 +27,7 @@ import java.util.ArrayList;
 //        onDestroy()：銷毀Fragment時調用。
 //        onDetach()：當Fragment和Activity解除關聯時調用
 
-public class Tab3 extends Fragment {
+public class Tab3 extends Fragment implements Tab3_CM.CtrlUnit{
 
     private ListView annocListView;
     private AnnocListAdapter annocListAdapter;
@@ -54,6 +54,7 @@ public class Tab3 extends Fragment {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Tab3_CM.getInstance().setListener(this);
     }
 
     @Override
@@ -105,6 +106,12 @@ public class Tab3 extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void refreshLv()
+    {
+        this.annocListAdapter.notifyDataSetChanged();
     }
 
 

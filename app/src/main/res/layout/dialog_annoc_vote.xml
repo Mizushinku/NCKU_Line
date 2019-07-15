@@ -144,6 +144,43 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vote_way"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="15dp"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/vote_rg"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/AD_rb"
+            android:text="@string/AD_vote"
+            android:textSize="18sp"
+            android:checked="true"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/MC_rb"
+            android:text="@string/MC_vote"
+            android:textSize="18sp"
+            android:layout_marginStart="20dp"/>
+
+    </RadioGroup>
+
 
 
 </LinearLayout>

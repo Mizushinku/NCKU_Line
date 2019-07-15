@@ -67,6 +67,14 @@ u
     <string name="annoc_OK">發布公告成功</string>
     <string name="annoc_fail">發布失敗</string>
 
+    <string name="vote_way">投票方式</string>
+    <string name="AD_vote">贊同或反對</string>
+    <string name="MC_vote">單選式</string>
+    <string name="MCDT">請輸入選項(至少兩項)</string>
+    <string name="MC_hint">選項文字</string>
+    <string name="MCEM1">不能空白</string>
+    <string name="MCEM2">至少需有兩個選項</string>
+    <string name="MCEM3">選項格式錯誤</string>
     <string name="yes">同意</string>
     <string name="no">不同意</string>
     <string name="sure_vote">確定投票嗎?</string>
