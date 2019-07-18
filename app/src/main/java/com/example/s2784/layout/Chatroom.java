@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,12 +53,12 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected GridView gridView;
     protected Grid_Adapter gridAdapter;
 
-
-
     protected String id;
     protected String code;
 
     protected String memberID;
+
+    protected boolean isLoading = false;
 
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
     protected static final int REQUEST_CODE_FORWARD = 2;
@@ -258,6 +259,23 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
         lv.setAdapter(bubbleAdapter);
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if(scrollState == SCROLL_STATE_IDLE) {
+                    if(view != null && view.getFirstVisiblePosition() == 0 && view.getTop() == 0) {
+                        if(!isLoading) {
+                            isLoading = true;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 
 
