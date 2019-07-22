@@ -15,7 +15,7 @@ import android.graphics.Bitmap;
 public class LinkModule {
 
     public interface MListener {
-        void updateMsg(String sender, String text, String time);
+        void updateMsg(String sender, String text, String time, int mod);
         void updateImg(String sender, Bitmap image, String time);
         void updateImg(Bitmap image, int pos);
         void fetchRecord(String record);
@@ -76,9 +76,9 @@ public class LinkModule {
 
 //////////////////////////////////////////////////////
 
-    public void callUpdateMsg(String sender, String text, String time) {
+    public void callUpdateMsg(String sender, String text, String time, int mod) {
         if(mListener != null) {
-            mListener.updateMsg(sender,text,time);
+            mListener.updateMsg(sender,text,time, mod);
         }
     }
     public void callUpdateImg(String sender, Bitmap image, String time) {

@@ -563,7 +563,7 @@ public class Main extends AppCompatActivity implements FriendLongClickDialogFrag
                             String SM_msg = new String(message.getPayload());
                             String[] SM_msg_splitLine = SM_msg.split("\t");
                             if(processingCode.equals(SM_msg_splitLine[0])){
-                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2],SM_msg_splitLine[3]);
+                                LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1],SM_msg_splitLine[2],SM_msg_splitLine[3], 1);
                             }
                             break;
                         case "GetRecord" :

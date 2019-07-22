@@ -59,6 +59,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected String memberID;
 
     protected boolean isLoading = false;
+    protected int record_cnt = 0;
 
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
     protected static final int REQUEST_CODE_FORWARD = 2;
@@ -255,7 +256,8 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
 
         //拿到聊天紀錄
-        mqtt.GetRecord(code);
+        ++record_cnt;
+        mqtt.GetRecord(code, record_cnt);
 
         bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
         lv.setAdapter(bubbleAdapter);
@@ -264,8 +266,11 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if(scrollState == SCROLL_STATE_IDLE) {
                     if(view != null && view.getFirstVisiblePosition() == 0 && view.getTop() == 0) {
+                        Log.d("CHAT", "is top");
                         if(!isLoading) {
                             isLoading = true;
+                            ++record_cnt;
+                            mqtt.GetRecord(code, record_cnt);
                         }
                     }
                 }
@@ -281,23 +286,39 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     //callback function 實作
     @Override
-    public void updateMsg(String sender, String text, String time) {
+    public void updateMsg(String sender, String text, String time, int mod) {
         if (sender.equals(id)) {
-            msgList.add(new Bubble(1, 0, text, sender, time));
+            if(mod == 0) {
+                msgList.add(0, new Bubble(1, 0, text, sender, time));
+            }
+            else {
+                msgList.add(new Bubble(1, 0, text, sender, time));
+            }
+            //msgList.add(0, new Bubble(1, 0, text, sender, time));
         } else {
-            msgList.add(new Bubble(0, 0, text, sender, time, mqtt.MapBitmap(sender)));
+            if(mod == 0) {
+                msgList.add(0, new Bubble(0, 0, text, sender, time, mqtt.MapBitmap(sender)));
+            }
+            else {
+                msgList.add(new Bubble(0, 0, text, sender, time, mqtt.MapBitmap(sender)));
+            }
         }
         //更新一則訊息
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
-        lv.setSelection(bubbleAdapter.getCount());
+        if(mod == 0) {
+            lv.setSelection(11);
+        }
+        else {
+            lv.setSelection(bubbleAdapter.getCount());
+        }
     }
 
     @Override
     public void updateImg(String sender, Bitmap image, String time) {
         if (sender.equals(id)) {
-            msgList.add(new Bubble(1, 1, image, sender, time));
+            msgList.add(0, new Bubble(1, 1, image, sender, time));
         } else {
-            msgList.add(new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
+            msgList.add(0, new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
         }
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
         lv.setSelection(bubbleAdapter.getCount());
@@ -472,10 +493,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 String[] token_splitLine = token.split("\t");
                 //if type == 'text'
                 if (token_splitLine[3].equals("text")) {
-                    roomWeakReference.get().updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2]);
+                    roomWeakReference.get().updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2], 0);
                 } else if (token_splitLine[3].equals("img")) {
                     roomWeakReference.get().updateImg(token_splitLine[0], null, token_splitLine[2]);
-                    mqtt.RecordImgBack(token_splitLine[1], i);
+                    //mqtt.RecordImgBack(token_splitLine[1], i);
                 }
                 ++i;
             }
@@ -489,6 +510,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 return;
             }
             roomWeakReference.get().findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+            roomWeakReference.get().setLoading(false);
         }
     }
 
@@ -533,6 +555,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
          Intent forward = new Intent(Chatroom.this, ForwardActivity.class);
          forward.putExtra("index",index);
          startActivityForResult(forward,REQUEST_CODE_FORWARD);
+    }
+
+    protected void setLoading(boolean loading) {
+        isLoading = loading;
     }
 
 }

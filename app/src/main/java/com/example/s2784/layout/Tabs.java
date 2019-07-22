@@ -865,7 +865,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     }
                                 }
                                 if (processingCode.equals(SM_msg_splitLine[0])) {
-                                    LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3]);
+                                    LinkModule.getInstance().callUpdateMsg(SM_msg_splitLine[1], SM_msg_splitLine[2], SM_msg_splitLine[3], 1);
                                 }
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 break;
@@ -1395,10 +1395,11 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void GetRecord(String code) {
+        public void GetRecord(String code, int record_cnt) {
             String topic = "IDF/GetRecord/" + user;
+            String msg = code + "\t" + record_cnt;
             try {
-                client.publish(topic, code.getBytes(), 2, false);
+                client.publish(topic, msg.getBytes(), 2, false);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
