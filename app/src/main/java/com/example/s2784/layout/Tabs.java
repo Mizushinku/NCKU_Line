@@ -1395,9 +1395,9 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
             }
         }
 
-        public void GetRecord(String code, int record_cnt) {
+        public void GetRecord(String code, int record_cnt, int last_pk) {
             String topic = "IDF/GetRecord/" + user;
-            String msg = code + "\t" + record_cnt;
+            String msg = code + "\t" + record_cnt + "\t" + last_pk;
             try {
                 client.publish(topic, msg.getBytes(), 2, false);
             } catch (MqttException e) {

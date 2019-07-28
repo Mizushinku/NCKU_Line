@@ -60,6 +60,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     protected boolean isLoading = false;
     protected int record_cnt = 0;
+    protected int last_pk = 0;
 
     protected static final int REQUEST_CODE_CHOOSEPIC = 1;
     protected static final int REQUEST_CODE_FORWARD = 2;
@@ -257,7 +258,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
         //拿到聊天紀錄
         ++record_cnt;
-        mqtt.GetRecord(code, record_cnt);
+        mqtt.GetRecord(code, record_cnt, last_pk);
 
         bubbleAdapter = new BubbleAdapter(Chatroom.this, msgList, roomInfo);
         lv.setAdapter(bubbleAdapter);
@@ -270,7 +271,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                         if(!isLoading) {
                             isLoading = true;
                             ++record_cnt;
-                            mqtt.GetRecord(code, record_cnt);
+                            mqtt.GetRecord(code, record_cnt, last_pk);
                         }
                     }
                 }
@@ -490,6 +491,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             int i = 0;
             while (stringTokenizer.hasMoreElements()) {
                 String token = stringTokenizer.nextToken();
+                if(i == 0)
+                {
+                    int last_pk = Integer.parseInt(token);
+                    roomWeakReference.get().setLast_pk(last_pk);
+                    ++i;
+                    continue;
+                }
                 String[] token_splitLine = token.split("\t");
                 //if type == 'text'
                 if (token_splitLine[3].equals("text")) {
@@ -559,6 +567,10 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     protected void setLoading(boolean loading) {
         isLoading = loading;
+    }
+
+    protected void setLast_pk(int pk) {
+        last_pk = pk;
     }
 
 }
