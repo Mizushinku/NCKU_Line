@@ -901,7 +901,7 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
                                     }
                                 }
                                 if (processingCode.equals(tsl[4])) {
-                                    LinkModule.getInstance().callUpdateImg(tsl[3], SI_img, tsl[5]);
+                                    LinkModule.getInstance().callUpdateImg(tsl[3], SI_img, tsl[5], 1);
                                 }
                                 viewPager.getAdapter().notifyDataSetChanged();
                                 break;

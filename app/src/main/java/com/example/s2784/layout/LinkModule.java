@@ -16,7 +16,7 @@ public class LinkModule {
 
     public interface MListener {
         void updateMsg(String sender, String text, String time, int mod);
-        void updateImg(String sender, Bitmap image, String time);
+        void updateImg(String sender, Bitmap image, String time, int mod);
         void updateImg(Bitmap image, int pos);
         void fetchRecord(String record);
         void memberChange(String memberID);
@@ -81,9 +81,9 @@ public class LinkModule {
             mListener.updateMsg(sender,text,time, mod);
         }
     }
-    public void callUpdateImg(String sender, Bitmap image, String time) {
+    public void callUpdateImg(String sender, Bitmap image, String time, int mod) {
         if(mListener != null) {
-            mListener.updateImg(sender,image,time);
+            mListener.updateImg(sender,image,time, mod);
         }
     }
     public void callUpdateImg(Bitmap image, int pos) {

@@ -59,6 +59,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     protected String memberID;
 
     protected boolean isLoading = false;
+    protected int cap = 12;
     protected int record_cnt = 0;
     protected int last_pk = 0;
 
@@ -307,7 +308,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
         //更新一則訊息
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
         if(mod == 0) {
-            lv.setSelection(11);
+            lv.setSelection(cap - 1);
         }
         else {
             lv.setSelection(bubbleAdapter.getCount());
@@ -315,14 +316,31 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    public void updateImg(String sender, Bitmap image, String time) {
+    public void updateImg(String sender, Bitmap image, String time, int mod) {
         if (sender.equals(id)) {
-            msgList.add(0, new Bubble(1, 1, image, sender, time));
+            if(mod == 0) {
+                msgList.add(0, new Bubble(1, 1, image, sender, time));
+            }
+            else {
+                msgList.add(new Bubble(1, 1, image, sender, time));
+            }
         } else {
-            msgList.add(0, new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
+            if(mod == 0) {
+                msgList.add(0, new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
+            }
+            else {
+                msgList.add(new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
+            }
         }
         bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
-        lv.setSelection(bubbleAdapter.getCount());
+        if(mod == 0) {
+            lv.setSelection(cap - 1);
+            Log.d("CHAT", "set selecttion in mod 0 : " + (cap-1));
+        }
+        else {
+            lv.setSelection(bubbleAdapter.getCount());
+            Log.d("CHAT", "set selecttion in mod 1 : " + bubbleAdapter.getCount());
+        }
         if (image != null) {
             findViewById(R.id.progressBar_img).setVisibility(View.GONE);
         }
@@ -330,7 +348,15 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void updateImg(Bitmap image, int pos) {
-        msgList.get(pos).setImage(image);
+        while(pos < this.getMsgListCount()) {
+            if(msgList.get(pos).getData_t() == 1) {
+                msgList.get(pos).setImage(image);
+                break;
+            }
+            else {
+                pos += cap;
+            }
+        }
         //bubbleAdapter.notifyDataSetChanged(lv, pos);
     }
 
@@ -353,7 +379,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void refreshListView() {
         bubbleAdapter.notifyDataSetChanged();
-        lv.setSelection(bubbleAdapter.getCount());
+        //lv.setSelection(bubbleAdapter.getCount());
+        try {
+            lv.setSelection(cap - 1);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -503,8 +535,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 if (token_splitLine[3].equals("text")) {
                     roomWeakReference.get().updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2], 0);
                 } else if (token_splitLine[3].equals("img")) {
-                    roomWeakReference.get().updateImg(token_splitLine[0], null, token_splitLine[2]);
-                    //mqtt.RecordImgBack(token_splitLine[1], i);
+                    roomWeakReference.get().updateImg(token_splitLine[0], null, token_splitLine[2], 0);
+                    int pos = roomWeakReference.get().getCap() - i;
+                    mqtt.RecordImgBack(token_splitLine[1], pos);
                 }
                 ++i;
             }
@@ -571,6 +604,14 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     protected void setLast_pk(int pk) {
         last_pk = pk;
+    }
+
+    protected int getMsgListCount() {
+        return this.msgList.size();
+    }
+
+    protected int getCap() {
+        return cap;
     }
 
 }
