@@ -25,6 +25,8 @@ public class Bubble {
     //message type, 0 = text data, 1 = image data
     private int data_t;
 
+    private int img_pos = 0;
+
 
     public Bubble() {}
 

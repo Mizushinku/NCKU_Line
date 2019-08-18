@@ -325,6 +325,7 @@ public class BubbleAdapter extends BaseAdapter {
         return rowView;
     }
 
+    /*
     public void notifyDataSetChanged(ListView lv, int position) {
         //listView 可能很長(超過手機畫面),這裡拿到處於手機畫面中,第一以及最後一個的item的index
         int firstVisiblePosition = lv.getFirstVisiblePosition();
@@ -342,6 +343,7 @@ public class BubbleAdapter extends BaseAdapter {
             this.getView(position, v, lv);
         }
     }
+    */
 
     private void initPopWindow(View v, final int position) {
         View view = LayoutInflater.from(v.getContext()).inflate(R.layout.simple_popup, null, false);

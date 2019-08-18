@@ -306,7 +306,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
             }
         }
         //更新一則訊息
-        bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        //bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        Chatroom.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bubbleAdapter.notifyDataSetChanged();
+            }
+        });
         if(mod == 0) {
             lv.setSelection(cap - 1);
         }
@@ -332,7 +338,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 msgList.add(new Bubble(0, 1, image, sender, time, mqtt.MapBitmap(sender)));
             }
         }
-        bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        //bubbleAdapter.notifyDataSetChanged(lv, bubbleAdapter.getCount());
+        Chatroom.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bubbleAdapter.notifyDataSetChanged();
+            }
+        });
         if(mod == 0) {
             lv.setSelection(cap - 1);
             Log.d("CHAT", "set selecttion in mod 0 : " + (cap-1));
@@ -357,12 +369,46 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 pos += cap;
             }
         }
-        //bubbleAdapter.notifyDataSetChanged(lv, pos);
+        Chatroom.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bubbleAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
     public void fetchRecord(String record) {
-        new FetchRecord(this).execute(record);
+
+        //new FetchRecord(this).execute(record);
+        findViewById(R.id.progressBar_img).setVisibility(View.VISIBLE);
+        findViewById(R.id.progressBar_img).bringToFront();
+
+        StringTokenizer stringTokenizer = new StringTokenizer(record, "\r");
+        int i = 0;
+        while (stringTokenizer.hasMoreElements()) {
+            String token = stringTokenizer.nextToken();
+            if(i == 0)
+            {
+                int last_pk = Integer.parseInt(token);
+                this.setLast_pk(last_pk);
+                ++i;
+                continue;
+            }
+            String[] token_splitLine = token.split("\t");
+            //if type == 'text'
+            if (token_splitLine[3].equals("text")) {
+                this.updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2], 0);
+            } else if (token_splitLine[3].equals("img")) {
+                this.updateImg(token_splitLine[0], null, token_splitLine[2], 0);
+                int pos = this.getCap() - i;
+                mqtt.RecordImgBack(token_splitLine[1], pos);
+            }
+            ++i;
+        }
+
+        findViewById(R.id.progressBar_img).setVisibility(View.GONE);
+        this.setLoading(false);
     }
 
     @Override
