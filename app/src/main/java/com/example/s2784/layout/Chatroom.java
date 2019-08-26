@@ -258,6 +258,7 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
 
         //拿到聊天紀錄
+        isLoading = true;
         ++record_cnt;
         mqtt.GetRecord(code, record_cnt, last_pk);
 
@@ -360,7 +361,13 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void updateImg(Bitmap image, int pos) {
-        while(pos < this.getMsgListCount()) {
+        int count = this.getMsgListCount();
+        Log.d("CHAT", "before pos = " + pos);
+        if(count <= this.getCap()) {
+            pos = count - (this.getCap() - pos);
+        }
+        Log.d("CHAT", "count = " + count + " and pos = " + pos);
+        while(pos < count) {
             if(msgList.get(pos).getData_t() == 1) {
                 msgList.get(pos).setImage(image);
                 break;
@@ -401,7 +408,9 @@ public class Chatroom extends AppCompatActivity implements View.OnClickListener,
                 this.updateMsg(token_splitLine[0], token_splitLine[1], token_splitLine[2], 0);
             } else if (token_splitLine[3].equals("img")) {
                 this.updateImg(token_splitLine[0], null, token_splitLine[2], 0);
-                int pos = this.getCap() - i;
+                int pos;
+                pos = this.getCap() - i;
+                Log.d("CHAT", "i = " + i);
                 mqtt.RecordImgBack(token_splitLine[1], pos);
             }
             ++i;
