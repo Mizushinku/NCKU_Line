@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Looper;
 import android.provider.Browser;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import java.net.URL;
 
 public class LogIn extends AppCompatActivity {
     private final static int CAMERA_RESULT = 0;
+    private final static int SIP_RESULT = 1;
     private Mqtt_Client mqtt;
 
     private EditText login_et;
@@ -112,6 +114,9 @@ public class LogIn extends AppCompatActivity {
         mqtt = new Mqtt_Client(this.getApplicationContext(), Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
         mqtt.Connect();
 
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.USE_SIP ,Manifest.permission.RECORD_AUDIO},1);
+        }
     }
 
     @Override
@@ -173,6 +178,9 @@ public class LogIn extends AppCompatActivity {
                     Toast.makeText(this,"需要相機權限掃描條碼",Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case SIP_RESULT:{
+//                Toast.makeText(this,"SIPSIPSIP",Toast.LENGTH_SHORT).show();
+            }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }}
