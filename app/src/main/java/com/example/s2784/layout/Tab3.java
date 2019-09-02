@@ -115,9 +115,18 @@ public class Tab3 extends Fragment implements Tab3_CM.CtrlUnit{
     }
 
     @Override
-    public void refresh_one_with_pk(int pk) {
-        this.annocListAdapter.setChanged_pk(pk);
-        this.annocListAdapter.notifyDataSetChanged();
+    public void refresh_one_with_pk(final int pk) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Tab3.this.annocListAdapter.setChanged_pk(pk);
+                Tab3.this.annocListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public AnnocListAdapter getAnnocListAdapter() {
+        return annocListAdapter;
     }
 
 

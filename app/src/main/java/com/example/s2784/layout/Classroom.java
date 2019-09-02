@@ -208,6 +208,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                                 "From : %s\nAnnouncement : %s\nTitle : %s\nDue : %s, %s\t" +
                                                 "%s %s:59",
                                         p, code, roomName, clicked, title, date, time, date, time);
+                                Tabs.annocViewModel.setAnnocBuffer(text.split("\t")[2]);
                                 Tabs.mqtt.pubAnnoc(text);
                             }
                         })
@@ -243,6 +244,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                                 "From : %s\nAnnouncement : %s\nTitle : %s\ndate : %s, %s\nlocation : %s\t" +
                                                 "%s %s:59",
                                         p, code, roomName, clicked, title, date, time, place, date, time);
+                                Tabs.annocViewModel.setAnnocBuffer(text.split("\t")[2]);
                                 Tabs.mqtt.pubAnnoc(text);
                             }
                         })
@@ -285,10 +287,13 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                                 "From : %s\nAnnouncement : %s\nTitle : %s\ncontent : %s\nDue : %s, %s\t" +
                                                 "%s %s:59",
                                         p, code, roomName, clicked, title, content, date, time, date, time);
+                                String text_buffer = text.split("\t")[2];
 
                                 if(MC_rb.isChecked()) {
                                     if(!candidates.equals("")) {
                                         text = String.format("%s\tMC\t%s", text, candidates);
+                                        Tabs.annocViewModel.setAnnocBuffer(
+                                                String.format("%s:::%s", text_buffer, candidates));
                                         Tabs.mqtt.pubAnnoc(text);
                                     }
                                     else {
@@ -297,6 +302,7 @@ public class Classroom extends Chatroom implements OnMenuItemClickListener {
                                 }
                                 else {
                                     text = String.format("%s\tAD", text);
+                                    Tabs.annocViewModel.setAnnocBuffer(text_buffer);
                                     Tabs.mqtt.pubAnnoc(text);
                                 }
                                 candidates = "";

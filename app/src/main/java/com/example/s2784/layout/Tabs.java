@@ -1647,8 +1647,10 @@ public class Tabs extends AppCompatActivity implements Tab1.OnFragmentInteractio
 
         private void PubAnnoc_re(String result)
         {
-            if(result.equals("OK")) {
+            if(result.split("/")[0].equals("OK")) {
                 Toast.makeText(context, getResources().getString(R.string.annoc_OK), Toast.LENGTH_SHORT).show();
+                Tabs.annocViewModel.add_annoc_soon(result.split("/")[1]);
+                Tab3_CM.getInstance().refreshLv();
             }
             else {
                 Toast.makeText(context, getResources().getString(R.string.annoc_fail), Toast.LENGTH_SHORT).show();
